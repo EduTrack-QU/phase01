@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.inline-icon{
+    height: 2em;
+    margin-bottom: -0.175em;
+}
+
+.qu-logo{
+    height: 2em;
+    margin-right: 0.5em;
+    margin-left: auto;
+}
+
+header h3 {
+    margin: 0;
+    color: #333;
+}
