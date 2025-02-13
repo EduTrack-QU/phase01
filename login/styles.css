@@ -109,3 +109,24 @@ footer {
     color: #90c5cd;
     transition: color 0.2s ease;
 }
+
+/* Login Information Styles */
+.login-info {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.login-info p {
+    margin: 10px 0;
+}
+
+.login-info a {
+    color: #90c5cd;
+    text-decoration: none;
+}
+
+.login-info a:hover {
+    text-decoration: underline;
+}
