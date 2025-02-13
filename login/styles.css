@@ -1,3 +1,4 @@
+/* Global Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #d8d8d8;
@@ -5,6 +6,7 @@ body {
     padding: 0;
 }
 
+/* Header Styles */
 header {
     display: flex;
     align-items: center;
@@ -13,6 +15,12 @@ header {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+header h3 {
+    margin: 0;
+    color: #000;
+}
+
+/* Icon and Logo Styles */
 .inline-icon {
     height: 2em;
     margin-bottom: -0.175em;
@@ -24,32 +32,28 @@ header {
     margin-left: auto;
 }
 
+/* Login Box Container */
 .login-box {
-    margin: 0 auto;
+    width: 400px;
+    margin: 100px auto 0;
     padding: 40px;
     border-radius: 8px;
-    width: 400px;
-    margin-top: 100px;
 }
 
-header h3 {
-    margin: 0;
-    color: #000;
-}
-
-.login-box input,
-.login-box button {
-    margin-bottom: 20px;
+/* Form Input Styles */
+.login-box input {
     width: 100%;
     padding: 12px;
-    border-radius: 4px;
+    margin-bottom: 20px;
     border: 1px solid #ddd;
+    border-radius: 4px;
     box-sizing: border-box;
 }
 
+/* Button Styles */
 .login-box input[type="submit"],
 .login-box .btn {
-    background-color: #90c5cd;
+    background-color: #d1b89e;
     color: #333;
     border: none;
     cursor: pointer;
