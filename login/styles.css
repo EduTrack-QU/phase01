@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #d8d8d8;
     margin: 0;
     padding: 0;
 }
@@ -9,22 +9,60 @@ header {
     display: flex;
     align-items: center;
     padding: 20px;
-    background-color: #fff;
+    background-color: #d1b89e;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.inline-icon{
+.inline-icon {
     height: 2em;
     margin-bottom: -0.175em;
 }
 
-.qu-logo{
+.qu-logo {
     height: 2em;
     margin-right: 0.5em;
     margin-left: auto;
 }
 
+.login-box {
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: 8px;
+    width: 400px;
+    margin-top: 100px;
+}
+
 header h3 {
     margin: 0;
+    color: #000;
+}
+
+.login-box input,
+.login-box button {
+    margin-bottom: 20px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.login-box input[type="submit"],
+.login-box .btn {
+    background-color: #90c5cd;
     color: #333;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.login-box input[type="submit"]:hover,
+.login-box .btn:hover {
+    background-color: #90c5cd;
+    transition: background-color 0.2s ease;
 }
