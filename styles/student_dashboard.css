@@ -4,29 +4,68 @@ body {
     margin: 0;
     padding: 0;
 }
-/* * Header Styles */
-header {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    background-color: #d1b89e;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 
-header h3 {
-    margin: 0;
-    color: #000;
-}
 
-/* Icon and Logo Styles */
+
+/* Dashboard Styles */
 .inline-icon {
     height: 2em;
     margin-bottom: -0.175em;
 }
 
-.qu-logo {
-    height: 2em;
-    margin-right: 0.5em;
-    margin-left: auto;
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
 }
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.nav-item:hover {
+    background-color: #f0f0f0;
+}
+
+.inline-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.nav-item h3 {
+    margin: 0;
+}
+
+.nav-item a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.welcome-banner {
+    text-align: center;
+    padding: 2rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    border-radius: 8px;
+    margin: 2rem auto;
+    max-width: 800px;
+}
+
+.welcome-banner h2 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 2rem;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+}
+
+
+
+
 
