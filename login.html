@@ -8,13 +8,20 @@
     <link rel="stylesheet" href="styles/login.css">
 </head>
 
-<body>
-    <header>
-        <img class="inline-icon" src="media/cap.svg" alt="cap icon">
-        <h3>EduTrack-QU</h3>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("header.html")
+            .then(response => response.text())
+            .then(data => document.getElementById("header").innerHTML = data);
 
-        <img class=qu-logo src="media/qulogo.png" alt="QU logo">
-    </header>
+        fetch("footer.html")
+            .then(response => response.text())
+            .then(data => document.getElementById("footer").innerHTML = data);
+    });
+</script>
+
+<body>
+    <div id="header"></div>
 
     <div class="login-box">
         <h1>Login</h1>
@@ -41,16 +48,7 @@
         </div>
     </div>
 
-    <footer>
-        <div class="footer-content">
-            <p>&copy; 2024 EduTrack-QU. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact Us</a>
-            </div>
-        </div>
-    </footer>
+  <div id="footer"></div>
 </body>
 
 </html>

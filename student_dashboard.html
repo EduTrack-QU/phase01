@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="styles/student_dashboard.css">
 </head>
-<body>
-    <header>
-        <img class="inline-icon" src="media/cap.svg" alt="cap icon">
-        <h3>EduTrack-QU</h3>
 
-        <img class=qu-logo src="media/qulogo.png" alt="QU logo">
-    </header>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("header.html")
+            .then(response => response.text())
+            .then(data => document.getElementById("header").innerHTML = data);
+
+        fetch("footer.html")
+            .then(response => response.text())
+            .then(data => document.getElementById("footer").innerHTML = data);
+    });
+</script>
+
+<body>
+    <div id="header"></div>
+
 
 
     <nav>
@@ -22,21 +32,9 @@
             <li><a href="learning_path.html">View Learning Path</a></li>
         </ul>
     </nav>
+    <div id="footer"></div>
 
 
-
-
-
-    <footer>
-        <div class="footer-content">
-            <p>&copy; 2024 EduTrack-QU. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact Us</a>
-            </div>
-        </div>
-    </footer>
-    
 </body>
+
 </html>

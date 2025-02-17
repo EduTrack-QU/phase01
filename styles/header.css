@@ -1,10 +1,4 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #d8d8d8;
-    margin: 0;
-    padding: 0;
-}
-/* * Header Styles */
+/* Header Styles */
 header {
     display: flex;
     align-items: center;
@@ -29,4 +23,3 @@ header h3 {
     margin-right: 0.5em;
     margin-left: auto;
 }
-

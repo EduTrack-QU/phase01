@@ -6,31 +6,6 @@ body {
     padding: 0;
 }
 
-/* Header Styles */
-header {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    background-color: #d1b89e;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-header h3 {
-    margin: 0;
-    color: #000;
-}
-
-/* Icon and Logo Styles */
-.inline-icon {
-    height: 2em;
-    margin-bottom: -0.175em;
-}
-
-.qu-logo {
-    height: 2em;
-    margin-right: 0.5em;
-    margin-left: auto;
-}
 
 /* Login Box Container */
 .login-box {
@@ -69,45 +44,6 @@ header h3 {
 .login-box .btn:hover {
     background-color: #90c5cd;
     transition: background-color 0.2s ease;
-}
-
-/* Footer Styles */
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #d1b89e;
-    padding: 15px 0;
-    text-align: center;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.footer-content p {
-    margin: 0;
-    color: #333;
-    font-size: 14px;
-}
-
-.footer-links {
-    margin-top: 10px;
-}
-
-.footer-links a {
-    color: #333;
-    text-decoration: none;
-    margin: 0 15px;
-    font-size: 14px;
-}
-
-.footer-links a:hover {
-    color: #90c5cd;
-    transition: color 0.2s ease;
 }
 
 /* Login Information Styles */
