@@ -1,0 +1,12 @@
+[
+    {
+        "username": "ansari@qu.edu.qa",
+        "password": "ansaripassword",
+        "role": "admin"
+    },
+    {
+        "username": "hamza@qu.edu.qa",
+        "password": "hamzapassword",
+        "role": "student"
+    }
+]
