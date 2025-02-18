@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Courses</title>
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="footer.css">
+    <link rel="stylesheet" href="vPath.css">
+</head>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("header.html")
+            .then(response => response.text())
+            .then(data => document.getElementById("header").innerHTML = data);
+
+        fetch("footer.html")
+            .then(response => response.text())
+            .then(data => document.getElementById("footer").innerHTML = data);
+    });
+
+    function showCourses() {
+        let selection = document.getElementById("courseSelect").value;
+        let coursesList = document.getElementById("courses-list");
+
+        if (selection === "current") {
+            coursesList.innerHTML = `
+                <h3>Spring 2025</h3>
+                <ul class="course-list">
+                    <li>CMPS 350 - Web Development <span class="grade">Current Grade: B </span></li>
+                    <li>CMPS 405 - Operating Systems <span class="grade">Current Grade: A </span></li>
+                    <li>CMPS 493 - Senior Project I <span class="grade"> Current Grade: C</span></li>
+                </ul>
+            `;
+        } else if (selection === "previous") {
+            coursesList.innerHTML = `
+                <h3>Fall 2024</h3>
+                <ul class="course-list">
+                    <li>CMPS 151 - Programming Concepts <span class="grade"> Grade: A</span></li>
+                    <li>CMPS 251 - Object Oriented Programming <span class="grade"> Grade: B</span></li>
+                    <li>CMPS 303 - Data Structures <span class="grade"> Grade: A </span></li>
+                </ul>
+                <h3>Spring 2024</h3>
+                <ul class="course-list">
+                    <li>CMPS 251 - Discreate Mathmatics <span class="grade"> Grade: A </span></li>
+                    <li>CMPS 251 - Object Oriented Programming <span class="grade"> Grade: B</span></li>
+                    <li>CMPS 303 - Data Structures <span class="grade"> Grade: D </span></li>
+                </ul>
+
+            `;
+        } else {
+            coursesList.innerHTML = `<p>Please select a category to view courses.</p>`;
+        }
+    }
+</script>
+
+<body>
+    <div id="header"></div>
+
+    <div class="course-container">
+        <h3>Your Courses</h3>
+        <div class="course-selection">
+            <!-- <label for="courseSelect">Choose a category:</label> -->
+            <select id="courseSelect" onchange="showCourses()">
+                <option value="">-- Select --</option>
+                <option value="current">Current Courses</option>
+                <option value="previous">Previous Courses</option>
+            </select>
+        </div>
+        
+        <div id="courses-list" class="courses-list">
+            <p>Please select a category to view courses.</p>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+</body>
+</html>

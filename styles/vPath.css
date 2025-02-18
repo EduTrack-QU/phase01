@@ -1,0 +1,71 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d8d8d8;
+    margin: 0;
+    padding: 0;
+}
+
+/* Course Container */
+.course-container {
+    width: 450px;
+    margin: 100px auto;
+    padding: 40px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Dropdown Selection */
+.course-selection {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 10px;
+    background-color: #f8f8f8;
+}
+
+/* Course List Section */
+.courses-list {
+    padding: 20px;
+    background: #f4f4f4;
+    border-radius: 8px;
+    min-height: 100px;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Course List */
+.course-list {
+    list-style: none;
+    padding: 0;
+}
+
+.course-list li {
+    background: #90c5cd;
+    padding: 12px;
+    margin: 5px 0;
+    border-radius: 5px;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.grade {
+    font-weight: normal;
+    color: #444;
+    font-size: 14px;
+}
