@@ -1,10 +1,12 @@
 [
     {
+        "name": "Mohamed",
         "username": "ansari@qu.edu.qa",
         "password": "ansaripassword",
         "role": "admin"
     },
     {
+        "name": "Hamza",
         "username": "hamza@qu.edu.qa",
         "password": "hamzapassword",
         "role": "student"
