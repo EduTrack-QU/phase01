@@ -42,7 +42,7 @@ body {
 
 .login-box input[type="submit"]:hover,
 .login-box .btn:hover {
-    background-color: #90c5cd;
+    background-color: b0dae1;
     transition: background-color 0.2s ease;
 }
 
