@@ -5,45 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Courses</title>
     <link rel="stylesheet" href="styles/learning_path.css">
-</head>
+    <script>
+        function showCourses() {
+            let selection = document.getElementById("courseSelect").value;
+            let coursesList = document.getElementById("courses-list");
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        
-    function showCourses() {
-        let selection = document.getElementById("courseSelect").value;
-        let coursesList = document.getElementById("courses-list");
-
-        if (selection === "current") {
-            coursesList.innerHTML = `
-                <h3>Spring 2025</h3>
-                <ul class="course-list">
-                    <li>CMPS 350 - Web Development <span class="grade">Current Grade: B </span></li>
-                    <li>CMPS 405 - Operating Systems <span class="grade">Current Grade: A </span></li>
-                    <li>CMPS 493 - Senior Project I <span class="grade"> Current Grade: C</span></li>
-                </ul>
-            `;
-        } else if (selection === "previous") {
-            coursesList.innerHTML = `
-                <h3>Fall 2024</h3>
-                <ul class="course-list">
-                    <li>CMPS 151 - Programming Concepts <span class="grade"> Grade: A</span></li>
-                    <li>CMPS 251 - Object Oriented Programming <span class="grade"> Grade: B</span></li>
-                    <li>CMPS 303 - Data Structures <span class="grade"> Grade: A </span></li>
-                </ul>
-                <h3>Spring 2024</h3>
-                <ul class="course-list">
-                    <li>CMPS 251 - Discreate Mathmatics <span class="grade"> Grade: A </span></li>
-                    <li>CMPS 251 - Object Oriented Programming <span class="grade"> Grade: B</span></li>
-                    <li>CMPS 303 - Data Structures <span class="grade"> Grade: D </span></li>
-                </ul>
-
-            `;
-        } else {
-            coursesList.innerHTML = `<p>Please select a category to view courses.</p>`;
+            if (selection === "current") {
+                coursesList.innerHTML = `
+                    <h3>Spring 2025</h3>
+                    <ul class="course-list">
+                        <li>CMPS 350 - Web Development <span class="grade">Current Grade: B </span></li>
+                        <li>CMPS 405 - Operating Systems <span class="grade">Current Grade: A </span></li>
+                        <li>CMPS 493 - Senior Project I <span class="grade"> Current Grade: C</span></li>
+                    </ul>
+                `;
+            } else if (selection === "previous") {
+                coursesList.innerHTML = `
+                    <h3>Fall 2024</h3>
+                    <ul class="course-list">
+                        <li>CMPS 151 - Programming Concepts <span class="grade"> Grade: A</span></li>
+                        <li>CMPS 251 - Object Oriented Programming <span class="grade"> Grade: B</span></li>
+                        <li>CMPS 303 - Data Structures <span class="grade"> Grade: A </span></li>
+                    </ul>
+                    <h3>Spring 2024</h3>
+                    <ul class="course-list">
+                        <li>CMPS 250 - Discrete Mathematics <span class="grade"> Grade: A </span></li>
+                        <li>CMPS 280 - Computer Architecture <span class="grade"> Grade: B</span></li>
+                        <li>CMPS 310 - Algorithms <span class="grade"> Grade: D </span></li>
+                    </ul>
+                `;
+            } else {
+                coursesList.innerHTML = `<p>Please select a category to view courses.</p>`;
+            }
         }
-    }
-</script>
+    </script>
+</head>
 
 <body>
     <div id="header"></div>
