@@ -1,0 +1,20 @@
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    
