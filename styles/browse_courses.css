@@ -1,0 +1,83 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d8d8d8;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto auto;
+    grid-template-areas: 
+        "header"
+        "nav"
+        "main"
+        "footer";
+}
+#header {
+    grid-area: header;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+#footer {
+    grid-area: footer;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+nav {
+    grid-area: nav;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+#courses-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 2rem;
+}
+
+.course-card {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.course-card button {
+    padding: 0.5rem;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.course-card button:hover {
+    background-color: #555;
+}
+@media screen and (min-width: 600px) {
+    body {
+        grid-template-columns: 200px 1fr;
+        grid-template-areas: 
+            "header header"
+            "nav main"
+            "footer footer";
+    }
+}
