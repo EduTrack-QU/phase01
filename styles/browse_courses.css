@@ -3,30 +3,8 @@ body {
     background-color: #d8d8d8;
     margin: 0;
     padding: 0;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto auto;
-    grid-template-areas: 
-        "header"
-        "nav"
-        "main"
-        "footer";
-}
-#header {
-    grid-area: header;
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 1rem;
 }
 
-#footer {
-    grid-area: footer;
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-}
 
 nav {
     grid-area: nav;
