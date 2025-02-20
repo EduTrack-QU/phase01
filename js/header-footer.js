@@ -1,9 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+    const bodyContent = document.body.innerHTML;
+    document.body.innerHTML = `<div class="page-wrapper">${bodyContent}</div>`;
+    
+
+    const headerElement = document.getElementById('header');
+    const footerElement = document.getElementById('footer');
+
     fetch("components/header.html")
         .then(response => response.text())
-        .then(data => document.getElementById("header").innerHTML = data);
+        .then(data => headerElement.innerHTML = data);
 
     fetch("components/footer.html")
         .then(response => response.text())
-        .then(data => document.getElementById("footer").innerHTML = data);
+        .then(data => footerElement.innerHTML = data);
 });
