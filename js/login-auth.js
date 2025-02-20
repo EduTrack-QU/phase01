@@ -8,8 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = document.querySelector('input[name="password"]').value;
         
         try {
-            // Updated path to match your file structure
-            const response = await fetch('/json/users.json');
+            const response = await fetch('../json/users.json');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
