@@ -60,16 +60,6 @@
       "description": "Software development lifecycle, requirements engineering, and design patterns."
     },
     {
-      "course_code": "CMPE 355",
-      "course_name": "Data Communication & Network",
-      "credit_hours": 4,
-      "category": "Networking & Security",
-      "prerequisites": ["CMPS 303"],
-      "concurrent_prerequisites": [],
-      "semester_recommended": "Year 3 - Fall",
-      "description": "Networking principles, protocols, and architectures."
-    },
-    {
       "course_code": "CMPS 380",
       "course_name": "Cybersecurity Fundamentals",
       "credit_hours": 3,
@@ -98,26 +88,6 @@
       "concurrent_prerequisites": [],
       "semester_recommended": "Year 3 - Spring",
       "description": "Introduction to web technologies including HTML, CSS, JavaScript, and backend programming."
-    },
-    {
-      "course_code": "CMPS 493",
-      "course_name": "Senior Project I",
-      "credit_hours": 3,
-      "category": "Capstone Project",
-      "prerequisites": ["CMPS 310", "CMPS 405", "CMPS 350"],
-      "concurrent_prerequisites": [],
-      "semester_recommended": "Year 4 - Fall",
-      "description": "Capstone project where students apply their knowledge to real-world problems."
-    },
-    {
-      "course_code": "CMPS 499",
-      "course_name": "Senior Project II",
-      "credit_hours": 4,
-      "category": "Capstone Project",
-      "prerequisites": ["CMPS 493"],
-      "concurrent_prerequisites": [],
-      "semester_recommended": "Year 4 - Spring",
-      "description": "Continuation of Senior Project I with a focus on implementation and evaluation."
     }
   ]
   

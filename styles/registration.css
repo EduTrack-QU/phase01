@@ -5,14 +5,14 @@ body {
     padding: 0;
 }
 
-.login-box {
+.registration-box {
     width: 400px;
     margin: 100px auto 0;
     padding: 40px;
     border-radius: 8px;
 }
 
-.login-box input {
+.registration-box input {
     width: 100%;
     padding: 12px;
     margin-bottom: 20px;
@@ -21,8 +21,8 @@ body {
     box-sizing: border-box;
 }
 
-.login-box input[type="submit"],
-.login-box .btn {
+.registration-box input[type="submit"],
+.registration-box .btn {
     background-color: #90c5cd;
     color: #333;
     border: none;
@@ -35,28 +35,29 @@ body {
     box-sizing: border-box;
 }
 
-.login-box input[type="submit"]:hover,
-.login-box .btn:hover {
-    background-color: b0dae1;
+.registration-box input[type="submit"]:hover,
+.registration-box .btn:hover {
+    background-color: #b0dae1;
     transition: background-color 0.2s ease;
 }
 
-.login-info {
+
+.registration-info {
     margin-top: 20px;
     text-align: center;
     font-size: 14px;
     color: #666;
 }
 
-.login-info p {
+.registration-info p {
     margin: 10px 0;
 }
 
-.login-info a {
+.registration-info a {
     color: #90c5cd;
     text-decoration: none;
 }
 
-.login-info a:hover {
+.registration-info a:hover {
     text-decoration: underline;
 }
