@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>create test</title>
+    <link rel="stylesheet" href="styles/create.css">
+</head>
+
+<body>
+    <div id="header"></div>
+    <main class="container">
+        <section class="course-section">
+            <h2>Validate Courses and Classes</h2>
+            <div id="courses-container"></div>
+        </section>
+
+        <section class="create-section">
+            <h2>Create New Course</h2>
+            <form id="create-course-form">
+                <label>Course Name: <input type="text" id="course-name" required></label>
+                <label>Category: <input type="text" id="course-category" required></label>
+                <label>Status:
+                    <select id="course-status" required>
+                        <option value="in-progress">In Progress</option>
+                        <option value="open">Open for Registration</option>
+                    </select>
+                </label>
+                <button type="submit" class="button create">Create Course</button>
+            </form>
+        </section>
+        <section>
+            <h2>
+                Created courses
+            </h2>
+            <div id="created-courses">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="created-courses-body">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <div><footer id="footer"></footer></div>
+    <script src="js/header-footer.js"></script>
+</body>
+
+</html>
