@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch('data/courses.json') 
+    fetch('json/courses.json') 
         .then(response => response.json())
         .then(data => {
             const tableBody = document.getElementById('courses-table-body');
