@@ -10,5 +10,11 @@
         "username": "hamza@qu.edu.qa",
         "password": "hamzapassword",
         "role": "student"
+    },
+    {
+        "name": "Barky",
+        "username": "bakry@qu.edu.qa",
+        "password": "bakrypassword",
+        "role": "instructor"
     }
 ]
