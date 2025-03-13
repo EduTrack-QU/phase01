@@ -6,7 +6,7 @@
 - 10% of the course grade.
 
 ### Important Dates
-- The project phase 1 submission is due by 12 AM Friday 15 March 2024.  
+- The project phase 1 submission is due by 12 AM Friday 22 March 2024.  
 - Demos are during the same week.
 
 ## 1. Description of the project
