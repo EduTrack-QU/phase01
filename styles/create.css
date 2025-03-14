@@ -16,37 +16,122 @@ main, nav, .main-content {
 
 #footer {
     margin-top: auto;
-}     
+} 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d8d8d8;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .container {
     padding: 20px;
     max-width: 1200px;
-    margin: auto;
+    margin: 0 auto;
+    flex: 1;
 }
 
-.course-section, .create-section {
-    display: flex;
-    flex-wrap: wrap;
-    background-color: #f9f9f9;
+/* Create Course Section */
+.create-section {
+    background-color: #ffffff;
     padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.create-section h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+}
 
+#create-course-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-end;
+}
 
+.form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+}
 
 .button {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin: 5px;
+    font-size: 14px;
+    font-weight: bold;
 }
-
 
 .button.create {
     background-color: #007bff;
     color: white;
 }
+
+
+.courses-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.courses-section h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.courses-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.courses-table th,
+.courses-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.courses-table th {
+    background-color: #f8f8f8;
+    font-weight: bold;
+}
+
