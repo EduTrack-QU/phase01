@@ -14,9 +14,6 @@ main, nav, .main-content {
     flex: 1;
 }
 
-#footer {
-    margin-top: auto;
-} 
 body {
     font-family: Arial, sans-serif;
     background-color: #d8d8d8;
@@ -27,17 +24,19 @@ body {
     flex-direction: column;
 }
 
+
 .container {
-    padding: 20px;
-    max-width: 1200px;
+    padding: 3vw; 
+    max-width: 1200px; 
+    min-width: 320px; 
     margin: 0 auto;
     flex: 1;
 }
 
-/* Create Course Section */
+
 .create-section {
     background-color: #ffffff;
-    padding: 20px;
+    padding: clamp(15px, 3vw, 30px); 
     border-radius: 8px;
     margin-bottom: 30px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -45,58 +44,57 @@ body {
 
 .create-section h2 {
     margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 24px;
+    margin-bottom: clamp(20px, 4vw, 30px);
+    font-size: clamp(20px, 3vw, 24px); 
     text-align: center;
 }
 
 #create-course-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: clamp(10px, 2vw, 20px);
 }
 
 .form-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    align-items: flex-end;
-    margin-bottom: 15px;
+    gap: clamp(15px, 3vw, 30px);
+    margin-bottom: clamp(10px, 2vw, 20px);
 }
 
 .form-group {
     flex: 1;
-    min-width: 200px;
-    margin-bottom: 15px;
+    min-width: 250px; 
+    margin-bottom: clamp(10px, 2vw, 20px);
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: clamp(5px, 1vw, 10px);
     font-weight: bold;
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
-    padding: 8px;
+    padding: clamp(8px, 1.5vw, 12px);
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: clamp(14px, 1.5vw, 16px);
 }
 
 .button-group {
     display: flex;
     justify-content: flex-end;
-    flex: 0 0 auto;
+    margin-top: clamp(15px, 2vw, 25px);
 }
 
 .button {
-    padding: 10px 20px;
+    padding: clamp(10px, 1.5vw, 15px) clamp(15px, 2vw, 25px);
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: clamp(14px, 1.5vw, 16px);
     font-weight: bold;
 }
 
@@ -108,17 +106,18 @@ body {
 
 .courses-section {
     background-color: #ffffff;
-    padding: 20px;
+    padding: clamp(15px, 3vw, 30px);
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .courses-section h2 {
     margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 24px;
+    margin-bottom: clamp(20px, 4vw, 30px);
+    font-size: clamp(20px, 3vw, 24px);
     text-align: center;
 }
+
 
 .courses-table {
     width: 100%;
@@ -127,7 +126,7 @@ body {
 
 .courses-table th,
 .courses-table td {
-    padding: 12px;
+    padding: clamp(8px, 1.5vw, 15px);
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
@@ -137,3 +136,43 @@ body {
     font-weight: bold;
 }
 
+#created-courses {
+    overflow-x: auto; 
+
+#footer {
+    margin-top: auto;
+    padding: clamp(15px, 2vw, 25px);
+    text-align: center;
+    background-color: #e2d0b8;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        
+    }
+    
+    .form-group {
+        width: 100%;
+    }
+    
+    .button-group {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+    
+    .create-section, .courses-section {
+        padding: 15px;
+    }
+    
+    .courses-table th, .courses-table td {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
