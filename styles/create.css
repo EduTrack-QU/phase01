@@ -59,18 +59,20 @@ body {
 .form-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 20px;
     align-items: flex-end;
+    margin-bottom: 15px;
 }
 
 .form-group {
     flex: 1;
     min-width: 200px;
+    margin-bottom: 15px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: bold;
 }
 
