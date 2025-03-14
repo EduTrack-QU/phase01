@@ -1,4 +1,22 @@
-       
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main, nav, .main-content {
+    flex: 1;
+}
+
+#footer {
+    margin-top: auto;
+}     
 .container {
     padding: 20px;
     max-width: 1200px;
@@ -6,6 +24,8 @@
 }
 
 .course-section, .create-section {
+    display: flex;
+    flex-wrap: wrap;
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 10px;
@@ -13,26 +33,9 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.course {
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-}
 
-.course-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
-.status-inprogress {
-    color: green;
-}
 
-.status-open {
-    color: blue;
-}
 
 .button {
     padding: 10px 20px;
@@ -42,15 +45,6 @@
     margin: 5px;
 }
 
-.button.validate {
-    background-color: #28a745;
-    color: white;
-}
-
-.button.cancel {
-    background-color: #dc3545;
-    color: white;
-}
 
 .button.create {
     background-color: #007bff;
