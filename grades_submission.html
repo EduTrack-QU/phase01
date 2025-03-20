@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Submission</title>
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="footer.css">
+    <link rel="stylesheet" href="grades_submission.css">
+</head>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("header.html")
+            .then(response => response.text())
+            .then(data => document.getElementById("header").innerHTML = data);
+
+        fetch("footer.html")
+            .then(response => response.text())
+            .then(data => document.getElementById("footer").innerHTML = data);
+    });
+
+    function toggleStudentList(courseId) {
+        let studentList = document.getElementById(`students-${courseId}`);
+        studentList.classList.toggle("hidden");
+    }
+</script>
+
+<body>
+    <div id="header"></div>
+
+    <div class="grade-container">
+        <h1>Grade Submission</h1>
+
+        <div class="search-box">
+            <input type="text" placeholder="Search for a course">
+        </div>
+
+        <div class="course-list">
+            <div class="course-item">
+                <button class="course-btn" onclick="toggleStudentList('cmps151')">
+                    CMPS 151 - Programming Concepts 
+                    <span class="details-btn">Details</span>
+                </button>
+                <div id="students-cmps151" class="students-list hidden">
+                    <h4>List of Students</h4>
+                    <ul>
+                        <li>Ali 
+                            <select>
+                                <option value="A">A</option>
+                                <option value="A+">A+</option>
+                                <option value="B">B</option>
+                                <option value="B+">B+</option>
+                                <option value="C">C</option>
+                                <option value="C+">C+</option>
+                                <option value="D">D</option>
+                                <option value="D+">D+</option>
+                                <option value="F">F</option>
+                            </select>
+                        </li>
+                        <li>Hamza 
+                            <select>
+                                <option value="A">A</option>
+                                <option value="A+">A+</option>
+                                <option value="B">B</option>
+                                <option value="B+">B+</option>
+                                <option value="C">C</option>
+                                <option value="C+">C+</option>
+                                <option value="D">D</option>
+                                <option value="D+">D+</option>
+                                <option value="F">F</option>
+                            </select>
+                        </li>
+                        <li>Omar 
+                            <select>
+                                <option value="A">A</option>
+                                <option value="A+">A+</option>
+                                <option value="B">B</option>
+                                <option value="B+">B+</option>
+                                <option value="C">C</option>
+                                <option value="C+">C+</option>
+                                <option value="D">D</option>
+                                <option value="D+">D+</option>
+                                <option value="F">F</option>
+                            </select>
+                        </li>
+                    </ul>
+                    <button class="submit-btn">Submit</button>
+                </div>
+            </div>
+
+            <div class="course-item">
+                <button class="course-btn" onclick="toggleStudentList('cmps251')">
+                    CMPS 251 - Object Oriented Programming 
+                    <span class="details-btn">Details</span>
+                </button>
+                <div id="students-cmps251" class="students-list hidden">
+                    <h4>List of Students</h4>
+                    <ul>
+                        <li>Ali 
+                            <select>
+                                <option value="A">A</option>
+                                <option value="A+">A+</option>
+                                <option value="B">B</option>
+                                <option value="B+">B+</option>
+                                <option value="C">C</option>
+                                <option value="C+">C+</option>
+                                <option value="D">D</option>
+                                <option value="D+">D+</option>
+                                <option value="F">F</option>
+                            </select>
+                        </li>
+                        <li>Hamza 
+                            <select>
+                                <option value="A">A</option>
+                                <option value="A+">A+</option>
+                                <option value="B">B</option>
+                                <option value="B+">B+</option>
+                                <option value="C">C</option>
+                                <option value="C+">C+</option>
+                                <option value="D">D</option>
+                                <option value="D+">D+</option>
+                                <option value="F">F</option>
+                            </select>
+                        </li>
+                        <li>Omar 
+                            <select>
+                                <option value="A">A</option>
+                                <option value="A+">A+</option>
+                                <option value="B">B</option>
+                                <option value="B+">B+</option>
+                                <option value="C">C</option>
+                                <option value="C+">C+</option>
+                                <option value="D">D</option>
+                                <option value="D+">D+</option>
+                                <option value="F">F</option>
+                            </select>
+                        </li>
+                    </ul>
+                    <button class="submit-btn">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+</body>
+</html>
