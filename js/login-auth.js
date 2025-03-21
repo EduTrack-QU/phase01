@@ -14,16 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const users = await response.json();
             
-            // Find the user
             const user = users.find(u => 
                 u.username === username && u.password === password
             );
             
             if (user) {
-                // Store user name in localStorage
                 localStorage.setItem('userName', user.name);
                 
-                // Redirect based on role
                 switch(user.role.toLowerCase()) {
                     case 'student':
                         window.location.href = '/student_dashboard.html';
