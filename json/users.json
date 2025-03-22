@@ -17,9 +17,15 @@
         "password": "bakrypassword",
         "role": "instructor" ,
         "courses":[
-            {"course_code": "CMPS 151",
+            {"course_code": "CMPS-151",
             "course_name": "Programming Concepts",
-            "enrolled students":["Hmaza","Mohamed"]}
+            "enrolled_students":["Hmaza","Mohamed"]
+            },
+            {"course_code": "CMPS-251",
+            "course_name": "Object Oriented Programming",
+            "enrolled_students":["Jaber","Ali"]
+            }
+
         ]
     }
 ]
