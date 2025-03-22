@@ -6,6 +6,7 @@ body {
     padding: 0;
 }
 
+
 /* Grade Submission Container */
 .grade-container {
     width: 500px;
@@ -62,7 +63,6 @@ body {
     padding: 15px;
     background: #f4f4f4;
     border-radius: 8px;
-    display: none;
 }
 
 .students-list h4 {
@@ -70,14 +70,28 @@ body {
 }
 
 /* Show/Hide Effect */
-.hidden {
+/* .hidden {
     display: none;
+} */
+
+.students-list ul {
+    display: flex;
+    text-align: left;
+    list-style: none;
+    padding: 1rem;
+    flex-direction: column;
+    justify-content: space-between;
+
 }
+
+
 
 /* Grade Dropdown */
 .students-list select {
+    display: flex;
     margin-left: 10px;
     padding: 5px;
+    justify-self: end;
 }
 
 /* Submit Button */

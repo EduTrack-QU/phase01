@@ -15,6 +15,11 @@
         "name": "Barky",
         "username": "bakry@qu.edu.qa",
         "password": "bakrypassword",
-        "role": "instructor"
+        "role": "instructor" ,
+        "courses":[
+            {"course_code": "CMPS 151",
+            "course_name": "Programming Concepts",
+            "enrolled students":["Hmaza","Mohamed"]}
+        ]
     }
 ]
