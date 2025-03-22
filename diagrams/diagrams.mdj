@@ -908,7 +908,7 @@
 											"top": 480,
 											"width": 109.01171875,
 											"height": 13,
-											"text": "+addUser()",
+											"text": "+createUser()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -925,7 +925,7 @@
 											"top": 495,
 											"width": 109.01171875,
 											"height": 13,
-											"text": "+addCourse()",
+											"text": "+createCourse()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1426,6 +1426,23 @@
 										},
 										{
 											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGVwDHjZk4k2gg=",
+											"_parent": {
+												"$ref": "AAAAAAGVwCA5EE3XKJ8="
+											},
+											"model": {
+												"$ref": "AAAAAAGVwDHjW04hn8w="
+											},
+											"font": "Arial;13;0",
+											"left": 573,
+											"top": 477,
+											"width": 119.142578125,
+											"height": 13,
+											"text": "+description",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
 											"_id": "AAAAAAGVwCEIdk4S1WE=",
 											"_parent": {
 												"$ref": "AAAAAAGVwCA5EE3XKJ8="
@@ -1435,10 +1452,27 @@
 											},
 											"font": "Arial;13;0",
 											"left": 573,
-											"top": 477,
+											"top": 492,
 											"width": 119.142578125,
 											"height": 13,
 											"text": "+title",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGVwDyAWE5J0mQ=",
+											"_parent": {
+												"$ref": "AAAAAAGVwCA5EE3XKJ8="
+											},
+											"model": {
+												"$ref": "AAAAAAGVwDyATk5G7YI="
+											},
+											"font": "Arial;13;0",
+											"left": 573,
+											"top": 507,
+											"width": 119.142578125,
+											"height": 13,
+											"text": "+instructorId",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1452,7 +1486,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 573,
-											"top": 492,
+											"top": 522,
 											"width": 119.142578125,
 											"height": 13,
 											"text": "+coursePrerequisite",
@@ -1469,27 +1503,10 @@
 											},
 											"font": "Arial;13;0",
 											"left": 573,
-											"top": 507,
+											"top": 537,
 											"width": 119.142578125,
 											"height": 13,
 											"text": "+available",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
-											"_id": "AAAAAAGVwDHjZk4k2gg=",
-											"_parent": {
-												"$ref": "AAAAAAGVwCA5EE3XKJ8="
-											},
-											"model": {
-												"$ref": "AAAAAAGVwDHjW04hn8w="
-											},
-											"font": "Arial;13;0",
-											"left": 573,
-											"top": 522,
-											"width": 119.142578125,
-											"height": 13,
-											"text": "+description",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1515,7 +1532,7 @@
 									"left": 568,
 									"top": 457,
 									"width": 129.142578125,
-									"height": 83
+									"height": 98
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -1538,7 +1555,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 573,
-											"top": 545,
+											"top": 560,
 											"width": 119.142578125,
 											"height": 13,
 											"text": "+registredStudents()",
@@ -1547,7 +1564,7 @@
 									],
 									"font": "Arial;13;0",
 									"left": 568,
-									"top": 540,
+									"top": 555,
 									"width": 129.142578125,
 									"height": 23
 								},
@@ -1589,7 +1606,7 @@
 							"left": 568,
 							"top": 432,
 							"width": 128.142578125,
-							"height": 133,
+							"height": 146,
 							"nameCompartment": {
 								"$ref": "AAAAAAGVwCA5EE3SyGo="
 							},
@@ -1806,7 +1823,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGVwAvHvkzpu0k="
 							},
-							"name": "addUser"
+							"name": "createUser"
 						},
 						{
 							"_type": "UMLOperation",
@@ -1814,7 +1831,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGVwAvHvkzpu0k="
 							},
-							"name": "addCourse"
+							"name": "createCourse"
 						},
 						{
 							"_type": "UMLOperation",
@@ -1852,11 +1869,27 @@
 						},
 						{
 							"_type": "UMLAttribute",
+							"_id": "AAAAAAGVwDHjW04hn8w=",
+							"_parent": {
+								"$ref": "AAAAAAGVwCA5D03P/oc="
+							},
+							"name": "description"
+						},
+						{
+							"_type": "UMLAttribute",
 							"_id": "AAAAAAGVwCEIcE4Pn2w=",
 							"_parent": {
 								"$ref": "AAAAAAGVwCA5D03P/oc="
 							},
 							"name": "title"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGVwDyATk5G7YI=",
+							"_parent": {
+								"$ref": "AAAAAAGVwCA5D03P/oc="
+							},
+							"name": "instructorId"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -1873,14 +1906,6 @@
 								"$ref": "AAAAAAGVwCA5D03P/oc="
 							},
 							"name": "available"
-						},
-						{
-							"_type": "UMLAttribute",
-							"_id": "AAAAAAGVwDHjW04hn8w=",
-							"_parent": {
-								"$ref": "AAAAAAGVwCA5D03P/oc="
-							},
-							"name": "description"
 						},
 						{
 							"_type": "UMLAttribute",
