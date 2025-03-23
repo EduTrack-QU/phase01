@@ -1,18 +1,17 @@
 class Student extends User {
-    constructor(name, username, enrolledCourses = [], finishedCourses = [], registeredCourses = [], gpa = 0) {
+    constructor(name, username, enrolledCourses, finishedCourses, registeredCourses, gpa) {
         super(name, username, 'student');
-        this.enrolledCourses = enrolledCourses; // array of course IDs
-        this.finishedCourses = finishedCourses; // array of course IDs
-        this.registeredCourses = registeredCourses; // FIXED: assign to this
-        this.gpa = gpa;
+        this.enrolledCourses = enrolledCourses || [];
+        this.finishedCourses = finishedCourses || [];
+        this.registeredCourses = registeredCourses || [];
+        this.gpa = gpa?? 0;
     }
 
     registerCourse(courseId) {
-        if (!this.registeredCourses.includes(courseId)) {
-            this.registeredCourses.push(courseId);
-            return true;
-        }
-        return false; // already registered
+       
+    }
+    toString() {
+        return `Student: ${this.name}, Username: ${this.username}, Enrolled Courses: ${this.enrolledCourses.join(', ')}, Finished Courses: ${this.finishedCourses.join(', ')}, Registered Courses: ${this.registeredCourses.join(', ')}, GPA: ${this.gpa}`;
     }
 
     toJSON() {
@@ -27,9 +26,8 @@ class Student extends User {
 
     static fromJSON(json) {
         return new Student(
-            json.id,
             json.name,
-            json.email,
+            json.username,
             json.enrolledCourses || [],
             json.finishedCourses || [],
             json.registeredCourses || [],
