@@ -8,7 +8,7 @@
       "concurrent_prerequisites": [],
       "semester_recommended": "Year 1 - Fall",
       "description": "Introduction to basic programming concepts using a high-level language.",
-      "open":true
+      "available":true
     },
     {
       "course_code": "CMPS 251",
@@ -19,7 +19,7 @@
       "concurrent_prerequisites": [],
       "semester_recommended": "Year 1 - Spring",
       "description": "Covers object-oriented programming principles including classes, inheritance, and polymorphism.",
-      "open":false
+      "available":false
       
     },
     {
@@ -31,7 +31,7 @@
       "concurrent_prerequisites": [],
       "semester_recommended": "Year 2 - Fall",
       "description": "Study of fundamental data structures such as arrays, linked lists, stacks, queues, trees, and graphs.",
-      "open":true
+      "available":true
 
     },
     {
