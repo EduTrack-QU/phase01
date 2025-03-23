@@ -1,0 +1,163 @@
+const navConfig = {
+    student: [
+        { icon: 'browse.svg', alt: 'browse courses icon', text: 'Browse Courses', url: 'browse_courses.html' },
+        { icon: 'register.svg', alt: 'register courses icon', text: 'Register Courses', id: 'registrationBtn', action: true },
+        { icon: 'view.svg', alt: 'view learning path icon', text: 'View Learning Path', url: 'learning_path.html' }
+    ],
+    instructor: [
+        { icon: 'create.svg', alt: 'create icon', text: 'Create Courses', url: 'create.html' },
+        { icon: 'validate.svg', alt: 'validate icon', text: 'Validate Courses', url: 'validate.html' },
+        { icon: 'assign.svg', alt: 'assign icon', text: 'Assign Instructors', url: 'assign.html' },
+        { icon: 'calendar.svg', alt: 'Schedule icon', text: 'View Schedule', url: 'schedule.html' }
+    ],
+    admin: [
+        { icon: 'submit.svg', alt: 'submit grades icon', text: 'Submit Grades', url: 'submit_grades.html' },
+        { icon: 'view.svg', alt: 'view icon', text: 'Choose Courses', url: 'choose_courses.html' }
+    ]
+};
+
+const welcomeTemplates = {
+    student: (name) => `Welcome, ${name}!`,
+    instructor: (name) => `Welcome, Professor ${name}!`,
+    admin: (name) => `Welcome, Administrator ${name}!`
+};
+
+let currentUser = null;
+let courses = [];
+
+window.addEventListener('DOMContentLoaded', () => {
+    currentUser=loadCurrentUserFromStorage();
+    
+    const page = window.location.pathname;
+    if (page.includes('login.html')) {
+        initLoginPage();
+    } else if (page.includes('dashboard.html')) {
+        initDashboard();
+    } else if (page.includes('registration.html')) {
+        initRegistrationPage();
+    }
+});
+
+function initDashboard() {
+    currentUser = loadCurrentUserFromStorage();
+    if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    const role = currentUser.role.toLowerCase();
+    
+    const welcomeMsg = document.getElementById('welcomeMsg');
+    if (welcomeMsg && welcomeTemplates[role]) {
+        welcomeMsg.innerText = welcomeTemplates[role](currentUser.name);
+    }
+    
+    loadNavigation(role);
+}
+
+function loadNavigation(role) {
+    const nav = document.getElementById('nav');
+    if (!nav || !navConfig[role]) return;
+    
+    const items = navConfig[role];
+    let navHTML = '';
+    
+    items.forEach(item => {
+        let buttonContent;
+        
+        if (item.action) {
+            buttonContent = `<button id="${item.id}">${item.text}</button>`;
+        } else {
+            buttonContent = `<button><a href="${item.url}">${item.text}</a></button>`;
+        }
+        
+        navHTML += `
+        <div class="nav-item">
+            <img class="inline-icon" src="media/${item.icon}" alt="${item.alt}">
+            ${buttonContent}
+        </div>`;
+    });
+    
+    nav.innerHTML = navHTML;
+    
+    const registrationBtn = document.getElementById('registrationBtn');
+    if (registrationBtn) {
+        registrationBtn.addEventListener('click', () => {
+            window.location.href = 'registration.html';
+        });
+    }
+}
+
+function loadCurrentUserFromStorage() {
+    const userJSON = localStorage.getItem('currentUser');
+    if (!userJSON) return null;
+    return JSON.parse(userJSON);
+}
+
+function saveCurrentUserToStorage(user) {
+    if (!user) return;
+    localStorage.setItem('currentUser', JSON.stringify(user));
+}
+
+function initLoginPage() {
+    const loginForm = document.querySelector('form');
+    if (!loginForm) return;
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.querySelector('input[name="username"]').value;
+        const password = document.querySelector('input[name="password"]').value;
+
+        try {
+            const response = await fetch('../json/users.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const users = await response.json();
+            const user = users.find(u =>
+                u.username === username && u.password === password
+            );
+            if (user) {
+                saveCurrentUserToStorage(user);
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Invalid username or password');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('An error occurred during login. Please try again later.');
+        }
+    });
+}
+
+function initRegistrationPage() {
+    const registrationForm = document.querySelector('form');
+    if (!registrationForm) return;
+    console.log(currentUser);
+    registrationForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const courseId = document.querySelector('input[name="course_code"]').value;
+
+        console.log(courseId);
+
+        try {
+            const response = await fetch('../json/courses.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const courses = await response.json();
+            const availableCourses = courses.filter(c => c.code.toLowerCase() === courseId.toLowerCase()&& c.available);
+            console.log(availableCourses);
+            if (availableCourses.length > 0) {
+                
+                alert(`Successfully registered for course ${availableCourses[0].name}`);
+            } else {
+                alert('Course not found');
+            }
+        } catch (error) {
+            console.error('Registration error:', error);
+            alert('An error occurred during registration. Please try again later.');
+        }
+    });
+    
+}
