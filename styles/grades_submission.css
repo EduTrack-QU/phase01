@@ -70,11 +70,11 @@ body {
 }
 
 /* Show/Hide Effect */
-/* .hidden {
+.hidden {
     display: none;
-} */
+}
 
-.students-list ul {
+#ulist {
     display: flex;
     text-align: left;
     list-style: none;
@@ -87,11 +87,20 @@ body {
 
 
 /* Grade Dropdown */
-.students-list select {
+#selectgrade {
     display: flex;
     margin-left: 10px;
     padding: 5px;
     justify-self: end;
+}
+
+
+#lig {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px;
 }
 
 /* Submit Button */
@@ -102,4 +111,14 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.back-btn{
+    background: #5b9f5b;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
 }
