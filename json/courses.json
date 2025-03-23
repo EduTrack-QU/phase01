@@ -1,98 +1,44 @@
 [
-    {
-      "course_code": "CMPS 151",
-      "course_name": "Programming Concepts",
-      "credit_hours": 3,
-      "category": "Programming",
-      "prerequisites": [],
-      "concurrent_prerequisites": [],
-      "semester_recommended": "Year 1 - Fall",
-      "description": "Introduction to basic programming concepts using a high-level language.",
-      "available":true
-    },
-    {
-      "course_code": "CMPS 251",
-      "course_name": "Object Oriented Programming",
-      "credit_hours": 4,
-      "category": "Programming",
-      "prerequisites": ["CMPS 151"],
-      "concurrent_prerequisites": [],
-      "semester_recommended": "Year 1 - Spring",
-      "description": "Covers object-oriented programming principles including classes, inheritance, and polymorphism.",
-      "available":false
-      
-    },
-    {
-      "course_code": "CMPS 303",
-      "course_name": "Data Structures",
-      "credit_hours": 4,
-      "category": "Programming",
-      "prerequisites": ["CMPS 251"],
-      "concurrent_prerequisites": [],
-      "semester_recommended": "Year 2 - Fall",
-      "description": "Study of fundamental data structures such as arrays, linked lists, stacks, queues, trees, and graphs.",
-      "available":true
-
-    },
-    {
-      "course_code": "CMPS 323",
-      "course_name": "Design & Analysis of Algorithms",
-      "credit_hours": 3,
-      "category": "Programming",
-      "prerequisites": ["CMPS 303"],
-      "concurrent_prerequisites": [],
-      "semester_recommended": "Year 2 - Spring",
-      "description": "Introduction to algorithm design techniques and complexity analysis."
-    },
-    {
-      "course_code": "CMPS 351",
-      "course_name": "Fundamentals of Database",
-      "credit_hours": 4,
-      "category": "Databases & Web",
-      "prerequisites": ["CMPS 251"],
-      "concurrent_prerequisites": [],
-      "semester_recommended": "Year 2 - Spring",
-      "description": "Covers relational database design, SQL, and normalization techniques."
-    },
-    {
-      "course_code": "CMPS 310",
-      "course_name": "Software Engineering",
-      "credit_hours": 4,
-      "category": "Software & Systems",
-      "prerequisites": ["CMPS 323"],
-      "concurrent_prerequisites": [],
-      "semester_recommended": "Year 3 - Fall",
-      "description": "Software development lifecycle, requirements engineering, and design patterns."
-    },
-    {
-      "course_code": "CMPS 380",
-      "course_name": "Cybersecurity Fundamentals",
-      "credit_hours": 3,
-      "category": "Networking & Security",
-      "prerequisites": ["CMPS 303"],
-      "concurrent_prerequisites": [],
-      "semester_recommended": "Year 3 - Fall",
-      "description": "Introduction to cybersecurity concepts and cryptography."
-    },
-    {
-      "course_code": "CMPS 405",
-      "course_name": "Operating Systems",
-      "credit_hours": 4,
-      "category": "Software & Systems",
-      "prerequisites": ["CMPS 303"],
-      "concurrent_prerequisites": [],
-      "semester_recommended": "Year 3 - Spring",
-      "description": "Covers process management, memory management, and file systems."
-    },
-    {
-      "course_code": "CMPS 350",
-      "course_name": "Web Development Fundamentals",
-      "credit_hours": 3,
-      "category": "Databases & Web",
-      "prerequisites": ["CMPS 251"],
-      "concurrent_prerequisites": [],
-      "semester_recommended": "Year 3 - Spring",
-      "description": "Introduction to web technologies including HTML, CSS, JavaScript, and backend programming."
-    }
-  ]
-  
+  {
+    "code": "CMPS 151",
+    "title": "Programming Concepts",
+    "creditHour": 3,
+    "prerequisites": [],
+    "description": "Introduction to basic programming concepts using a high-level language.",
+    "instructorId": "",
+    "available": true
+  },
+  {
+    "code": "CMPS 251",
+    "title": "Object Oriented Programming",
+    "creditHour": 4,
+    "prerequisites": [
+      "CMPS 151"
+    ],
+    "description": "Covers object-oriented programming principles including classes, inheritance, and polymorphism.",
+    "instructorId": "",
+    "available": true
+  },
+  {
+    "code": "CMPS 351",
+    "title": "Database Systems",
+    "creditHour": 4,
+    "prerequisites": [
+      "CMPS 251"
+    ],
+    "description": "Introduction to database design, SQL, and database management systems.",
+    "instructorId": "",
+    "available": false
+  },
+  {
+    "code": "CMPS 350",
+    "title": "Web Development",
+    "creditHour": 3,
+    "prerequisites": [
+      "CMPS 251"
+    ],
+    "description": "Covers web technologies including HTML, CSS, JavaScript, and server-side programming.",
+    "instructorId": "",
+    "available": false
+  }
+]
