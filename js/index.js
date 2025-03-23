@@ -1,3 +1,5 @@
+import { Student } from './student.js';
+
 const navConfig = {
     student: [
         { icon: 'browse.svg', alt: 'browse courses icon', text: 'Browse Courses', url: 'browse_courses.html' },
@@ -22,12 +24,13 @@ const welcomeTemplates = {
     admin: (name) => `Welcome, Administrator ${name}!`
 };
 
+
 let currentUser = null;
 let courses = [];
 
 window.addEventListener('DOMContentLoaded', () => {
-    currentUser=loadCurrentUserFromStorage();
-    
+    currentUser = loadCurrentUserFromStorage();
+
     const page = window.location.pathname;
     if (page.includes('login.html')) {
         initLoginPage();
@@ -44,42 +47,42 @@ function initDashboard() {
         window.location.href = 'login.html';
         return;
     }
-    
+
     const role = currentUser.role.toLowerCase();
-    
+
     const welcomeMsg = document.getElementById('welcomeMsg');
     if (welcomeMsg && welcomeTemplates[role]) {
         welcomeMsg.innerText = welcomeTemplates[role](currentUser.name);
     }
-    
+
     loadNavigation(role);
 }
 
 function loadNavigation(role) {
     const nav = document.getElementById('nav');
     if (!nav || !navConfig[role]) return;
-    
+
     const items = navConfig[role];
     let navHTML = '';
-    
+
     items.forEach(item => {
         let buttonContent;
-        
+
         if (item.action) {
             buttonContent = `<button id="${item.id}">${item.text}</button>`;
         } else {
             buttonContent = `<button><a href="${item.url}">${item.text}</a></button>`;
         }
-        
+
         navHTML += `
         <div class="nav-item">
             <img class="inline-icon" src="media/${item.icon}" alt="${item.alt}">
             ${buttonContent}
         </div>`;
     });
-    
+
     nav.innerHTML = navHTML;
-    
+
     const registrationBtn = document.getElementById('registrationBtn');
     if (registrationBtn) {
         registrationBtn.addEventListener('click', () => {
@@ -88,10 +91,25 @@ function loadNavigation(role) {
     }
 }
 
+function createUserInstance(userData) {
+    switch (userData.role.toLowerCase()) {
+        case 'student':
+            return Student.fromJSON(userData);
+        case 'instructor':
+            return Instructor.fromJSON(userData);
+        case 'admin':
+            return Admin.fromJSON(userData);
+        default:
+            return User.fromJSON(userData);
+    }
+}
+
 function loadCurrentUserFromStorage() {
     const userJSON = localStorage.getItem('currentUser');
     if (!userJSON) return null;
-    return JSON.parse(userJSON);
+
+    const userData = JSON.parse(userJSON);
+    return createUserInstance(userData);
 }
 
 function saveCurrentUserToStorage(user) {
@@ -114,11 +132,13 @@ function initLoginPage() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const users = await response.json();
-            const user = users.find(u =>
+            const userData = users.find(u =>
                 u.username === username && u.password === password
             );
-            if (user) {
-                saveCurrentUserToStorage(user);
+
+            if (userData) {
+                currentUser = createUserInstance(userData);
+                saveCurrentUserToStorage(currentUser);
                 window.location.href = 'dashboard.html';
             } else {
                 alert('Invalid username or password');
@@ -133,12 +153,17 @@ function initLoginPage() {
 function initRegistrationPage() {
     const registrationForm = document.querySelector('form');
     if (!registrationForm) return;
-    console.log(currentUser);
+
+    currentUser = loadCurrentUserFromStorage();
+
+    if (!currentUser || currentUser.role.toLowerCase() !== 'student') {
+        window.location.href = 'login.html';
+        return;
+    }
+
     registrationForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const courseId = document.querySelector('input[name="course_code"]').value;
-
-        console.log(courseId);
 
         try {
             const response = await fetch('../json/courses.json');
@@ -146,18 +171,24 @@ function initRegistrationPage() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const courses = await response.json();
-            const availableCourses = courses.filter(c => c.code.toLowerCase() === courseId.toLowerCase()&& c.available);
-            console.log(availableCourses);
-            if (availableCourses.length > 0) {
-                
-                alert(`Successfully registered for course ${availableCourses[0].name}`);
+            const availableCourses = courses.filter(c =>
+                c.code.toLowerCase() === courseId.toLowerCase() && c.available
+            );
+
+            if (availableCourses) {
+                if (currentUser.registerCourse(availableCourses[0])) {
+
+                    saveCurrentUserToStorage(currentUser);
+                    alert(`Successfully registered for course ${availableCourses[0].title}`);
+                } else {
+                    alert(`You are already enrolled in ${availableCourses[0].title}`);
+                }
             } else {
-                alert('Course not found');
+                alert('Course not found or not available');
             }
         } catch (error) {
             console.error('Registration error:', error);
             alert('An error occurred during registration. Please try again later.');
         }
     });
-    
 }
