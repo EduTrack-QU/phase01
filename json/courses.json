@@ -6,7 +6,30 @@
     "prerequisites": [],
     "description": "Introduction to basic programming concepts using a high-level language.",
     "instructorId": "",
-    "available": true
+    "available": true,
+    "time": {
+      "days": [
+        "Monday",
+        "Wednesday"
+      ],
+      "time": "08:00-09:30"
+    }
+  },
+  {
+    "code": "CMPS 151",
+    "title": "Programming Concepts",
+    "creditHour": 3,
+    "prerequisites": [],
+    "description": "Introduction to basic programming concepts using a high-level language.",
+    "instructorId": "",
+    "available": true,
+    "time": {
+      "days": [
+        "Monday",
+        "Wednesday"
+      ],
+      "time": "010:00-11:30"
+    }
   },
   {
     "code": "CMPS 251",
@@ -17,7 +40,14 @@
     ],
     "description": "Covers object-oriented programming principles including classes, inheritance, and polymorphism.",
     "instructorId": "",
-    "available": true
+    "available": true,
+    "time": {
+      "days": [
+        "Tuesday",
+        "Thursday"
+      ],
+      "time": "09:00-10:30"
+    }
   },
   {
     "code": "CMPS 351",
@@ -28,7 +58,14 @@
     ],
     "description": "Introduction to database design, SQL, and database management systems.",
     "instructorId": "",
-    "available": false
+    "available": false,
+    "time": {
+      "days": [
+        "Monday",
+        "Wednesday"
+      ],
+      "time": "10:00-11:30"
+    }
   },
   {
     "code": "CMPS 350",
@@ -39,6 +76,13 @@
     ],
     "description": "Covers web technologies including HTML, CSS, JavaScript, and server-side programming.",
     "instructorId": "",
-    "available": false
+    "available": false,
+    "time": {
+      "days": [
+        "Tuesday",
+        "Thursday"
+      ],
+      "time": "11:00-12:30"
+    }
   }
 ]
