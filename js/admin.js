@@ -1,6 +1,6 @@
 class Admin extends User {
-    constructor(id, name, email) {
-      super(id, name, email, 'admin');
+    constructor(name, username) {
+      super(name, username, 'admin');
     }
   
     createUser(userObject) {

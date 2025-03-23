@@ -1,8 +1,7 @@
 class User {
-    constructor(id, name, email, role) {
-      this.id = id;
+    constructor(name, username, role) {
       this.name = name;
-      this.email = email;
+      this.username = username;
       this.role = role; // 'student', 'instructor', or 'admin'
     }
   
@@ -10,7 +9,7 @@ class User {
       return {
         id: this.id,
         name: this.name,
-        email: this.email,
+        username: this.username,
         role: this.role
       };
     }

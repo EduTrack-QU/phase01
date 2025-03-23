@@ -1,6 +1,6 @@
 class Instructor extends User {
-    constructor(id, name, email, teachingCourses) {
-      super(id, name, email, 'instructor');
+    constructor(name, username, teachingCourses) {
+      super(name, username, 'instructor');
       this.teachingCourses = teachingCourses || []; // array of course IDs
       this.preferedCourses = preferedCourses || []; // array of course IDs
     }
