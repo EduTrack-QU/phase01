@@ -58,6 +58,13 @@ The CSE department of Qatar University has tasked you with building a web applic
 - Instructors should be able to:
   - View their current classes.
   - Submit students’ final grades.
+ 
+#### Use Case 7: Course-instructor assignments
+- Classes are assigned to instructors as follows. The administrator should publish the list of courses to be open. The instructors should able to express their interests in courses. Once the deadline of submitting interests / preferences, the administrator should be able to select the instructors for the courses / classes to be open for registration.
+
+#### Use Case 8: Courses schedule
+- This functionality allows the administrator to display the schedule of the week for all the
+courses / classes that are in progress.
 
 ---
 

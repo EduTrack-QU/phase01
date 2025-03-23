@@ -39,9 +39,6 @@ nav {
     height: 24px;
 }
 
-.nav-item h3 {
-    margin: 0;
-}
 
 .nav-item a {
     text-decoration: none;
@@ -66,7 +63,37 @@ nav {
     letter-spacing: 0.5px;
 }
 
+/* Style for the navigation buttons */
+.nav-item button {
+    background-color: #90c5cd; /* Updated button color */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding around the text */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline from links */
+    display: inline-block; /* Make buttons inline */
+    font-size: 16px; /* Increase font size */
+    margin: 4px 2px; /* Margin around buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 8px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
 
+/* Hover effect for buttons */
+.nav-item button:hover {
+    background-color: #7ab8bc; /* Darker shade on hover */
+}
 
+/* Style for the nav-item to improve layout */
+.nav-item {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Center items vertically */
+    margin-bottom: 10px; /* Space between nav items */
+}
 
-
+/* Style for icons */
+.inline-icon {
+    width: 30px; /* Increased icon size */
+    height: 30px; /* Increased icon size */
+    margin-right: 10px; /* Space between icon and button */
+}

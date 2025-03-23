@@ -9,23 +9,18 @@
         "name": "Hamza",
         "username": "hamza@qu.edu.qa",
         "password": "hamzapassword",
-        "role": "student"
+        "role": "student",
+        "gpa": 3.5,
+        "enrolledCourses": [],
+        "finishedCourses": [],
+        "registeredCourses": []
     },
     {
         "name": "Barky",
         "username": "bakry@qu.edu.qa",
         "password": "bakrypassword",
-        "role": "instructor" ,
-        "courses":[
-            {"course_code": "CMPS-151",
-            "course_name": "Programming Concepts",
-            "enrolled_students":["Hmaza","Mohamed"]
-            },
-            {"course_code": "CMPS-251",
-            "course_name": "Object Oriented Programming",
-            "enrolled_students":["Jaber","Ali"]
-            }
-
-        ]
+        "role": "instructor",
+        "teachingCourses": [],
+        "prefereredCourses": []
     }
 ]
