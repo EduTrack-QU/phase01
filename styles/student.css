@@ -1,0 +1,193 @@
+@import 'common.css';
+
+/* Browse Courses Styles */
+.browse-courses {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.browse-courses h1 {
+    margin: 0;
+    color: #343a40;
+    font-size: 2rem;
+}
+
+/* Courses Container */
+.courses-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+/* Course Card Styling */
+.course-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #e9ecef;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.course-card h3 {
+    margin-top: 0;
+    color: #0056b3;
+    font-size: 1.25rem;
+}
+
+.course-card p {
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.course-card button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.course-card button:hover {
+    background-color: #004494;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .courses-row {
+        justify-content: center;
+    }
+    
+    .course-card {
+        width: 100%;
+        max-width: 350px;
+    }
+}
+
+/* Registration Container */
+.registration-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.registration-container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+/* Course action buttons */
+.course-action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.register-btn, .remove-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    width: 48%;
+}
+
+.register-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.register-btn:hover {
+    background-color: #218838;
+}
+
+.remove-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.remove-btn:hover {
+    background-color: #c82333;
+}
+
+/* Disabled button state */
+.btn-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-disabled:hover {
+    background-color: inherit;
+    transform: none;
+}
+
+/* Confirmation button */
+.registration-submit-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.confirm-btn {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    min-width: 250px;
+}
+
+.confirm-btn:hover {
+    background-color: #004494;
+}
+
+/* Course Container Styles */
+.course-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Course Selection Dropdown */
+#courseSelect {
+    width: 200px;
+    padding: 8px;
+    margin: 1rem 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Courses List */
+.courses-list {
+    margin-top: 1.5rem;
+}
+
+.courses-list p {
+    color: #666;
+    text-align: center;
+}
