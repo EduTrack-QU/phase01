@@ -1,62 +1,91 @@
+@import './common.css';
 body {
-    font-family: Arial, sans-serif;
-    background-color: #d8d8d8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f5f5f5;
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
     margin: 0;
-    padding: 0;
 }
 
 .login-box {
-    width: 400px;
-    margin: 100px auto 0;
-    padding: 40px;
+    background-color: white;
     border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 400px;
+    padding: 2rem;
+    margin-top: 5rem;
 }
 
-.login-box input {
+.login-box h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.textbox {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.textbox input {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
+    padding: 12px 15px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.login-box input[type="submit"],
-.login-box .btn {
-    background-color: #90c5cd;
-    color: #333;
-    border: none;
-    cursor: pointer;
     font-size: 16px;
-    width: 100%;
-    padding: 12px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    box-sizing: border-box;
+    transition: border-color 0.3s;
 }
 
-.login-box input[type="submit"]:hover,
-.login-box .btn:hover {
-    background-color: b0dae1;
-    transition: background-color 0.2s ease;
+.textbox input:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+
+.btn {
+    width: 100%;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 1.5rem;
+}
+
+.btn:hover {
+    background-color: #0d62c9;
 }
 
 .login-info {
-    margin-top: 20px;
     text-align: center;
     font-size: 14px;
     color: #666;
 }
 
-.login-info p {
-    margin: 10px 0;
+.terms-notice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
 }
 
 .login-info a {
-    color: #90c5cd;
+    color: #1a73e8;
     text-decoration: none;
 }
 
 .login-info a:hover {
     text-decoration: underline;
 }
+
+.support-info {
+    margin-top: 15px;
+    font-weight: 500;
+}
+
