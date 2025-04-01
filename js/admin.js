@@ -1,4 +1,6 @@
-class Admin extends User {
+import { User } from './user.js';
+
+export class Admin extends User {
     constructor(name, username) {
       super(name, username, 'admin');
     }

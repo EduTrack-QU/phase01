@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-class Course {
+export class Course {
     constructor(code,title, creditHour,description, instructorId, available) {
         this.code=code?? nanoid(6);
         this.title = title;
