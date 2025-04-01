@@ -5,16 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login page</title>
-    <link rel="stylesheet" href="styles/login.css">
     <link rel="stylesheet" href="styles/common.css">
 </head>
 
 <body>
+    <header>
+        <img class="inline-icon" src="media/cap.svg" alt="cap icon">
+        <h3>EduTrack-QU</h3>
+    
+        <img class=qu-logo src="media/qulogo.png" alt="QU logo">
+    </header>
     <div id="header"></div>
 
     <div class="login-box">
         <h1>Login</h1>
-        <form action="/login" method="POST">
+        <form id="login-form">
             <div class="textbox">
                 <input type="text" placeholder="Username" name="username" required>
             </div>
@@ -42,7 +47,7 @@
     <script src="js/header-footer.js"></script>
     <script src="js/student.js"></script>
     <script src="js/user.js"></script>
-    <script src="js/index.js"></script>
+    <script type="module" src="js/index.js"></script>
 
 </body>
 
