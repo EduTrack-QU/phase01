@@ -1,19 +1,147 @@
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root{
+  /* Typography */
+  --font-sans: 'Noto Sans', system-ui, sans-serif;
+  --font-serif: 'Libre Baskerville', Georgia, serif;
+  
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  
+  /* Borders and Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --border-width: 1px;
 }
 
-.page-wrapper {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+@media (prefers-color-scheme: light) {
+    :root {
+      /* Colors - Light Theme */
+      --color-primary: #6366f1;       /* Indigo */
+      --color-primary-light: #818cf8; /* Light Indigo */
+      --color-secondary: #ec4899;     /* Pink */
+      
+      --color-accent: #f97316;        /* Orange */
+      --color-success: #10b981;       /* Emerald */
+      --color-warning: #f59e0b;       /* Amber */
+      --color-error: #ef4444;         /* Red */
+      
+      /* Background and Surfaces */
+      --color-bg-primary: #ffffff;
+      --color-bg-secondary: #f9fafb;
+      --color-bg-tertiary: #f1f5f9;
+      
+      /* Text Colors */
+      --color-text-primary: #1e293b;
+      --color-text-secondary: #475569;
+      --color-text-muted: #64748b;
+      
+      /* Misc */
+      --color-border: #e2e8f0;
+      
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
 }
 
-main, nav, .main-content {
-    flex: 1;
+/* Reset and base styles */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-#footer {
-    margin-top: auto;
-} 
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-secondary);
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Basic typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  margin-top: 0;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-primary-light);
+}
+
+/* Common Layout Component */
+header {
+  display: flex;
+  align-items: center;
+  padding: var(--space-md) var(--space-xl);
+  background-color: var(--color-bg-primary);
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  height: 4rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.inline-icon {
+  height: 30px;
+  margin-right: var(--space-sm);
+}
+
+header h3 {
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.qu-logo {
+  height: 40px;
+  margin-left: auto;
+}
+
+/* Form elements */
+input, select, textarea {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* Simple Button Styles */
+button, .btn {
+  padding: var(--space-sm) var(--space-lg);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+button:hover, .btn:hover {
+  background-color: var(--color-primary-light);
+}
+
+/* Essential utility classes */
+.text-center { text-align: center; }
+.ml-auto { margin-left: auto; }
+.d-flex { display: flex; }
+.flex-column { flex-direction: column; }
+.align-items-center { align-items: center; }
