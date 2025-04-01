@@ -118,11 +118,12 @@ function saveCurrentUserToStorage(user) {
 }
 
 function initLoginPage() {
-    const loginForm = document.querySelector('form');
+    const loginForm = document.getElementById('login-form');
     if (!loginForm) return;
 
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
         const username = document.querySelector('input[name="username"]').value;
         const password = document.querySelector('input[name="password"]').value;
 
@@ -132,14 +133,29 @@ function initLoginPage() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const users = await response.json();
-            const userData = users.find(u =>
+            
+            const user = users.find(u => 
                 u.username === username && u.password === password
             );
 
-            if (userData) {
-                currentUser = createUserInstance(userData);
-                saveCurrentUserToStorage(currentUser);
-                window.location.href = 'dashboard.html';
+            if (user) {
+                // Store user info in localStorage
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Redirect based on user role
+                switch(user.role.toLowerCase()) {
+                    case 'student':
+                        window.location.href = 'dashboard.html';
+                        break;
+                    case 'instructor':
+                        window.location.href = 'instructor_dashboard.html';
+                        break;
+                    case 'admin':
+                        window.location.href = 'admin_dashboard.html';
+                        break;
+                    default:
+                        window.location.href = 'dashboard.html';
+                }
             } else {
                 alert('Invalid username or password');
             }
