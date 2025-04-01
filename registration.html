@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Registration</title>
-    <link rel="stylesheet" href="styles/registration.css">
-    <link rel="stylesheet" href="styles/common.css">
+    <link rel="stylesheet" href="styles/student.css">
 </head>
 
 <body>
@@ -17,41 +16,30 @@
         <img class=qu-logo src="media/qulogo.png" alt="QU logo">
     </header>
 
-    <div id="header"></div>
-
-    <div class="registration-box">
+    <div class="registration-container">
         <h1>Course Registration</h1>
-        <form action="/register" method="POST">
-            <div class="textbox">
-                <input type="text" placeholder="Course Code" name="course_code" required>
+        
+        <div id="courses-container" class="courses-row">
+            <div class="course-card" data-course-id="CS101">
+                <h3>CS101: Introduction to Computer Science</h3>
+                <p><strong>Instructor:</strong> Dr. Smith</p>
+                <p><strong>Schedule:</strong> Mon/Wed 10:00-11:30</p>
+                <p><strong>Credits:</strong> 3</p>
+                <div class="course-action-buttons">
+                    <button class="register-btn" data-course-id="CS101">Register</button>
+                    <button class="remove-btn btn-disabled" data-course-id="CS101">Remove</button>
+                </div>
             </div>
-            <input type="submit" id="search-btn"" value="Search">
-        </form>
-
-
-        <!-- <div class="registration-info">
-           
-            <p style="color: #888; font-style: italic;">
-                Registration is open to all eligible students. Please ensure course details are correct before submitting.
-            </p>
-            <p class="support-info" style="margin-top: 15px;">
-                Need help? <a href="#">Contact the Registrar's Office</a>.
-            </p>
-        </div> -->
+        </div>
+        
+        <div class="registration-submit-container">
+            <button id="confirm-registration" class="confirm-btn">Confirm Registration</button>
+        </div>
     </div>
 
-    <div class="course info">
-
-
-    </div>
-
-    <div id="footer"></div>
-    <script src="js/header-footer.js"></script>
     <script src="js/student.js"></script>
     <script src="js/user.js"></script>
     <script type="module" src="js/index.js"></script>
-
-
 </body>
 
 </html>
