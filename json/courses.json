@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "code": "CMPS 151",
     "title": "Programming Concepts",
     "creditHour": 3,
@@ -16,6 +17,7 @@
     }
   },
   {
+    "id": 2,
     "code": "CMPS 151",
     "title": "Programming Concepts",
     "creditHour": 3,
@@ -32,6 +34,7 @@
     }
   },
   {
+    "id": 3,
     "code": "CMPS 251",
     "title": "Object Oriented Programming",
     "creditHour": 4,
@@ -50,6 +53,7 @@
     }
   },
   {
+    "id":4,
     "code": "CMPS 351",
     "title": "Database Systems",
     "creditHour": 4,
@@ -68,6 +72,7 @@
     }
   },
   {
+    "id": 5,
     "code": "CMPS 350",
     "title": "Web Development",
     "creditHour": 3,
