@@ -337,8 +337,8 @@ async function instructorGradesSubmission() {
     window.submitGrades = async function (event, cid) {
         event.preventDefault();
         const form = event.target;
-        const studentGrades = Array.from(form.querySelectorAll('input[type="number"]')).map(input => {
-            return { studentId: input.name, grade: input.value };
+        const studentGrades = Array.from(form.querySelectorAll('select]')).map(select => {
+            return { studentName: select.name, grade: select.value };
         });
 
         // Save the grades to local storage or send them to the server
