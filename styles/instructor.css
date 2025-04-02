@@ -1,1 +1,49 @@
 @import 'common.css';
+
+.grade-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.grade-container h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.search-box {
+    margin-bottom: 1.5rem;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+.course-list {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 1rem;
+    min-height: 200px;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    .grade-container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+}
