@@ -1,0 +1,124 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d8d8d8;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Grade Submission Container */
+.grade-container {
+    width: 500px;
+    margin: 100px auto;
+    padding: 40px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Search Box */
+.search-box input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    background-color: #f8f8f8;
+}
+
+/* Course List */
+.course-item {
+    margin-bottom: 10px;
+}
+
+.course-btn {
+    background: #90c5cd;
+    color: #333;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.details-btn {
+    font-size: 14px;
+    background: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: normal;
+}
+
+/* Student List */
+.students-list {
+    padding: 15px;
+    background: #f4f4f4;
+    border-radius: 8px;
+}
+
+.students-list h4 {
+    margin-bottom: 10px;
+}
+
+/* Show/Hide Effect */
+.hidden {
+    display: none;
+}
+
+#ulist {
+    display: flex;
+    text-align: left;
+    list-style: none;
+    padding: 1rem;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+
+
+/* Grade Dropdown */
+#selectgrade {
+    display: flex;
+    margin-left: 10px;
+    padding: 5px;
+    justify-self: end;
+}
+
+
+#lig {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+/* Submit Button */
+.submit-btn {
+    background: #5b9f5b;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.back-btn{
+    background: #5b9f5b;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+}

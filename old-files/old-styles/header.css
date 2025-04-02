@@ -1,0 +1,25 @@
+/* Header Styles */
+header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #d1b89e;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h3 {
+    margin: 0;
+    color: #000;
+}
+
+/* Icon and Logo Styles */
+.inline-icon {
+    height: 2em;
+    margin-bottom: -0.175em;
+}
+
+.qu-logo {
+    height: 2em;
+    margin-right: 0.5em;
+    margin-left: auto;
+}
