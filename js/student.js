@@ -8,6 +8,15 @@ export class Student extends User {
         this.registeredCourses = registeredCourses || [];
         this.gpa = gpa?? 0;
     }
+    constructor(name, username, enrolledCourses, finishedCourses, registeredCourses, gpa,grades) {
+        super(name, username, 'student');
+        this.enrolledCourses = enrolledCourses || [];
+        this.finishedCourses = finishedCourses || [];
+        this.registeredCourses = registeredCourses || [];
+        this.gpa = gpa?? 0;
+        this.enrolledCoursesGrades = grades?? {};
+    }
+
 
     registerCourse(courseId) {
         courseId = courseId.toString();
@@ -54,6 +63,16 @@ export class Student extends User {
                    !this.hasFinished(courseId);
         });
     }
+
+
+    setGrades(courseId, grade) {
+        courseId = courseId.toString();
+        if (this.isRegisteredFor(courseId)) {
+            this.enrolledCoursesGrades[courseId] = grade;
+            return true;
+        }
+        return false;
+    }
     
     toString() {
         return `Student: ${this.name}, Username: ${this.username}, Enrolled Courses: ${this.enrolledCourses.join(', ')}, Finished Courses: ${this.finishedCourses.join(', ')}, Registered Courses: ${this.registeredCourses.join(', ')}, GPA: ${this.gpa}`;
@@ -68,6 +87,9 @@ export class Student extends User {
             gpa: this.gpa
         };
     }
+
+
+
 
     static fromJSON(json) {
         return new Student(

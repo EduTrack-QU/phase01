@@ -63,8 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function converStutToHtml(s){
         return `
         <li id="lig">
-            ${s}
-            <select name="grade-${s}" id="selectgrade">
+            ${s.name}
+            <select name="grade-${s.name}" id="selectgrade">
                 <option value="A">A</option>
                 <option value="A+">A+</option>
                 <option value="B">B</option>

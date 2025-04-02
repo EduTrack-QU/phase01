@@ -32,5 +32,30 @@
 
         ]
 
+    },
+    {
+        "name": "Mohamed",
+        "username": "ansari@qu.edu.qa",
+        "password": "ansaripassword",
+        "role": "admin"
+    },
+    {
+        "name": "Hamza",
+        "username": "hamza@qu.edu.qa",
+        "password": "hamzapassword",
+        "role": "student",
+        "gpa": 3.5,
+        "enrolledCourses": [],
+        "finishedCourses": [],
+        "registeredCourses": [],
+        "grades": {}
+    },
+    {
+        "name": "Barky",
+        "username": "bakry@qu.edu.qa",
+        "password": "bakrypassword",
+        "role": "instructor",
+        "teachingCourses": [],
+        "prefereredCourses": []
     }
 ]

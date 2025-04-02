@@ -13,7 +13,8 @@
         "gpa": 3.5,
         "enrolledCourses": [],
         "finishedCourses": [],
-        "registeredCourses": []
+        "registeredCourses": [],
+        "grades": {}
     },
     {
         "name": "Barky",

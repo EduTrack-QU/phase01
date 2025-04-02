@@ -40,6 +40,8 @@ window.addEventListener('DOMContentLoaded', () => {
         initDashboard();
     } else if (page.includes('registration.html')) {
         initRegistrationPage();
+    }else if (page.includes('grades_submission.html')) {
+        instructorGradesSubmission();
     }
 });
 
@@ -105,9 +107,9 @@ function createUserInstance(userData) {
                 userData.gpa
             );
         case 'instructor':
-            return new Instructor(userData.name, userData.username);
+            return new Instructor(userData.name, userData.username,userData.teachingCourses, userData.preferedCourses);
         case 'admin':
-            return new Admin(userData.name, userData.username);
+            return new Admin(userData.name, userData.username);  
         default:
             return null;
     }
@@ -278,4 +280,106 @@ async function initRegistrationPage() {
             alert('No courses selected for registration.');
         }
     });
+}
+//use vase for instructor grades submission
+async function instructorGradesSubmission() {
+    currentUser = loadCurrentUserFromStorage();
+
+    if (!currentUser || currentUser.role.toLowerCase() !== 'instructor') {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    const courses_list = document.querySelector('.course-list');
+    const instructor = Instructor.fromJSON(currentUser);
+    const coursesData = instructor.teachingCourses;    
+
+    let gradedcourses= localStorage.graded ? JSON.parse(localStorage.getItem('graded')) : []; 
+    // let courses = [];
+    // let students = [];
+    
+    const cHTML = coursesData.map(c => convertToHtml(c)).join('');
+    courses_list.innerHTML = cHTML;
+    
+    
+   window.handleDetails= async function (cid){
+        if(gradedcourses.includes(cid)){
+            alert("This course hvae been already graded");
+            return;
+        }
+        const studentDiv = document.getElementById(`students-${cid}`);
+        studentDiv.classList.remove('hidden');
+        let studentsEnrolled = [];
+        const response = await fetch('../json/users.json');
+        const users = await response.json();
+        for (let user of users) {
+            if (user.role === 'student' && user.enrolledCourses.includes(cid)) {
+                studentsEnrolled.push(user);
+            }
+        }   
+        const course_ = coursesData.find(c => c.course_code === cid);
+        
+        if (!course_ || !studentsEnrolled) {
+            studentDiv.innerHTML = "<p>No students enrolled.</p>";
+            return;
+        }
+        const stuHTML = studentsEnrolled.map(s => converStutToHtml(s)).join('');
+        studentDiv.innerHTML = `
+        <h4>Grading Form</h4>
+        <form onsubmit="submitGrades(event, '${cid}')">
+            <ul id="ulist">
+                ${stuHTML}
+            </ul>
+            <button type="submit" class="submit-btn">Submit</button>
+            <button type="button" class="back-btn" onclick="document.getElementById('students-${cid}').classList.add('hidden')">Back</button>
+        </form>`;
+    }
+    window.submitGrades = async function (event, cid) {
+        event.preventDefault();
+        const form = event.target;
+        const studentGrades = Array.from(form.querySelectorAll('input[type="number"]')).map(input => {
+            return { studentId: input.name, grade: input.value };
+        });
+
+        // Save the grades to local storage or send them to the server
+        gradedcourses.push(cid);
+        localStorage.setItem('graded', JSON.stringify(gradedcourses));
+        alert(`Grades for course ${cid} have been submitted.`);
+    };  
+
+
+   
+
+}
+
+function converStutToHtml(s){
+    return `
+    <li id="lig">
+        ${s.name}
+        <select name="grade-${s.name}" id="selectgrade">
+            <option value="A">A</option>
+            <option value="A+">A+</option>
+            <option value="B">B</option>
+            <option value="B+">B+</option>
+            <option value="C">C</option>
+            <option value="C+">C+</option>
+            <option value="D">D</option>
+            <option value="D+">D+</option>
+            <option value="F">F</option>
+        </select>
+    </li>
+`;
+}
+
+
+function convertToHtml(course) {
+    return `
+        <div class="course-item">
+            <button class="course-btn" onclick="handleDetails('${course.course_code}')">
+                ${course.course_code}${" "} ${course.course_name}
+                <span class="details-btn">View students list</span>
+            </button>
+            <div id="students-${course.course_code}"></div>
+        </div>
+    `;
 }
