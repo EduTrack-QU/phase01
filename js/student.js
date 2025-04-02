@@ -1,13 +1,6 @@
 import { User } from './user.js';
 
 export class Student extends User {
-    constructor(name, username, enrolledCourses, finishedCourses, registeredCourses, gpa) {
-        super(name, username, 'student');
-        this.enrolledCourses = enrolledCourses || [];
-        this.finishedCourses = finishedCourses || [];
-        this.registeredCourses = registeredCourses || [];
-        this.gpa = gpa?? 0;
-    }
     constructor(name, username, enrolledCourses, finishedCourses, registeredCourses, gpa,grades) {
         super(name, username, 'student');
         this.enrolledCourses = enrolledCourses || [];
@@ -15,6 +8,7 @@ export class Student extends User {
         this.registeredCourses = registeredCourses || [];
         this.gpa = gpa?? 0;
         this.enrolledCoursesGrades = grades?? {};
+
     }
 
 

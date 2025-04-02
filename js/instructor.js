@@ -13,12 +13,17 @@ export class Instructor extends User {
         //     this.preferedCourses.push(courseId);
         // }
     }
+
   
     toJSON() {
       return {
         ...super.toJSON(),
         teachingCourses: this.teachingCourses
       };
+    }
+    static fromJSON(Json) {
+      
+      return new Instructor(Json.name, Json.username, Json.teachingCourses, Json.preferedCourses);  
     }
   }
   

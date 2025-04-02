@@ -15,7 +15,7 @@ const navConfig = {
         { icon: 'calendar.svg', alt: 'Schedule icon', text: 'View Schedule', url: 'schedule.html' }
     ],
     instructor: [
-        { icon: 'submit.svg', alt: 'submit grades icon', text: 'Submit Grades', url: 'submit_grades.html' },
+        { icon: 'submit.svg', alt: 'submit grades icon', text: 'Submit Grades', url: 'grades_submission.html' },
         { icon: 'view.svg', alt: 'view icon', text: 'Choose Courses', url: 'choose_courses.html' }
     ]
 };
@@ -296,7 +296,7 @@ async function instructorGradesSubmission() {
 
     let gradedcourses= localStorage.graded ? JSON.parse(localStorage.getItem('graded')) : []; 
     // let courses = [];
-    // let students = [];
+    let students = localStorage.students ? JSON.parse(localStorage.getItem('students')) : [];
     
     const cHTML = coursesData.map(c => convertToHtml(c)).join('');
     courses_list.innerHTML = cHTML;
@@ -313,16 +313,17 @@ async function instructorGradesSubmission() {
         const response = await fetch('../json/users.json');
         const users = await response.json();
         for (let user of users) {
-            if (user.role === 'student' && user.enrolledCourses.includes(cid)) {
-                studentsEnrolled.push(user);
+            if (user.role === 'student' ) {
+                if(user.enrolledCourses.includes(cid)){
+                    studentsEnrolled.push(user);}
             }
         }   
         const course_ = coursesData.find(c => c.course_code === cid);
-        
         if (!course_ || !studentsEnrolled) {
             studentDiv.innerHTML = "<p>No students enrolled.</p>";
             return;
         }
+        students=studentsEnrolled;
         const stuHTML = studentsEnrolled.map(s => converStutToHtml(s)).join('');
         studentDiv.innerHTML = `
         <h4>Grading Form</h4>
@@ -337,9 +338,16 @@ async function instructorGradesSubmission() {
     window.submitGrades = async function (event, cid) {
         event.preventDefault();
         const form = event.target;
-        const studentGrades = Array.from(form.querySelectorAll('select]')).map(select => {
+        const studentGrades = Array.from(form.querySelectorAll('select')).map(select => {
             return { studentName: select.name, grade: select.value };
         });
+        alert(`Grades submitted for course ${cid}: ${JSON.stringify(studentGrades)}`);
+        for (let i = 0; i < students.length; i++) {
+            const student = createUserInstance(students[i]);
+            const grade = studentGrades[i].grade;
+            student.setGrades(cid, grade);
+        }
+
 
         // Save the grades to local storage or send them to the server
         gradedcourses.push(cid);

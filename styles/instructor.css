@@ -39,7 +39,9 @@
     padding: 1rem;
     min-height: 200px;
 }
-
+.hidden {
+    display: none;
+}
 /* Responsive design */
 @media screen and (max-width: 768px) {
     .grade-container {
