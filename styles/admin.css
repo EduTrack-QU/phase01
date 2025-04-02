@@ -251,3 +251,38 @@ h2 {
         padding: 0.75rem;
     }
 }
+
+/* Assign Instructor Page Specific Styles */
+.courses-table-container {
+    margin-bottom: var(--space-lg);
+    overflow-x: auto;
+}
+
+.instructor-select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background-color: white;
+}
+
+.interested-instructor {
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+/* Make sure the assign button is properly styled */
+#assign-button {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+#assign-button:hover {
+    background-color: var(--color-primary-light);
+}

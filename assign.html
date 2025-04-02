@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>assign Instructor</title>
+    <title>Assign Instructor</title>
     <link rel="stylesheet" href="styles/admin.css">
 </head>
 <body>
@@ -17,15 +17,26 @@
     <main class="container">
         <div class="create-section">
             <h2>Assign Instructor</h2>
-            <form id="assign-instructor-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        
-                    </div>
-                </div>
-                </form>
+            <div class="courses-table-container">
+                <table class="courses-table">
+                    <thead>
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Interested Instructors</th>
+                            <th>Assigned</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courses-table-body">
+                        <!-- Table rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
             </div>
-            </main>
+            <div class="button-group">
+                <button type="button" id="assign-button" class="button create">Assign Instructor</button>
+            </div>
+        </div>
+    </main>
 
+    <script src="js/assign.js"></script>
 </body>
 </html>
