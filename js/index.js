@@ -124,6 +124,26 @@ function loadCurrentUserFromStorage() {
 function saveCurrentUserToStorage(user) {
     if (!user) return;
     localStorage.setItem('currentUser', JSON.stringify(user));
+    
+    // The following will break the code
+    // fs.readFile('json/users.json', 'utf8', (err, data) => {
+    //     if (err) {
+    //         console.error('Error reading users file:', err);
+    //         return;
+    //     }
+    //     const users = JSON.parse(data);
+    //     const userIndex = users.findIndex(u => u.username === user.username);
+    //     if (userIndex !== -1) {
+    //         users[userIndex] = user;
+    //     } else {
+    //         users.push(user);
+    //     }
+    //     fs.writeFile('json/users.json', JSON.stringify(users, null, 2), err => {
+    //         if (err) {
+    //             console.error('Error writing users file:', err);
+    //         }
+    //     });
+    // });
 }
 
 function initLoginPage() {
