@@ -273,16 +273,74 @@ h2 {
 
 /* Make sure the assign button is properly styled */
 #assign-button {
-    background-color: var(--color-primary);
-    color: white;
-    padding: 0.75rem 1.5rem;
+    width: 140px;
+    height: 50px;
+    background: linear-gradient(to top, #00154c, #12376e, #23487f);
+    color: black;
+    border-radius: 50px;
     border: none;
-    border-radius: var(--radius-sm);
+    outline: none;
     cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
+    position: relative;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
 }
 
-#assign-button:hover {
-    background-color: var(--color-primary-light);
+#assign-button span {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: top 0.5s;
+}
+
+.btn-text-one {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.btn-text-two {
+    position: absolute;
+    width: 100%;
+    top: 150%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+
+
+/* Assign page specific styles that won't affect other pages */
+.create-section .courses-table {
+    border: 2px solid #ddd;
+    box-shadow: var(--shadow-md);
+}
+
+.create-section .courses-table th {
+    background-color: var(--color-primary);
+    color: black;
+    border: 2px solid #ddd;
+    font-weight: 700;
+}
+
+.create-section .courses-table td {
+    border: 2px solid #ddd;
+}
+
+.create-section .courses-table tr:nth-child(even) {
+    background-color: var(--color-bg-secondary);
+}
+
+.create-section .button-group {
+    justify-content: center;
+    margin-top: var(--space-xl);
+}
+
+.create-section #assign-button {
+    padding: 0;
+    font-size: 1.1rem;
+    color: black;
+    width: 180px;
+    height: 50px;
 }
