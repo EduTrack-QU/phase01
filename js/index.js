@@ -43,6 +43,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }else if (page.includes('grades_submission.html')) {
         instructorGradesSubmission();
     }
+    else if (page.includes('browse_courses.html')) {
+        initBrowsePage();
+    }
 });
 
 function initDashboard() {
@@ -279,6 +282,47 @@ async function initRegistrationPage() {
         } else {
             alert('No courses selected for registration.');
         }
+    });
+}
+
+
+async function initBrowsePage() {
+    currentUser = loadCurrentUserFromStorage();
+
+    if (!currentUser || currentUser.role.toLowerCase() !== 'student') {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    const coursesContainer = document.getElementById('courses-container');
+    const response = await fetch('../json/courses.json');
+    const coursesData = await response.json();
+    const student = Student.fromJSON(currentUser);
+
+    const availableCourses = student.getAvailableCourses(coursesData);
+
+    coursesContainer.innerHTML = '';
+    
+    if (availableCourses.length === 0) {
+        coursesContainer.innerHTML = '<p class="no-courses">No courses available for registration.</p>';
+        return;
+    }
+ 
+    availableCourses.forEach(course => {
+        const courseName = `${course.code}: ${course.title}`;
+        const schedule = `${course.time.days.join('/')} ${course.time.time}`;
+        
+        const courseDiv = document.createElement('div');
+        courseDiv.classList.add('course-card');
+        courseDiv.setAttribute('data-course-id', course.id);
+        courseDiv.innerHTML = `
+            <h3>${courseName}</h3>
+            <p><strong>Instructor:</strong> ${course.instructorId || 'TBA'}</p>
+            <p><strong>Schedule:</strong> ${schedule}</p>
+            <p><strong>Credits:</strong> ${course.creditHour}</p>
+        `;
+        
+        coursesContainer.appendChild(courseDiv);
     });
 }
 //use vase for instructor grades submission
