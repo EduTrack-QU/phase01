@@ -1,5 +1,16 @@
 [
     {
+        "name": "Mahmoud",
+        "username": "mahmoud@qu.edu.qa",
+        "password": "mahmoud",
+        "role": "student",
+        "gpa": 3,
+        "enrolledCourses": [],
+        "finishedCourses": [],
+        "registeredCourses": [],
+        "grades": {}
+    },
+    {
         "name": "Mohamed",
         "username": "ansari@qu.edu.qa",
         "password": "ansaripassword",
