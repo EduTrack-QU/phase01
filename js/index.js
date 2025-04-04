@@ -12,7 +12,7 @@ const navConfig = {
         { icon: 'create.svg', alt: 'create icon', text: 'Create Courses', url: 'create.html' },
         { icon: 'validate.svg', alt: 'validate icon', text: 'Validate Courses', url: 'validate.html' },
         { icon: 'assign.svg', alt: 'assign icon', text: 'Assign Instructors', url: 'assign.html' },
-        { icon: 'calendar.svg', alt: 'Schedule icon', text: 'View Schedule', url: 'schedule.html' }
+        { icon: 'calendar.svg', alt: 'Schedule icon', text: 'View Schedule', url: 'view_schedule.html' }
     ],
     instructor: [
         { icon: 'submit.svg', alt: 'submit grades icon', text: 'Submit Grades', url: 'grades_submission.html' },
@@ -46,6 +46,10 @@ window.addEventListener('DOMContentLoaded', () => {
     else if (page.includes('browse_courses.html')) {
         initBrowsePage();
     }
+    else if (page.includes('view_schedule.html')){
+        initViewSchedulePage();
+    }
+
 });
 
 function initDashboard() {
@@ -326,6 +330,68 @@ async function initBrowsePage() {
     });
 }
 //use vase for instructor grades submission
+async function initViewSchedulePage() {
+    currentUser = loadCurrentUserFromStorage();
+    const scheduleTable = document.getElementById('schedule-table');
+
+    if (!currentUser || currentUser.role.toLowerCase() !== 'admin') {
+        scheduleTable.innerHTML = '<tr><td>You do not have permission to view this page.</td></tr>';
+        return;
+    }
+
+    const courseRes = await fetch('json/courses.json');
+    const userRes = await fetch('json/users.json');
+    const allCourses = await courseRes.json();
+    const users = await userRes.json();
+
+    const instructors = users.filter(u => u.role === 'instructor');
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
+
+    // Build table header
+    const thead = document.createElement('thead');
+    const headRow = document.createElement('tr');
+    const firstTh = document.createElement('th');
+    firstTh.textContent = 'Instructors';
+    headRow.appendChild(firstTh);
+
+    days.forEach(day => {
+        const th = document.createElement('th');
+        th.textContent = day;
+        headRow.appendChild(th);
+    });
+
+    thead.appendChild(headRow);
+    scheduleTable.appendChild(thead);
+
+    // Build table body
+    const tbody = document.createElement('tbody');
+
+    instructors.forEach((instructor, index) => {
+        const row = document.createElement('tr');
+
+        const nameCell = document.createElement('td');
+        nameCell.textContent = instructor.name || `Instructor#${index + 1}`;
+        row.appendChild(nameCell);
+
+        days.forEach(day => {
+            const cell = document.createElement('td');
+            const coursesToday = allCourses.filter(course =>
+                course.instructorId === instructor.username &&
+                course.time?.days?.includes(day)
+            );
+
+            cell.innerHTML = coursesToday.length > 0
+                ? coursesToday.map(c => `${c.code}<br><small>${c.time.time}</small>`).join('<br>')
+                : '-';
+            row.appendChild(cell);
+        });
+
+        tbody.appendChild(row);
+    });
+
+    scheduleTable.appendChild(tbody);
+}
+
 async function instructorGradesSubmission() {
     currentUser = loadCurrentUserFromStorage();
 
