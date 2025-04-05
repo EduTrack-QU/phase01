@@ -6,7 +6,12 @@
     margin: var(--space-xl) auto;
     padding: 0 var(--space-md);
 }
-
+.edit-btn{
+    color:#00154c
+}
+.delete-btn{
+    color:red
+}
 /* Create Section Styles */
 .create-section, .courses-section {
     background-color: white;
