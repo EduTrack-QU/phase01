@@ -9,10 +9,15 @@
 
 /* Create Section Styles */
 .create-section, .courses-section {
-    background-color: var(--color-bg-primary);
+    background-color: white;
     border-radius: var(--radius-md);
     padding: var(--space-xl);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: var(--space-lg);
+}
+
+body {
+    background-color: #f8f9fa;
 }
 
 .create-section h2, .courses-section h2 {
@@ -40,7 +45,8 @@
 }
 
 .form-group input,
-.form-group select {
+.form-group select,
+.form-group textarea {
     width: 100%;
     padding: 0.75rem;
     border: 1px solid #ddd;
@@ -49,10 +55,110 @@
 }
 
 .form-group input:focus,
-.form-group select:focus {
+.form-group select:focus,
+.form-group textarea:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(65, 105, 225, 0.1);
+}
+
+/* Days Selection Styling */
+.days-selection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.day-checkbox {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.day-checkbox input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.day-checkbox label {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.day-checkbox input[type="checkbox"]:checked + label {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.day-checkbox label:hover {
+    background-color: #e0e0e0;
+}
+
+.day-checkbox input[type="checkbox"]:checked + label:hover {
+    background-color: var(--color-primary-dark, #3a5fcd);
+}
+
+/* Status indicators for courses */
+.status-pending {
+    color: var(--color-warning, #ffc107);
+    font-weight: 500;
+}
+
+.status-validated {
+    color: var(--color-success, #28a745);
+    font-weight: 500;
+}
+
+.status-cancelled {
+    color: var(--color-error, #dc3545);
+    font-weight: 500;
+}
+
+/* Course category badges */
+.category-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.category-core {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+}
+
+.category-elective {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+}
+
+.category-general {
+    background-color: #fff3e0;
+    color: #e65100;
+}
+
+.category-major {
+    background-color: #f3e5f5;
+    color: #4a148c;
+}
+
+.category-minor {
+    background-color: #e0f7fa;
+    color: #006064;
 }
 
 /* Button Styles */
@@ -106,7 +212,7 @@
     display: block;
 }
 
-.button.create:hover:not(.assigned) {
+.button.create {
     background-color: var(--color-primary-dark, #3a5fcd);
 }
 
@@ -115,9 +221,9 @@
     cursor: default;
 }
 
-.button.create:hover {
+/* .button.create:hover {
     background-color: var(--color-primary-light);
-}
+} */
 
 /* Courses Table Styles */
 .courses-section {

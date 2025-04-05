@@ -1,7 +1,7 @@
 import { Student } from './student.js';
 import { Admin } from './admin.js';
 import { Instructor } from './instructor.js';
-
+import { Course } from './course.js';
 const navConfig = {
     student: [
         { icon: 'browse.svg', alt: 'browse courses icon', text: 'Browse Courses', url: 'browse_courses.html' },
@@ -54,6 +54,12 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     else if (page.includes('assign.html')) {
         initAssignPage();
+    }
+    else if (page.includes('validate.html')) {
+        initValidationPage();
+    }
+    else if (page.includes('create.html')) {
+        initCreatePage();
     }
 
 });
@@ -782,4 +788,245 @@ async function initAssignPage() {
         document.getElementById('courses-table-body').innerHTML =
             '<tr><td colspan="3">Failed to load data. Please try again later.</td></tr>';
     }
+}
+async function initCreatePage() {
+    currentUser = loadCurrentUserFromStorage();
+
+    if (!currentUser || currentUser.role.toLowerCase() !== 'admin') {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Load existing courses
+    let courses = [];
+    
+    // Try to get courses from localStorage first
+    const localCourses = localStorage.getItem('courses');
+    if (localCourses) {
+        courses = JSON.parse(localCourses);
+    } else {
+        // If not in localStorage, fetch from JSON file
+        try {
+            const response = await fetch('json/courses.json');
+            if (response.ok) {
+                courses = await response.json();
+                // Store in localStorage for future use
+                localStorage.setItem('courses', JSON.stringify(courses));
+            } else {
+                console.error('Failed to fetch courses');
+            }
+        } catch (error) {
+            console.error('Error fetching courses:', error);
+        }
+    }
+    
+    // Display the courses
+    displayCreatedCourses(courses);
+    
+    // Set up form submission
+    const form = document.getElementById('create-course-form');
+    if (form) {
+        form.addEventListener('submit', handleCourseFormSubmit);
+    }
+}
+
+function displayCreatedCourses(courses) {
+    const tableBody = document.getElementById('created-courses-body');
+    if (!tableBody) return;
+    
+    tableBody.innerHTML = '';
+    
+    courses.forEach(course => {
+        const row = document.createElement('tr');
+        
+        // Format days for display
+        const days = course.time?.days ? course.time.days.join('/') : '-';
+        const time = course.time?.time || '-';
+        const daysTime = `${days}<br>${time}`;
+        
+        // Create status class based on course status
+        const statusClass = `status-${course.status || 'pending'}`;
+        
+        row.innerHTML = `
+            <td>${course.code}</td>
+            <td>${course.title}</td>
+            <td>${daysTime}</td>
+            <td class="${statusClass}">${capitalizeFirstLetter(course.status || 'pending')}</td>
+            <td>
+                <button class="action-btn edit-btn" data-id="${course.id}">Edit</button>
+                <button class="action-btn delete-btn" data-id="${course.id}">Delete</button>
+            </td>
+        `;
+        
+        tableBody.appendChild(row);
+    });
+    
+    // Add event listeners to action buttons
+    addCourseActionButtonListeners();
+}
+
+function addCourseActionButtonListeners() {
+    // Edit button listeners
+    const editButtons = document.querySelectorAll('.edit-btn');
+    editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const courseId = this.getAttribute('data-id');
+            editCourse(courseId);
+        });
+    });
+    
+    // Delete button listeners
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const courseId = this.getAttribute('data-id');
+            deleteCourse(courseId);
+        });
+    });
+}
+
+function editCourse(courseId) {
+    // Get courses from localStorage
+    const courses = JSON.parse(localStorage.getItem('courses') || '[]');
+    const course = courses.find(c => c.id == courseId);
+    
+    if (!course) {
+        alert('Course not found');
+        return;
+    }
+    
+    // Fill the form with course data
+    document.getElementById('course-code').value = course.code || '';
+    document.getElementById('course-title').value = course.title || '';
+    document.getElementById('course-ch').value = course.creditHour || '';
+    document.getElementById('course-description').value = course.description || '';
+    document.getElementById('prerequisites').value = course.prerequisites ? course.prerequisites.join(', ') : '';
+    document.getElementById('course-time').value = course.time?.time || '';
+    
+    // Check the appropriate day checkboxes
+    const days = course.time?.days || [];
+    document.querySelectorAll('.day-checkbox input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = days.includes(checkbox.value);
+    });
+    
+    // Change the form submit button to update
+    const submitButton = document.querySelector('.button.create');
+    submitButton.textContent = 'Update Course';
+    submitButton.setAttribute('data-id', courseId);
+    submitButton.classList.add('update');
+}
+
+function deleteCourse(courseId) {
+    if (!confirm('Are you sure you want to delete this course?')) {
+        return;
+    }
+    
+    // Get courses from localStorage
+    let courses = JSON.parse(localStorage.getItem('courses') || '[]');
+    
+    // Filter out the course to delete
+    courses = courses.filter(c => c.id != courseId);
+    
+    // Save back to localStorage
+    localStorage.setItem('courses', JSON.stringify(courses));
+    
+    // Refresh the display
+    displayCreatedCourses(courses);
+}
+
+function handleCourseFormSubmit(event) {
+    event.preventDefault();
+    
+    // Get form values
+    const code = document.getElementById('course-code').value;
+    const title = document.getElementById('course-title').value;
+    const creditHour = parseInt(document.getElementById('course-ch').value);
+    const description = document.getElementById('course-description').value;
+    const prerequisitesStr = document.getElementById('prerequisites').value;
+    const timeStr = document.getElementById('course-time').value;
+    
+    // Get selected days
+    const selectedDays = [];
+    document.querySelectorAll('.day-checkbox input[type="checkbox"]:checked').forEach(checkbox => {
+        selectedDays.push(checkbox.value);
+    });
+    
+    // Validate form
+    if (!code || !title || !creditHour || !description || !timeStr || selectedDays.length === 0) {
+        alert('Please fill in all required fields');
+        return;
+    }
+    
+    // Parse prerequisites
+    const prerequisites = prerequisitesStr
+        ? prerequisitesStr.split(',').map(p => p.trim()).filter(p => p)
+        : [];
+    
+    // Check if this is an update or a new course
+    const submitButton = document.querySelector('.button.create');
+    const isUpdate = submitButton.classList.contains('update');
+    const courseId = isUpdate ? submitButton.getAttribute('data-id') : null;
+    
+    // Get existing courses
+    let courses = JSON.parse(localStorage.getItem('courses') || '[]');
+    
+    if (isUpdate) {
+        // Update existing course
+        const index = courses.findIndex(c => c.id == courseId);
+        if (index !== -1) {
+            courses[index] = {
+                ...courses[index],
+                code,
+                title,
+                creditHour,
+                description,
+                prerequisites,
+                time: {
+                    days: selectedDays,
+                    time: timeStr
+                }
+            };
+        }
+        
+        // Reset form button
+        submitButton.textContent = 'Create Course';
+        submitButton.removeAttribute('data-id');
+        submitButton.classList.remove('update');
+    } else {
+        // Create new course using the Course class
+        const newCourse = new Course(
+            code,
+            title,
+            creditHour,
+            description,
+            '', // instructorId (empty for now)
+            false // available (false until validated)
+        );
+        
+        newCourse.prerequisites = prerequisites;
+        newCourse.time = {
+            days: selectedDays,
+            time: timeStr
+        };
+        
+        // Add to courses array
+        courses.push(newCourse.toJSON());
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('courses', JSON.stringify(courses));
+    
+    // Reset form
+    document.getElementById('create-course-form').reset();
+    
+    // Refresh the display
+    displayCreatedCourses(courses);
+    
+    // Show success message
+    alert(isUpdate ? 'Course updated successfully!' : 'Course created successfully!');
+}
+
+// Helper function to capitalize first letter
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
