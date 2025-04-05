@@ -235,6 +235,7 @@ main {
 
 /* Schedule Page Title */
 h2 {
+    text-align: center;
     color: #333;
     margin-bottom: 1.5rem;
 }

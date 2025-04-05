@@ -49,6 +49,10 @@ window.addEventListener('DOMContentLoaded', () => {
     else if (page.includes('view_schedule.html')){
         initViewSchedulePage();
     }
+    else if (page.includes('choose_courses.html')) {
+        initChooseCoursesPage();
+    }
+
 
 });
 
@@ -288,6 +292,74 @@ async function initRegistrationPage() {
         }
     });
 }
+async function initChooseCoursesPage() {
+    currentUser = loadCurrentUserFromStorage();
+
+    if (!currentUser || currentUser.role.toLowerCase() !== 'instructor') {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    const coursesContainer = document.getElementById('courses-container');
+    const response = await fetch('../json/courses.json');
+    const courses = await response.json();
+
+    const selectedCourses = new Set();
+
+    coursesContainer.innerHTML = '';
+
+    courses.forEach(course => {
+        if (!course.available) return;
+
+        const div = document.createElement('div');
+        div.classList.add('course-card');
+        div.setAttribute('data-id', course.id);
+        div.innerHTML = `
+            <h3>${course.code}: ${course.title}</h3>
+            <p><strong>Schedule:</strong> ${course.time.days.join('/')} ${course.time.time}</p>
+            <p><strong>Credits:</strong> ${course.creditHour}</p>
+        `;
+
+        div.addEventListener('click', () => {
+            const cid = course.id;
+            if (selectedCourses.has(cid)) {
+                selectedCourses.delete(cid);
+                div.classList.remove('selected');
+            } else {
+                selectedCourses.add(cid);
+                div.classList.add('selected');
+            }
+        });
+
+        coursesContainer.appendChild(div);
+    });
+
+    const submitButton = document.getElementById('submit-preferences');
+    submitButton.addEventListener('click', async () => {
+        if (selectedCourses.size === 0) {
+            alert("Please select at least one course.");
+            return;
+        }
+
+        // Load original courses
+        const response = await fetch('../json/courses.json');
+        let allCourses = await response.json();
+
+        // Assign instructorId to selected courses
+        allCourses = allCourses.map(course => {
+            if (selectedCourses.has(course.id)) {
+                return { ...course, instructorId: currentUser.username };
+            }
+            return course;
+        });
+
+        // Save updated list to localStorage
+        localStorage.setItem('assignedCourses', JSON.stringify(allCourses));
+
+        alert("Your preferences have been submitted and saved as assignments!");
+    });
+}
+
 
 
 async function initBrowsePage() {
