@@ -337,30 +337,42 @@ async function initChooseCoursesPage() {
     });
 
     const submitButton = document.getElementById('submit-preferences');
-    submitButton.addEventListener('click', async () => {
+    submitButton.addEventListener('click', () => {
         if (selectedCourses.size === 0) {
             alert("Please select at least one course.");
             return;
         }
 
-        // Load original courses
-        const response = await fetch('../json/courses.json');
-        let allCourses = await response.json();
+        const instructor = Instructor.fromJSON(currentUser);
+        const courseIds = Array.from(selectedCourses);
 
-        // Assign instructorId to selected courses
-        allCourses = allCourses.map(course => {
-            if (selectedCourses.has(course.id)) {
-                return { ...course, instructorId: currentUser.username };
-            }
-            return course;
-        });
+        // Save preferences to current user (session)
+        instructor.preferedCourses = courseIds;
+        saveCurrentUserToStorage(instructor);
 
-        // Save updated list to localStorage
-        localStorage.setItem('assignedCourses', JSON.stringify(allCourses));
 
-        alert("Your preferences have been submitted and saved as assignments!");
+        let allInstructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+        const index = allInstructors.findIndex(i => i.username === instructor.username);
+
+        if (index !== -1) {
+            allInstructors[index] = {
+                ...instructor,
+                role: 'instructor'
+            };
+        } else {
+            allInstructors.push({
+                ...instructor,
+                role: 'instructor'
+            });
+        }
+
+        localStorage.setItem('instructors', JSON.stringify(allInstructors));
+
+        alert("Your preferred courses have been saved!");
     });
 }
+
+
 
 
 
@@ -413,10 +425,23 @@ async function initViewSchedulePage() {
         return;
     }
 
-    const courseRes = await fetch('json/courses.json');
-    const userRes = await fetch('json/users.json');
-    const allCourses = await courseRes.json();
-    const users = await userRes.json();
+    let allCourses = [];
+    const localCourses = localStorage.getItem('courses');
+    if (localCourses) {
+        allCourses = JSON.parse(localCourses);
+    } else {
+        const courseRes = await fetch('json/courses.json');
+        allCourses = await courseRes.json();
+    }
+
+    let users = [];
+    const localUsers = localStorage.getItem('instructors');
+    if (localUsers) {
+        users = JSON.parse(localUsers);
+    } else {
+        const userRes = await fetch('json/users.json');
+        users = await userRes.json();
+    }
 
     const instructors = users.filter(u => u.role === 'instructor');
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
@@ -465,6 +490,7 @@ async function initViewSchedulePage() {
 
     scheduleTable.appendChild(tbody);
 }
+
 
 async function instructorGradesSubmission() {
     currentUser = loadCurrentUserFromStorage();
@@ -584,24 +610,29 @@ async function initAssignPage() {
         window.location.href = 'login.html';
         return;
     }
+
     try {
         const coursesResponse = await fetch('../json/courses.json');
-        const usersResponse = await fetch('../json/users.json');
-        
-        if (!coursesResponse.ok || !usersResponse.ok) {
-            throw new Error('Failed to fetch data');
+
+        if (!coursesResponse.ok) {
+            throw new Error('Failed to fetch course data');
         }
-        
+
         const courses = await coursesResponse.json();
-        const users = await usersResponse.json();
-        
-        // Filter instructors from users
+
+        let users = [];
+        const localInstructors = localStorage.getItem('instructors');
+        if (localInstructors) {
+            users = JSON.parse(localInstructors);
+        } else {
+            const usersResponse = await fetch('../json/users.json');
+            users = await usersResponse.json();
+        }
+
         const instructors = users.filter(user => user.role === "instructor");
-        
-        // Process data to get course preferences
+
         const coursePreferences = {};
-        
-        // Initialize coursePreferences with only available courses
+
         courses.forEach(course => {
             if (course.available === true) {
                 coursePreferences[course.id] = {
@@ -610,11 +641,10 @@ async function initAssignPage() {
                 };
             }
         });
-        
-        // Add instructor preferences to courses based on prefereredCourses array
+
         instructors.forEach(instructor => {
-            if (instructor.prefereredCourses && Array.isArray(instructor.prefereredCourses)) {
-                instructor.prefereredCourses.forEach(courseId => {
+            if (instructor.preferedCourses && Array.isArray(instructor.preferedCourses)) {
+                instructor.preferedCourses.forEach(courseId => {
                     if (coursePreferences[courseId]) {
                         coursePreferences[courseId].interestedInstructors.push({
                             name: instructor.name,
@@ -624,21 +654,19 @@ async function initAssignPage() {
                 });
             }
         });
-        
-        // Populate the table
+
         const tableBody = document.getElementById('courses-table-body');
-        
+        tableBody.innerHTML = '';
+
         Object.values(coursePreferences).forEach(coursePref => {
             const course = coursePref.course;
             const row = document.createElement('tr');
-            
-            // Course name cell with schedule information
+
             const nameCell = document.createElement('td');
             const schedule = `${course.time.days.join('/')} ${course.time.time}`;
             nameCell.innerHTML = `<strong>${course.code}: ${course.title}</strong><br><small>${schedule}</small>`;
             row.appendChild(nameCell);
-            
-            // Interested instructors cell
+
             const interestedCell = document.createElement('td');
             if (coursePref.interestedInstructors.length > 0) {
                 interestedCell.textContent = coursePref.interestedInstructors
@@ -648,63 +676,57 @@ async function initAssignPage() {
                 interestedCell.textContent = 'No preferences';
             }
             row.appendChild(interestedCell);
-            
-            // Assigned instructor dropdown cell
+
             const assignedCell = document.createElement('td');
             const selectElement = document.createElement('select');
             selectElement.className = 'instructor-select';
             selectElement.dataset.courseId = course.id;
-            
-            // Add empty option
+
             const emptyOption = document.createElement('option');
             emptyOption.value = '';
             emptyOption.textContent = 'Select instructor';
             selectElement.appendChild(emptyOption);
-            
-            // Add all instructors as options
+
             instructors.forEach(instructor => {
                 const option = document.createElement('option');
                 option.value = instructor.username;
                 option.textContent = instructor.name;
-                
-                // If this instructor is interested, highlight them
+
                 const isInterested = coursePref.interestedInstructors.some(
                     inst => inst.username === instructor.username
                 );
-                
+
                 if (isInterested) {
                     option.className = 'interested-instructor';
                 }
-                
-                // If this course is already in the instructor's teachingCourses, select it
-                if (instructor.teachingCourses && 
-                    Array.isArray(instructor.teachingCourses) && 
-                    instructor.teachingCourses.includes(course.id)) {
+
+                if (
+                    instructor.teachingCourses &&
+                    Array.isArray(instructor.teachingCourses) &&
+                    instructor.teachingCourses.includes(course.id)
+                ) {
                     option.selected = true;
                 }
-                
+
                 selectElement.appendChild(option);
             });
-            
+
             assignedCell.appendChild(selectElement);
             row.appendChild(assignedCell);
-            
+
             tableBody.appendChild(row);
         });
-        
-        // Add event listener to the assign button
+
         const assignButton = document.getElementById('assign-button');
         if (assignButton) {
-            assignButton.addEventListener('click', function() {
-                // Get all instructor selections
+            assignButton.addEventListener('click', () => {
                 const selections = document.querySelectorAll('.instructor-select');
                 const assignments = {};
-                
-                // Create a mapping of instructor to assigned courses
+
                 selections.forEach(select => {
                     const courseId = parseInt(select.dataset.courseId);
                     const instructorUsername = select.value;
-                    
+
                     if (instructorUsername) {
                         if (!assignments[instructorUsername]) {
                             assignments[instructorUsername] = [];
@@ -712,24 +734,14 @@ async function initAssignPage() {
                         assignments[instructorUsername].push(courseId);
                     }
                 });
-                
-                // Update each instructor with their assigned courses
+
+                let allInstructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+
                 instructors.forEach(instructorData => {
                     const username = instructorData.username;
                     if (assignments[username]) {
-                        // Create instructor instance using the existing function
-                        const instructor = createUserInstance({
-                            ...instructorData,
-                            teachingCourses: assignments[username]
-                        });
-                        
-                        // Save the updated instructor data
-                        saveCurrentUserToStorage(instructor);
-                        
-                        // Store in localStorage for persistence across sessions
-                        const allInstructors = JSON.parse(localStorage.getItem('instructors') || '[]');
                         const instructorIndex = allInstructors.findIndex(i => i.username === username);
-                        
+
                         if (instructorIndex !== -1) {
                             allInstructors[instructorIndex] = {
                                 ...instructorData,
@@ -741,12 +753,11 @@ async function initAssignPage() {
                                 teachingCourses: assignments[username]
                             });
                         }
-                        
-                        localStorage.setItem('instructors', JSON.stringify(allInstructors));
                     }
                 });
-                
-                // Update courses with assigned instructors
+
+                localStorage.setItem('instructors', JSON.stringify(allInstructors));
+
                 const updatedCourses = courses.map(course => {
                     if (course.available) {
                         const select = document.querySelector(`.instructor-select[data-course-id="${course.id}"]`);
@@ -759,20 +770,16 @@ async function initAssignPage() {
                     }
                     return course;
                 });
-                
-                // Save updated courses to localStorage
+
                 localStorage.setItem('courses', JSON.stringify(updatedCourses));
-                
-                // Visual feedback - add the assigned class to trigger the CSS transition
+
                 assignButton.classList.add('assigned');
-                
                 alert('Instructors have been successfully assigned to courses!');
             });
         }
-        
     } catch (error) {
         console.error('Error:', error);
-        document.getElementById('courses-table-body').innerHTML = 
+        document.getElementById('courses-table-body').innerHTML =
             '<tr><td colspan="3">Failed to load data. Please try again later.</td></tr>';
     }
 }

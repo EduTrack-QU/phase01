@@ -18,7 +18,8 @@ export class Instructor extends User {
     toJSON() {
       return {
         ...super.toJSON(),
-        teachingCourses: this.teachingCourses
+        teachingCourses: this.teachingCourses,
+        preferedCourses: this.preferedCourses
       };
     }
     static fromJSON(Json) {

@@ -28,7 +28,7 @@
         "grades": {}
     },
     {
-        "name": "Barky",
+        "name": "Bakry",
         "username": "bakry@qu.edu.qa",
         "password": "bakrypassword",
         "role": "instructor",
@@ -41,6 +41,6 @@
         "password": "ahmadpassword",
         "role": "instructor",
         "teachingCourses": [],
-        "prefereredCourses": [1, 3]
+        "prefereredCourses": []
     }
 ]
