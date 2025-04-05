@@ -34,5 +34,13 @@
         "role": "instructor",
         "teachingCourses": [],
         "prefereredCourses": []
+    },
+    {
+        "name": "Ahmad",
+        "username": "ahmad@qu.edu.qa",
+        "password": "ahmadpassword",
+        "role": "instructor",
+        "teachingCourses": [],
+        "prefereredCourses": [1, 3]
     }
 ]

@@ -49,6 +49,9 @@ window.addEventListener('DOMContentLoaded', () => {
     else if (page.includes('view_schedule.html')){
         initViewSchedulePage();
     }
+    else if (page.includes('assign.html')) {
+        initAssignPage();
+    }
 
 });
 
@@ -500,4 +503,129 @@ function convertToHtml(course) {
             <div id="students-${course.course_code}"></div>
         </div>
     `;
+}
+
+
+async function initAssignPage() {
+    currentUser = loadCurrentUserFromStorage();
+
+    if (!currentUser || currentUser.role.toLowerCase() !== 'admin') {
+        window.location.href = 'login.html';
+        return;
+    }
+    try {
+        const coursesResponse = await fetch('../json/courses.json');
+        const usersResponse = await fetch('../json/users.json');
+        
+        if (!coursesResponse.ok || !usersResponse.ok) {
+            throw new Error('Failed to fetch data');
+        }
+        
+        const courses = await coursesResponse.json();
+        const users = await usersResponse.json();
+        
+        // Filter instructors from users
+        const instructors = users.filter(user => user.role === "instructor");
+        
+        // Process data to get course preferences
+        const coursePreferences = {};
+        
+        // Initialize coursePreferences with only available courses
+        courses.forEach(course => {
+            if (course.available === true) {
+                coursePreferences[course.id] = {
+                    course: course,
+                    interestedInstructors: []
+                };
+            }
+        });
+        
+        // Add instructor preferences to courses based on prefereredCourses array
+        instructors.forEach(instructor => {
+            if (instructor.prefereredCourses && Array.isArray(instructor.prefereredCourses)) {
+                instructor.prefereredCourses.forEach(courseId => {
+                    if (coursePreferences[courseId]) {
+                        coursePreferences[courseId].interestedInstructors.push({
+                            name: instructor.name,
+                            username: instructor.username
+                        });
+                    }
+                });
+            }
+        });
+        
+        // Populate the table
+        const tableBody = document.getElementById('courses-table-body');
+        
+        Object.values(coursePreferences).forEach(coursePref => {
+            const course = coursePref.course;
+            const row = document.createElement('tr');
+            
+            // Course name cell with schedule information
+            const nameCell = document.createElement('td');
+            const schedule = `${course.time.days.join('/')} ${course.time.time}`;
+            nameCell.innerHTML = `<strong>${course.code}: ${course.title}</strong><br><small>${schedule}</small>`;
+            row.appendChild(nameCell);
+            
+            // Interested instructors cell
+            const interestedCell = document.createElement('td');
+            if (coursePref.interestedInstructors.length > 0) {
+                interestedCell.textContent = coursePref.interestedInstructors
+                    .map(inst => inst.name)
+                    .join(', ');
+            } else {
+                interestedCell.textContent = 'No preferences';
+            }
+            row.appendChild(interestedCell);
+            
+            // Assigned instructor dropdown cell
+            const assignedCell = document.createElement('td');
+            const selectElement = document.createElement('select');
+            selectElement.className = 'instructor-select';
+            selectElement.dataset.courseId = course.id;
+            
+            // Add empty option
+            const emptyOption = document.createElement('option');
+            emptyOption.value = '';
+            emptyOption.textContent = 'Select instructor';
+            selectElement.appendChild(emptyOption);
+            
+            // Add all instructors as options
+            instructors.forEach(instructor => {
+                const option = document.createElement('option');
+                option.value = instructor.username;
+                option.textContent = instructor.name;
+                
+                // If this instructor is interested, highlight them
+                const isInterested = coursePref.interestedInstructors.some(
+                    inst => inst.username === instructor.username
+                );
+                
+                if (isInterested) {
+                    option.className = 'interested-instructor';
+                }
+                
+                // If this course is already in the instructor's teachingCourses, select it
+                if (instructor.teachingCourses && 
+                    Array.isArray(instructor.teachingCourses) && 
+                    instructor.teachingCourses.includes(course.id)) {
+                    option.selected = true;
+                }
+                
+                selectElement.appendChild(option);
+            });
+            
+            assignedCell.appendChild(selectElement);
+            row.appendChild(assignedCell);
+            
+            tableBody.appendChild(row);
+        });
+        
+        //button to save
+        
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('courses-table-body').innerHTML = 
+            '<tr><td colspan="3">Failed to load data. Please try again later.</td></tr>';
+    }
 }
