@@ -3,7 +3,7 @@ import { nanoid } from '../node_modules/nanoid/nanoid.js';
 export class Course {
     constructor(code, title, creditHour, description, instructorId, available) {
         this.id = nanoid(8);
-        this.code = code ?? nanoid(6);
+        this.code = code
         this.title = title;
         this.creditHour = creditHour; // number of credit hours
         this.description = description;
