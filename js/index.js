@@ -621,7 +621,83 @@ async function initAssignPage() {
             tableBody.appendChild(row);
         });
         
-        //button to save
+        // Add event listener to the assign button
+        const assignButton = document.getElementById('assign-button');
+        if (assignButton) {
+            assignButton.addEventListener('click', function() {
+                // Get all instructor selections
+                const selections = document.querySelectorAll('.instructor-select');
+                const assignments = {};
+                
+                // Create a mapping of instructor to assigned courses
+                selections.forEach(select => {
+                    const courseId = parseInt(select.dataset.courseId);
+                    const instructorUsername = select.value;
+                    
+                    if (instructorUsername) {
+                        if (!assignments[instructorUsername]) {
+                            assignments[instructorUsername] = [];
+                        }
+                        assignments[instructorUsername].push(courseId);
+                    }
+                });
+                
+                // Update each instructor with their assigned courses
+                instructors.forEach(instructorData => {
+                    const username = instructorData.username;
+                    if (assignments[username]) {
+                        // Create instructor instance using the existing function
+                        const instructor = createUserInstance({
+                            ...instructorData,
+                            teachingCourses: assignments[username]
+                        });
+                        
+                        // Save the updated instructor data
+                        saveCurrentUserToStorage(instructor);
+                        
+                        // Store in localStorage for persistence across sessions
+                        const allInstructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+                        const instructorIndex = allInstructors.findIndex(i => i.username === username);
+                        
+                        if (instructorIndex !== -1) {
+                            allInstructors[instructorIndex] = {
+                                ...instructorData,
+                                teachingCourses: assignments[username]
+                            };
+                        } else {
+                            allInstructors.push({
+                                ...instructorData,
+                                teachingCourses: assignments[username]
+                            });
+                        }
+                        
+                        localStorage.setItem('instructors', JSON.stringify(allInstructors));
+                    }
+                });
+                
+                // Update courses with assigned instructors
+                const updatedCourses = courses.map(course => {
+                    if (course.available) {
+                        const select = document.querySelector(`.instructor-select[data-course-id="${course.id}"]`);
+                        if (select && select.value) {
+                            return {
+                                ...course,
+                                instructorId: select.value
+                            };
+                        }
+                    }
+                    return course;
+                });
+                
+                // Save updated courses to localStorage
+                localStorage.setItem('courses', JSON.stringify(updatedCourses));
+                
+                // Visual feedback - add the assigned class to trigger the CSS transition
+                assignButton.classList.add('assigned');
+                
+                alert('Instructors have been successfully assigned to courses!');
+            });
+        }
         
     } catch (error) {
         console.error('Error:', error);
