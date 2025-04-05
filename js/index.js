@@ -40,13 +40,13 @@ window.addEventListener('DOMContentLoaded', () => {
         initDashboard();
     } else if (page.includes('registration.html')) {
         initRegistrationPage();
-    }else if (page.includes('grades_submission.html')) {
+    } else if (page.includes('grades_submission.html')) {
         instructorGradesSubmission();
     }
     else if (page.includes('browse_courses.html')) {
         initBrowsePage();
     }
-    else if (page.includes('view_schedule.html')){
+    else if (page.includes('view_schedule.html')) {
         initViewSchedulePage();
     }
     else if (page.includes('choose_courses.html')) {
@@ -118,16 +118,16 @@ function createUserInstance(userData) {
     switch (userData.role.toLowerCase()) {
         case 'student':
             return new Student(
-                userData.name, 
+                userData.name,
                 userData.username,
                 userData.enrolledCourses,
                 userData.finishedCourses,
                 userData.gpa
             );
         case 'instructor':
-            return new Instructor(userData.name, userData.username,userData.teachingCourses, userData.preferedCourses);
+            return new Instructor(userData.name, userData.username, userData.teachingCourses, userData.preferedCourses);
         case 'admin':
-            return new Admin(userData.name, userData.username);  
+            return new Admin(userData.name, userData.username);
         default:
             return null;
     }
@@ -144,7 +144,7 @@ function loadCurrentUserFromStorage() {
 function saveCurrentUserToStorage(user) {
     if (!user) return;
     localStorage.setItem('currentUser', JSON.stringify(user));
-    
+
     // The following will break the code
     // fs.readFile('json/users.json', 'utf8', (err, data) => {
     //     if (err) {
@@ -206,7 +206,7 @@ async function initRegistrationPage() {
         window.location.href = 'login.html';
         return;
     }
-    
+
     const coursesContainer = document.getElementById('courses-container');
     const response = await fetch('../json/courses.json');
     const coursesData = await response.json();
@@ -215,16 +215,16 @@ async function initRegistrationPage() {
     const availableCourses = student.getAvailableCourses(coursesData);
 
     coursesContainer.innerHTML = '';
-    
+
     if (availableCourses.length === 0) {
         coursesContainer.innerHTML = '<p class="no-courses">No courses available for registration.</p>';
         return;
     }
- 
+
     availableCourses.forEach(course => {
         const courseName = `${course.code}: ${course.title}`;
         const schedule = `${course.time.days.join('/')} ${course.time.time}`;
-        
+
         const courseDiv = document.createElement('div');
         courseDiv.classList.add('course-card');
         courseDiv.setAttribute('data-course-id', course.id);
@@ -238,60 +238,60 @@ async function initRegistrationPage() {
                 <button class="remove-btn btn-disabled" data-course-id="${course.id}">Remove</button>
             </div>
         `;
-        
+
         coursesContainer.appendChild(courseDiv);
     });
 
     const registerButtons = document.querySelectorAll('.register-btn');
     registerButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const courseId = this.getAttribute('data-course-id');
             const courseCard = document.querySelector(`.course-card[data-course-id="${courseId}"]`);
-            
+
             if (this.textContent === 'Register') {
                 this.textContent = 'Registered';
                 this.classList.add('registered');
-                
+
                 const removeBtn = courseCard.querySelector('.remove-btn');
                 removeBtn.classList.remove('btn-disabled');
             } else {
                 this.textContent = 'Register';
                 this.classList.remove('registered');
-                
+
                 const removeBtn = courseCard.querySelector('.remove-btn');
                 removeBtn.classList.add('btn-disabled');
             }
         });
     });
-    
+
     const removeButtons = document.querySelectorAll('.remove-btn');
     removeButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             if (this.classList.contains('btn-disabled')) return;
-            
+
             const courseId = this.getAttribute('data-course-id');
             const courseCard = document.querySelector(`.course-card[data-course-id="${courseId}"]`);
-            
+
             const registerBtn = courseCard.querySelector('.register-btn');
             registerBtn.textContent = 'Register';
             registerBtn.classList.remove('registered');
-            
+
             this.classList.add('btn-disabled');
         });
     });
-    
+
     const confirmButton = document.getElementById('confirm-registration');
-    confirmButton.addEventListener('click', function() {
+    confirmButton.addEventListener('click', function () {
         const registeredButtons = document.querySelectorAll('.register-btn.registered');
-        const newRegisteredCourses = Array.from(registeredButtons).map(button => 
+        const newRegisteredCourses = Array.from(registeredButtons).map(button =>
             button.getAttribute('data-course-id')
         );
-        
+
         const registeredCount = student.registerCourses(newRegisteredCourses);
-        
+
         if (registeredCount > 0) {
             saveCurrentUserToStorage(student);
-            
+
             alert(`Successfully registered for ${registeredCount} course(s).`);
             window.location.href = 'dashboard.html';
         } else {
@@ -377,10 +377,6 @@ async function initChooseCoursesPage() {
     });
 }
 
-
-
-
-
 async function initBrowsePage() {
     currentUser = loadCurrentUserFromStorage();
 
@@ -388,7 +384,7 @@ async function initBrowsePage() {
         window.location.href = 'login.html';
         return;
     }
-    
+
     const coursesContainer = document.getElementById('courses-container');
     const response = await fetch('../json/courses.json');
     const coursesData = await response.json();
@@ -397,16 +393,16 @@ async function initBrowsePage() {
     const availableCourses = student.getAvailableCourses(coursesData);
 
     coursesContainer.innerHTML = '';
-    
+
     if (availableCourses.length === 0) {
         coursesContainer.innerHTML = '<p class="no-courses">No courses available for registration.</p>';
         return;
     }
- 
+
     availableCourses.forEach(course => {
         const courseName = `${course.code}: ${course.title}`;
         const schedule = `${course.time.days.join('/')} ${course.time.time}`;
-        
+
         const courseDiv = document.createElement('div');
         courseDiv.classList.add('course-card');
         courseDiv.setAttribute('data-course-id', course.id);
@@ -416,7 +412,7 @@ async function initBrowsePage() {
             <p><strong>Schedule:</strong> ${schedule}</p>
             <p><strong>Credits:</strong> ${course.creditHour}</p>
         `;
-        
+
         coursesContainer.appendChild(courseDiv);
     });
 }
@@ -507,18 +503,18 @@ async function instructorGradesSubmission() {
 
     const courses_list = document.querySelector('.course-list');
     const instructor = Instructor.fromJSON(currentUser);
-    const coursesData = instructor.teachingCourses;    
+    const coursesData = instructor.teachingCourses;
 
-    let gradedcourses= localStorage.graded ? JSON.parse(localStorage.getItem('graded')) : []; 
+    let gradedcourses = localStorage.graded ? JSON.parse(localStorage.getItem('graded')) : [];
     // let courses = [];
     let students = localStorage.students ? JSON.parse(localStorage.getItem('students')) : [];
-    
+
     const cHTML = coursesData.map(c => convertToHtml(c)).join('');
     courses_list.innerHTML = cHTML;
-    
-    
-   window.handleDetails= async function (cid){
-        if(gradedcourses.includes(cid)){
+
+
+    window.handleDetails = async function (cid) {
+        if (gradedcourses.includes(cid)) {
             alert("This course hvae been already graded");
             return;
         }
@@ -528,17 +524,18 @@ async function instructorGradesSubmission() {
         const response = await fetch('../json/users.json');
         const users = await response.json();
         for (let user of users) {
-            if (user.role === 'student' ) {
-                if(user.enrolledCourses.includes(cid)){
-                    studentsEnrolled.push(user);}
+            if (user.role === 'student') {
+                if (user.enrolledCourses.includes(cid)) {
+                    studentsEnrolled.push(user);
+                }
             }
-        }   
+        }
         const course_ = coursesData.find(c => c.course_code === cid);
         if (!course_ || !studentsEnrolled) {
             studentDiv.innerHTML = "<p>No students enrolled.</p>";
             return;
         }
-        students=studentsEnrolled;
+        students = studentsEnrolled;
         const stuHTML = studentsEnrolled.map(s => converStutToHtml(s)).join('');
         studentDiv.innerHTML = `
         <h4>Grading Form</h4>
@@ -568,14 +565,10 @@ async function instructorGradesSubmission() {
         gradedcourses.push(cid);
         localStorage.setItem('graded', JSON.stringify(gradedcourses));
         alert(`Grades for course ${cid} have been submitted.`);
-    };  
-
-
-   
-
+    };
 }
 
-function converStutToHtml(s){
+function converStutToHtml(s) {
     return `
     <li id="lig">
         ${s.name}
@@ -798,7 +791,7 @@ async function initCreatePage() {
 
     // Load existing courses
     let courses = [];
-    
+
     // Try to get courses from localStorage first
     const localCourses = localStorage.getItem('courses');
     if (localCourses) {
@@ -818,10 +811,10 @@ async function initCreatePage() {
             console.error('Error fetching courses:', error);
         }
     }
-    
+
     // Display the courses
     displayCreatedCourses(courses);
-    
+
     // Set up form submission
     const form = document.getElementById('create-course-form');
     if (form) {
@@ -832,20 +825,20 @@ async function initCreatePage() {
 function displayCreatedCourses(courses) {
     const tableBody = document.getElementById('created-courses-body');
     if (!tableBody) return;
-    
+
     tableBody.innerHTML = '';
-    
+
     courses.forEach(course => {
         const row = document.createElement('tr');
-        
+
         // Format days for display
         const days = course.time?.days ? course.time.days.join('/') : '-';
         const time = course.time?.time || '-';
         const daysTime = `${days}<br>${time}`;
-        
+
         // Create status class based on course status
         const statusClass = `status-${course.status || 'pending'}`;
-        
+
         row.innerHTML = `
             <td>${course.code}</td>
             <td>${course.title}</td>
@@ -856,10 +849,10 @@ function displayCreatedCourses(courses) {
                 <button class="action-btn delete-btn" data-id="${course.id}">Delete</button>
             </td>
         `;
-        
+
         tableBody.appendChild(row);
     });
-    
+
     // Add event listeners to action buttons
     addCourseActionButtonListeners();
 }
@@ -868,16 +861,16 @@ function addCourseActionButtonListeners() {
     // Edit button listeners
     const editButtons = document.querySelectorAll('.edit-btn');
     editButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const courseId = this.getAttribute('data-id');
             editCourse(courseId);
         });
     });
-    
+
     // Delete button listeners
     const deleteButtons = document.querySelectorAll('.delete-btn');
     deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const courseId = this.getAttribute('data-id');
             deleteCourse(courseId);
         });
@@ -888,12 +881,12 @@ function editCourse(courseId) {
     // Get courses from localStorage
     const courses = JSON.parse(localStorage.getItem('courses') || '[]');
     const course = courses.find(c => c.id == courseId);
-    
+
     if (!course) {
         alert('Course not found');
         return;
     }
-    
+
     // Fill the form with course data
     document.getElementById('course-code').value = course.code || '';
     document.getElementById('course-title').value = course.title || '';
@@ -901,13 +894,13 @@ function editCourse(courseId) {
     document.getElementById('course-description').value = course.description || '';
     document.getElementById('prerequisites').value = course.prerequisites ? course.prerequisites.join(', ') : '';
     document.getElementById('course-time').value = course.time?.time || '';
-    
+
     // Check the appropriate day checkboxes
     const days = course.time?.days || [];
     document.querySelectorAll('.day-checkbox input[type="checkbox"]').forEach(checkbox => {
         checkbox.checked = days.includes(checkbox.value);
     });
-    
+
     // Change the form submit button to update
     const submitButton = document.querySelector('.button.create');
     submitButton.textContent = 'Update Course';
@@ -919,23 +912,23 @@ function deleteCourse(courseId) {
     if (!confirm('Are you sure you want to delete this course?')) {
         return;
     }
-    
+
     // Get courses from localStorage
     let courses = JSON.parse(localStorage.getItem('courses') || '[]');
-    
+
     // Filter out the course to delete
     courses = courses.filter(c => c.id != courseId);
-    
+
     // Save back to localStorage
     localStorage.setItem('courses', JSON.stringify(courses));
-    
+
     // Refresh the display
     displayCreatedCourses(courses);
 }
 
 function handleCourseFormSubmit(event) {
     event.preventDefault();
-    
+
     // Get form values
     const code = document.getElementById('course-code').value;
     const title = document.getElementById('course-title').value;
@@ -943,32 +936,32 @@ function handleCourseFormSubmit(event) {
     const description = document.getElementById('course-description').value;
     const prerequisitesStr = document.getElementById('prerequisites').value;
     const timeStr = document.getElementById('course-time').value;
-    
+
     // Get selected days
     const selectedDays = [];
     document.querySelectorAll('.day-checkbox input[type="checkbox"]:checked').forEach(checkbox => {
         selectedDays.push(checkbox.value);
     });
-    
+
     // Validate form
     if (!code || !title || !creditHour || !description || !timeStr || selectedDays.length === 0) {
         alert('Please fill in all required fields');
         return;
     }
-    
+
     // Parse prerequisites
     const prerequisites = prerequisitesStr
         ? prerequisitesStr.split(',').map(p => p.trim()).filter(p => p)
         : [];
-    
+
     // Check if this is an update or a new course
     const submitButton = document.querySelector('.button.create');
     const isUpdate = submitButton.classList.contains('update');
     const courseId = isUpdate ? submitButton.getAttribute('data-id') : null;
-    
+
     // Get existing courses
     let courses = JSON.parse(localStorage.getItem('courses') || '[]');
-    
+
     if (isUpdate) {
         // Update existing course
         const index = courses.findIndex(c => c.id == courseId);
@@ -986,7 +979,7 @@ function handleCourseFormSubmit(event) {
                 }
             };
         }
-        
+
         // Reset form button
         submitButton.textContent = 'Create Course';
         submitButton.removeAttribute('data-id');
@@ -1001,26 +994,26 @@ function handleCourseFormSubmit(event) {
             '', // instructorId (empty for now)
             false // available (false until validated)
         );
-        
+
         newCourse.prerequisites = prerequisites;
         newCourse.time = {
             days: selectedDays,
             time: timeStr
         };
-        
+
         // Add to courses array
         courses.push(newCourse.toJSON());
     }
-    
+
     // Save to localStorage
     localStorage.setItem('courses', JSON.stringify(courses));
-    
+
     // Reset form
     document.getElementById('create-course-form').reset();
-    
+
     // Refresh the display
     displayCreatedCourses(courses);
-    
+
     // Show success message
     alert(isUpdate ? 'Course updated successfully!' : 'Course created successfully!');
 }
