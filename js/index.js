@@ -122,7 +122,6 @@ function createUserInstance(userData) {
                 userData.username,
                 userData.enrolledCourses,
                 userData.finishedCourses,
-                userData.registeredCourses,
                 userData.gpa
             );
         case 'instructor':

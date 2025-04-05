@@ -1,11 +1,10 @@
 import { User } from './user.js';
 
 export class Student extends User {
-    constructor(name, username, enrolledCourses, finishedCourses, registeredCourses, gpa,grades) {
+    constructor(name, username, enrolledCourses, finishedCourses, gpa,grades) {
         super(name, username, 'student');
         this.enrolledCourses = enrolledCourses || [];
         this.finishedCourses = finishedCourses || [];
-        this.registeredCourses = registeredCourses || [];
         this.gpa = gpa?? 0;
         this.enrolledCoursesGrades = grades?? {};
 
@@ -15,14 +14,14 @@ export class Student extends User {
     registerCourse(courseId) {
         courseId = courseId.toString();
         if (!this.isRegisteredFor(courseId) && !this.hasFinished(courseId)) {
-            this.registeredCourses.push(courseId);
+            this.enrolledCourses.push(courseId);
             return true;
         }
         return false;
     }
     
     isRegisteredFor(courseId) {
-        return this.registeredCourses.map(id => id.toString()).includes(courseId.toString());
+        return this.enrolledCourses.map(id => id.toString()).includes(courseId.toString());
     }
     
     hasFinished(courseId) {
@@ -31,9 +30,9 @@ export class Student extends User {
     
     unregisterCourse(courseId) {
         courseId = courseId.toString();
-        const index = this.registeredCourses.map(id => id.toString()).indexOf(courseId);
+        const index = this.enrolledCourses.map(id => id.toString()).indexOf(courseId);
         if (index !== -1) {
-            this.registeredCourses.splice(index, 1);
+            this.enrolledCourses.splice(index, 1);
             return true;
         }
         return false;
@@ -69,7 +68,7 @@ export class Student extends User {
     }
     
     toString() {
-        return `Student: ${this.name}, Username: ${this.username}, Enrolled Courses: ${this.enrolledCourses.join(', ')}, Finished Courses: ${this.finishedCourses.join(', ')}, Registered Courses: ${this.registeredCourses.join(', ')}, GPA: ${this.gpa}`;
+        return `Student: ${this.name}, Username: ${this.username}, Enrolled Courses: ${this.enrolledCourses.join(', ')}, Finished Courses: ${this.finishedCourses.join(', ')}, GPA: ${this.gpa}`;
     }
 
     toJSON() {
@@ -77,7 +76,6 @@ export class Student extends User {
             ...super.toJSON(),
             enrolledCourses: this.enrolledCourses,
             finishedCourses: this.finishedCourses,
-            registeredCourses: this.registeredCourses,
             gpa: this.gpa
         };
     }
@@ -91,7 +89,7 @@ export class Student extends User {
             json.username,
             json.enrolledCourses || [],
             json.finishedCourses || [],
-            json.registeredCourses || [],
+
             json.gpa || 0
         );
     }
