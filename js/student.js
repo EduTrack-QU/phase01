@@ -1,12 +1,14 @@
 import { User } from './user.js';
 
 export class Student extends User {
-    constructor(name, username, enrolledCourses, finishedCourses, gpa,grades) {
+    constructor(name, username, enrolledCourses, finishedCourses, gpa,grades,prevGrades) {
         super(name, username, 'student');
         this.enrolledCourses = enrolledCourses || [];
         this.finishedCourses = finishedCourses || [];
         this.gpa = gpa?? 0;
         this.enrolledCoursesGrades = grades?? {};
+        this.finishedCoursesGrades = prevGrades?? {};
+
 
     }
 
@@ -65,6 +67,14 @@ export class Student extends User {
             return true;
         }
         return false;
+    }
+    getGrades(courseId) {
+        courseId = courseId.toString();
+        if(this.enrolledCoursesGrades[courseId] !== undefined) {
+            return this.enrolledCoursesGrades[courseId];
+        }else if(this.finishedCoursesGrades[courseId] !== undefined) {
+            return this.finishedCoursesGrades[courseId];}
+        return "-";    
     }
     
     toString() {

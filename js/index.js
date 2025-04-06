@@ -61,6 +61,9 @@ window.addEventListener('DOMContentLoaded', () => {
     else if (page.includes('create.html')) {
         initCreatePage();
     }
+    else if (page.includes('learning_path.html')) {
+        viewLearningPath();
+    }
 
 });
 
@@ -598,6 +601,52 @@ function convertToHtml(course) {
             <div id="students-${course.course_code}"></div>
         </div>
     `;
+}
+
+async function viewLearningPath() {
+    currentUser = loadCurrentUserFromStorage();
+
+    if (!currentUser || currentUser.role.toLowerCase() !== 'student') {
+        window.location.href = 'login.html';
+        return;
+    }
+    const request =  fetch('../json/courses.json');
+    const response = await request;
+    const coursesData = await response.json();
+    let courses=coursesData.map(c=>Course.fromJSON(c));
+
+    const learningPathList = document.getElementById('courses-list');
+    const student = Student.fromJSON(currentUser);
+    const selectButton = document.getElementById('courseSelect');
+    
+    selectButton.addEventListener('click', function (e) {
+        let seletctedOption= e.target.value;
+        let selectCoursesCode=[];
+        let selectedCourses=[];
+        if (seletctedOption===""){
+            learningPathList.innerHTML = '<p>Please select a category to view courses.</p>';
+            return; 
+        }
+        if (seletctedOption==="current"){ 
+            selectCoursesCode=student.enrolledCourses;}
+        else if (seletctedOption==="previous"){
+            selectCoursesCode=student.finishedCourses;}
+        if (selectCoursesCode.length === 0) {
+            learningPathList.innerHTML = '<p class="no-courses">No courses available in your learning path.</p>';
+        return; }
+
+        selectedCourses=courses.filter(c=>selectCoursesCode.includes(c.id));
+
+        const HTML_= selectedCourses.map(c=>`<li>${c.code} - ${c.title}  <span class="grade"> Grade: ${student.getGrades(c.id)}</span></li>`).join('');      
+        learningPathList.innerHTML = `<ul class="course-list" >${HTML_}</ul>`;    
+        // learningPathList.classList.remove('hidden');    
+
+    })
+    
+
+
+
+
 }
 
 
