@@ -7,7 +7,8 @@
         "gpa": 3,
         "enrolledCourses": [],
         "finishedCourses": [],
-        "grades": {}
+        "grades": {},
+        "prevGrades":{}
     },
     {
         "name": "Mohamed",
@@ -21,9 +22,10 @@
         "password": "hamzapassword",
         "role": "student",
         "gpa": 3.5,
-        "enrolledCourses": [],
-        "finishedCourses": [],
-        "grades": {}
+        "enrolledCourses": [1,2,3,4,5],
+        "finishedCourses": [1,4],
+        "grades": {},
+        "prevGrades":{}
     },
     {
         "name": "Bakry",
