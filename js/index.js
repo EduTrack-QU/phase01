@@ -436,29 +436,75 @@ async function initBrowsePage() {
 
     const availableCourses = courses.filter(course => course.available && !student.hasFinished(course.id));
 
-    coursesContainer.innerHTML = '';
+    const searchFilterHTML = `
+        <div class="search-filter-container">
+            <input type="text" id="course-search" placeholder="Search courses...">
+            <div class="filter-options">
+                <select id="credit-filter">
+                    <option value="">All Credits</option>
+                    <option value="1">1 Credit</option>
+                    <option value="2">2 Credits</option>
+                    <option value="3">3 Credits</option>
+                    <option value="4">4 Credits</option>
+                </select>
+                <select id="day-filter">
+                    <option value="">All Days</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+            </div>
+        </div>
+    `;
+    
+    coursesContainer.insertAdjacentHTML('beforebegin', searchFilterHTML);
+    
+    function renderFilteredCourses() {
+        const searchTerm = document.getElementById('course-search').value.toLowerCase();
+        const creditFilter = document.getElementById('credit-filter').value;
+        const dayFilter = document.getElementById('day-filter').value;
+        
+        const filteredCourses = availableCourses.filter(course => {
+            const courseText = `${course.code} ${course.title}`.toLowerCase();
+            const matchesSearch = !searchTerm || courseText.includes(searchTerm);
+            
+            const matchesCredit = !creditFilter || course.creditHour == creditFilter;
+            
+            const matchesDay = dayFilter === '' || 
+                (course.time && course.time.days && course.time.days.includes(dayFilter));
+            
+            return matchesSearch && matchesCredit && matchesDay;
+        });
+        
+        coursesContainer.innerHTML = '';
+        
+        if (filteredCourses.length === 0) {
+            coursesContainer.innerHTML = '<p class="no-courses">No courses match your search criteria.</p>';
+            return;
+        }
+        filteredCourses.forEach(course => {
+            const courseName = `${course.code}: ${course.title}`;
+            const schedule = `${course.time.days.join('/')} ${course.time.time}`;
 
-    if (availableCourses.length === 0) {
-        coursesContainer.innerHTML = '<p class="no-courses">No courses available for registration.</p>';
-        return;
+            const courseDiv = document.createElement('div');
+            courseDiv.classList.add('course-card');
+            courseDiv.setAttribute('data-course-id', course.id);
+            courseDiv.innerHTML = `
+                <h3>${courseName}</h3>
+                <p><strong>Instructor:</strong> ${course.instructorId || 'TBA'}</p>
+                <p><strong>Schedule:</strong> ${schedule}</p>
+                <p><strong>Credits:</strong> ${course.creditHour}</p>
+            `;
+
+            coursesContainer.appendChild(courseDiv);
+        });
     }
-
-    availableCourses.forEach(course => {
-        const courseName = `${course.code}: ${course.title}`;
-        const schedule = `${course.time.days.join('/')} ${course.time.time}`;
-
-        const courseDiv = document.createElement('div');
-        courseDiv.classList.add('course-card');
-        courseDiv.setAttribute('data-course-id', course.id);
-        courseDiv.innerHTML = `
-            <h3>${courseName}</h3>
-            <p><strong>Instructor:</strong> ${course.instructorId || 'TBA'}</p>
-            <p><strong>Schedule:</strong> ${schedule}</p>
-            <p><strong>Credits:</strong> ${course.creditHour}</p>
-        `;
-
-        coursesContainer.appendChild(courseDiv);
-    });
+    document.getElementById('course-search').addEventListener('input', renderFilteredCourses);
+    document.getElementById('credit-filter').addEventListener('change', renderFilteredCourses);
+    document.getElementById('day-filter').addEventListener('change', renderFilteredCourses);
+    renderFilteredCourses();
 }
 //use vase for instructor grades submission
 async function initViewSchedulePage() {
