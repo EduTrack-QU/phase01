@@ -120,17 +120,11 @@ function loadNavigation(role) {
 function createUserInstance(userData) {
     switch (userData.role.toLowerCase()) {
         case 'student':
-            return new Student(
-                userData.name,
-                userData.username,
-                userData.enrolledCourses,
-                userData.finishedCourses,
-                userData.gpa
-            );
+            return Student.fromJSON(userData);
         case 'instructor':
-            return new Instructor(userData.name, userData.username, userData.teachingCourses, userData.preferedCourses);
+            return Instructor.fromJSON(userData);
         case 'admin':
-            return new Admin(userData.name, userData.username);
+            return Admin.fromJSON(userData);
         default:
             return null;
     }
@@ -610,43 +604,40 @@ async function viewLearningPath() {
         window.location.href = 'login.html';
         return;
     }
-    const request =  fetch('../json/courses.json');
+    const request = fetch('../json/courses.json');
     const response = await request;
     const coursesData = await response.json();
-    let courses=coursesData.map(c=>Course.fromJSON(c));
+    let courses = coursesData.map(c => Course.fromJSON(c));
 
     const learningPathList = document.getElementById('courses-list');
     const student = Student.fromJSON(currentUser);
     const selectButton = document.getElementById('courseSelect');
-    
+
     selectButton.addEventListener('click', function (e) {
-        let seletctedOption= e.target.value;
-        let selectCoursesCode=[];
-        let selectedCourses=[];
-        if (seletctedOption===""){
+        let seletctedOption = e.target.value;
+        let selectCoursesCode = [];
+        let selectedCourses = [];
+        if (seletctedOption === "") {
             learningPathList.innerHTML = '<p>Please select a category to view courses.</p>';
-            return; 
+            return;
         }
-        if (seletctedOption==="current"){ 
-            selectCoursesCode=student.enrolledCourses;}
-        else if (seletctedOption==="previous"){
-            selectCoursesCode=student.finishedCourses;}
+        if (seletctedOption === "current") {
+            selectCoursesCode = student.enrolledCourses;
+        }
+        else if (seletctedOption === "previous") {
+            selectCoursesCode = student.finishedCourses;
+        }
         if (selectCoursesCode.length === 0) {
             learningPathList.innerHTML = '<p class="no-courses">No courses available in your learning path.</p>';
-        return; }
+            return;
+        }
 
-        selectedCourses=courses.filter(c=>selectCoursesCode.includes(c.id));
+        selectedCourses = courses.filter(c => selectCoursesCode.includes(c.id));
 
-        const HTML_= selectedCourses.map(c=>`<li>${c.code} - ${c.title}  <span class="grade"> Grade: ${student.getGrades(c.id)}</span></li>`).join('');      
-        learningPathList.innerHTML = `<ul class="course-list" >${HTML_}</ul>`;    
+        const HTML_ = selectedCourses.map(c => `<li>${c.code} - ${c.title}  <span class="grade"> Grade: ${student.getGrades(c.id)}</span></li>`).join('');
+        learningPathList.innerHTML = `<ul class="course-list" >${HTML_}</ul>`;
         // learningPathList.classList.remove('hidden');    
-
     })
-    
-
-
-
-
 }
 
 
