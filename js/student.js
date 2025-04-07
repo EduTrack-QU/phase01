@@ -1,5 +1,4 @@
 import { User } from './user.js';
-
 export class Student extends User {
     constructor(name, username, enrolledCourses, finishedCourses, gpa,grades,prevGrades) {
         super(name, username, 'student');
@@ -8,8 +7,6 @@ export class Student extends User {
         this.gpa = gpa?? 0;
         this.enrolledCoursesGrades = grades?? {};
         this.finishedCoursesGrades = prevGrades?? {};
-
-
     }
 
 
@@ -90,17 +87,18 @@ export class Student extends User {
         };
     }
 
-
-
-
+    fromJSON(json) {
+        this.name = json.name;
+        this.username = json.username;
+        this.enrolledCourses = json.enrolledCourses || [];
+        this.finishedCourses = json.finishedCourses || [];
+        this.gpa = json.gpa || 0;
+        this.enrolledCoursesGrades = json.enrolledCoursesGrades || {};
+        this.finishedCoursesGrades = json.finishedCoursesGrades || {};
+        return this;
+    }
     static fromJSON(json) {
-        return new Student(
-            json.name,
-            json.username,
-            json.enrolledCourses || [],
-            json.finishedCourses || [],
-
-            json.gpa || 0
-        );
+        const course = new Student();
+        return course.fromJSON(json);
     }
 }
