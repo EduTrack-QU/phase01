@@ -224,7 +224,6 @@ function initLoginPage() {
 }
 
 async function initRegistrationPage() {
-
     if (!currentUser || currentUser.role.toLowerCase() !== 'student') {
         window.location.href = 'login.html';
         return;
@@ -232,18 +231,39 @@ async function initRegistrationPage() {
 
     const coursesContainer = document.getElementById('courses-container');
     const student = users.find(u => u.username === currentUser.username);
+    
     const availableCourses = student.getAvailableCourses(courses);
+    const registeredCourseIds = student.enrolledCourses || [];
+    
+    const registeredCourses = courses.filter(course => 
+        registeredCourseIds.includes(course.id) && 
+        !availableCourses.some(ac => ac.id === course.id)
+    );
+    
+    const allCoursesToShow = [...availableCourses, ...registeredCourses];
 
     coursesContainer.innerHTML = '';
 
-    if (availableCourses.length === 0) {
+    if (allCoursesToShow.length === 0) {
         coursesContainer.innerHTML = '<p class="no-courses">No courses available for registration.</p>';
         return;
     }
 
-    availableCourses.forEach(course => {
+    function updateButtonStates(courseCard, isRegistered) {
+        const registerBtn = courseCard.querySelector('.register-btn');
+        const removeBtn = courseCard.querySelector('.remove-btn');
+        
+        registerBtn.textContent = isRegistered ? 'Registered' : 'Register';
+        registerBtn.classList.toggle('registered', isRegistered);
+        registerBtn.disabled = isRegistered;
+        
+        removeBtn.classList.toggle('btn-disabled', !isRegistered);
+    }
+
+    allCoursesToShow.forEach(course => {
         const courseName = `${course.code}: ${course.title}`;
         const schedule = `${course.time.days.join('/')} ${course.time.time}`;
+        const isRegistered = registeredCourseIds.includes(course.id);
 
         const courseDiv = document.createElement('div');
         courseDiv.classList.add('course-card');
@@ -254,62 +274,56 @@ async function initRegistrationPage() {
             <p><strong>Schedule:</strong> ${schedule}</p>
             <p><strong>Credits:</strong> ${course.creditHour}</p>
             <div class="course-action-buttons">
-                <button class="register-btn" data-course-id="${course.id}">Register</button>
-                <button class="remove-btn btn-disabled" data-course-id="${course.id}">Remove</button>
+                <button class="register-btn ${isRegistered ? 'registered' : ''}" data-course-id="${course.id}" ${isRegistered ? 'disabled' : ''}>${isRegistered ? 'Registered' : 'Register'}</button>
+                <button class="remove-btn ${isRegistered ? '' : 'btn-disabled'}" data-course-id="${course.id}">Remove</button>
             </div>
         `;
 
         coursesContainer.appendChild(courseDiv);
     });
 
-    const registerButtons = document.querySelectorAll('.register-btn');
-    registerButtons.forEach(button => {
-        button.addEventListener('click', function () {
+    document.querySelectorAll('.register-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            if (this.classList.contains('registered')) return;
+            
             const courseId = this.getAttribute('data-course-id');
             const courseCard = document.querySelector(`.course-card[data-course-id="${courseId}"]`);
-
-            if (this.textContent === 'Register') {
-                this.textContent = 'Registered';
-                this.classList.add('registered');
-
-                const removeBtn = courseCard.querySelector('.remove-btn');
-                removeBtn.classList.remove('btn-disabled');
-            } else {
-                this.textContent = 'Register';
-                this.classList.remove('registered');
-
-                const removeBtn = courseCard.querySelector('.remove-btn');
-                removeBtn.classList.add('btn-disabled');
-            }
+            updateButtonStates(courseCard, true);
         });
     });
 
-    const removeButtons = document.querySelectorAll('.remove-btn');
-    removeButtons.forEach(button => {
-        button.addEventListener('click', function () {
+    document.querySelectorAll('.remove-btn').forEach(button => {
+        button.addEventListener('click', function() {
             if (this.classList.contains('btn-disabled')) return;
 
             const courseId = this.getAttribute('data-course-id');
             const courseCard = document.querySelector(`.course-card[data-course-id="${courseId}"]`);
-
-            const registerBtn = courseCard.querySelector('.register-btn');
-            registerBtn.textContent = 'Register';
-            registerBtn.classList.remove('registered');
-
-            this.classList.add('btn-disabled');
+            updateButtonStates(courseCard, false);
         });
     });
 
     const confirmButton = document.getElementById('confirm-registration');
-    confirmButton.addEventListener('click', function () {
+    confirmButton.addEventListener('click', function() {
         const registeredButtons = document.querySelectorAll('.register-btn.registered');
         const newRegisteredCourses = Array.from(registeredButtons).map(button =>
-            parseInt(button.getAttribute('data-course-id'))  // Convert to number
+            parseInt(button.getAttribute('data-course-id'))
         );
-
+        
+        const originalEnrolledCourses = [...student.enrolledCourses];
+        
+        const coursesToUnregister = originalEnrolledCourses.filter(
+            courseId => !newRegisteredCourses.includes(courseId)
+        );
+        
+        coursesToUnregister.forEach(courseId => {
+            student.unregisterCourse(courseId);
+        });
+        
         const registeredCount = student.registerCourses(newRegisteredCourses);
+        
+        const totalChanges = registeredCount + coursesToUnregister.length;
 
-        if (registeredCount > 0) {
+        if (totalChanges > 0) {
             users = users.map(s => {
                 if (s.username === currentUser.username) {
                    s = student;
@@ -318,10 +332,19 @@ async function initRegistrationPage() {
             });
             saveUsers(users);
 
-            alert(`Successfully registered for ${registeredCount} course(s).`);
+            let message = '';
+            if (registeredCount > 0 && coursesToUnregister.length > 0) {
+                message = `Successfully registered for ${registeredCount} course(s) and unregistered from ${coursesToUnregister.length} course(s).`;
+            } else if (registeredCount > 0) {
+                message = `Successfully registered for ${registeredCount} course(s).`;
+            } else {
+                message = `Successfully unregistered from ${coursesToUnregister.length} course(s).`;
+            }
+            
+            alert(message);
             window.location.href = 'dashboard.html';
         } else {
-            alert('No courses selected for registration.');
+            alert('No changes made to your course registrations.');
         }
     });
 }
