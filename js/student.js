@@ -13,7 +13,7 @@ export class Student extends User {
     registerCourse(courseId) {
         courseId = courseId.toString();
         if (!this.isRegisteredFor(courseId) && !this.hasFinished(courseId)) {
-            this.enrolledCourses.push(courseId);
+            this.enrolledCourses.push(parseInt(courseId));
             return true;
         }
         return false;
