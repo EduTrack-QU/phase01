@@ -24,6 +24,8 @@ export class Instructor extends User {
   }
 
   fromJSON(json) {
+    this.name = json.name;
+    this.username = json.username;
     this.teachingCourses = json.teachingCourses || [];
     this.preferedCourses = json.preferedCourses || [];
     return this;
