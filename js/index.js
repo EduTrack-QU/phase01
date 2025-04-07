@@ -434,7 +434,7 @@ async function initBrowsePage() {
     const coursesContainer = document.getElementById('courses-container');
     const student = users.find(u => u.username === currentUser.username);
 
-    const availableCourses = student.getAvailableCourses(courses);
+    const availableCourses = courses.filter(course => course.available && !student.hasFinished(course.id));
 
     coursesContainer.innerHTML = '';
 
