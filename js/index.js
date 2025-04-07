@@ -29,9 +29,20 @@ const welcomeTemplates = {
 
 let currentUser = null;
 let courses = [];
+let users = [];
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
     currentUser = loadCurrentUserFromStorage();
+    
+    const coursesData = await loadCourses();    
+    coursesData.forEach((course) => {
+        courses.push(Course.fromJSON(course));
+    });
+    const usersData = await loadUsers();
+    usersData.forEach((user) => {
+        users.push(createUserInstance(user));});
+    console.log(courses)
+    console.log(users)
 
     const page = window.location.pathname;
     if (page.includes('login.html')) {
@@ -68,7 +79,6 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function initDashboard() {
-    currentUser = loadCurrentUserFromStorage();
     if (!currentUser) {
         window.location.href = 'login.html';
         return;
@@ -80,7 +90,6 @@ function initDashboard() {
     if (welcomeMsg && welcomeTemplates[role]) {
         welcomeMsg.innerText = welcomeTemplates[role](currentUser.name);
     }
-
     loadNavigation(role);
 }
 
@@ -138,29 +147,47 @@ function loadCurrentUserFromStorage() {
     return createUserInstance(userData);
 }
 
-function saveCurrentUserToStorage(user) {
-    if (!user) return;
-    localStorage.setItem('currentUser', JSON.stringify(user));
+async function loadUsers() {
+    const users = localStorage.getItem('users');
+    if (users) {
+        return JSON.parse(users);
+    }
+    else {
+        const response = await fetch('../json/users.json');
+        if (!response.ok) {
+            throw new Error('Failed to fetch users data');
+        }
+        const users = await response.json();
+        saveUsers(users);
+        return users;
+    }
+}
 
-    // The following will break the code
-    // fs.readFile('json/users.json', 'utf8', (err, data) => {
-    //     if (err) {
-    //         console.error('Error reading users file:', err);
-    //         return;
-    //     }
-    //     const users = JSON.parse(data);
-    //     const userIndex = users.findIndex(u => u.username === user.username);
-    //     if (userIndex !== -1) {
-    //         users[userIndex] = user;
-    //     } else {
-    //         users.push(user);
-    //     }
-    //     fs.writeFile('json/users.json', JSON.stringify(users, null, 2), err => {
-    //         if (err) {
-    //             console.error('Error writing users file:', err);
-    //         }
-    //     });
-    // });
+function saveUsers(users) {
+    const usersString = JSON.stringify(users, null, 2); // Pretty print with 2 spaces
+    localStorage.setItem("users", usersString);
+
+}
+
+async function loadCourses() {
+    const courses = localStorage.getItem('courses');
+    if (courses) {
+        return JSON.parse(courses);
+    }
+    else {
+        const response = await fetch('../json/courses.json');
+        if (!response.ok) {
+            throw new Error('Failed to fetch course data');
+        }
+        const courses = await response.json();
+        saveCourses(courses);
+        return courses;
+    }
+}
+
+function saveCourses(courses) {
+    const coursesString = JSON.stringify(courses, null, 2); // Pretty print with 2 spaces
+    localStorage.setItem("courses", coursesString);
 }
 
 function initLoginPage() {
@@ -184,7 +211,7 @@ function initLoginPage() {
 
             if (userData) {
                 currentUser = createUserInstance(userData);
-                saveCurrentUserToStorage(currentUser);
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 window.location.href = 'dashboard.html';
             } else {
                 alert('Invalid username or password');
@@ -197,7 +224,6 @@ function initLoginPage() {
 }
 
 async function initRegistrationPage() {
-    currentUser = loadCurrentUserFromStorage();
 
     if (!currentUser || currentUser.role.toLowerCase() !== 'student') {
         window.location.href = 'login.html';
@@ -205,11 +231,8 @@ async function initRegistrationPage() {
     }
 
     const coursesContainer = document.getElementById('courses-container');
-    const response = await fetch('../json/courses.json');
-    const coursesData = await response.json();
-    const student = Student.fromJSON(currentUser);
-
-    const availableCourses = student.getAvailableCourses(coursesData);
+    const student = users.find(u => u.username === currentUser.username);
+    const availableCourses = student.getAvailableCourses(courses);
 
     coursesContainer.innerHTML = '';
 
@@ -281,13 +304,19 @@ async function initRegistrationPage() {
     confirmButton.addEventListener('click', function () {
         const registeredButtons = document.querySelectorAll('.register-btn.registered');
         const newRegisteredCourses = Array.from(registeredButtons).map(button =>
-            button.getAttribute('data-course-id')
+            parseInt(button.getAttribute('data-course-id'))  // Convert to number
         );
 
         const registeredCount = student.registerCourses(newRegisteredCourses);
 
         if (registeredCount > 0) {
-            saveCurrentUserToStorage(student);
+            users = users.map(s => {
+                if (s.username === currentUser.username) {
+                   s = student;
+                }
+                return s;
+            });
+            saveUsers(users);
 
             alert(`Successfully registered for ${registeredCount} course(s).`);
             window.location.href = 'dashboard.html';
@@ -297,7 +326,6 @@ async function initRegistrationPage() {
     });
 }
 async function initChooseCoursesPage() {
-    currentUser = loadCurrentUserFromStorage();
 
     if (!currentUser || currentUser.role.toLowerCase() !== 'instructor') {
         window.location.href = 'login.html';
@@ -375,19 +403,15 @@ async function initChooseCoursesPage() {
 }
 
 async function initBrowsePage() {
-    currentUser = loadCurrentUserFromStorage();
-
     if (!currentUser || currentUser.role.toLowerCase() !== 'student') {
         window.location.href = 'login.html';
         return;
     }
 
     const coursesContainer = document.getElementById('courses-container');
-    const response = await fetch('../json/courses.json');
-    const coursesData = await response.json();
-    const student = Student.fromJSON(currentUser);
+    const student = users.find(u => u.username === currentUser.username);
 
-    const availableCourses = student.getAvailableCourses(coursesData);
+    const availableCourses = student.getAvailableCourses(courses);
 
     coursesContainer.innerHTML = '';
 
@@ -415,7 +439,6 @@ async function initBrowsePage() {
 }
 //use vase for instructor grades submission
 async function initViewSchedulePage() {
-    currentUser = loadCurrentUserFromStorage();
     const scheduleTable = document.getElementById('schedule-table');
 
     if (!currentUser || currentUser.role.toLowerCase() !== 'admin') {
@@ -491,7 +514,6 @@ async function initViewSchedulePage() {
 
 
 async function instructorGradesSubmission() {
-    currentUser = loadCurrentUserFromStorage();
 
     if (!currentUser || currentUser.role.toLowerCase() !== 'instructor') {
         window.location.href = 'login.html';
@@ -598,7 +620,6 @@ function convertToHtml(course) {
 }
 
 async function viewLearningPath() {
-    currentUser = loadCurrentUserFromStorage();
 
     if (!currentUser || currentUser.role.toLowerCase() !== 'student') {
         window.location.href = 'login.html';
@@ -642,7 +663,6 @@ async function viewLearningPath() {
 
 
 async function initAssignPage() {
-    currentUser = loadCurrentUserFromStorage();
 
     if (!currentUser || currentUser.role.toLowerCase() !== 'admin') {
         window.location.href = 'login.html';
@@ -822,7 +842,6 @@ async function initAssignPage() {
     }
 }
 async function initCreatePage() {
-    currentUser = loadCurrentUserFromStorage();
 
     if (!currentUser || currentUser.role.toLowerCase() !== 'admin') {
         window.location.href = 'login.html';
