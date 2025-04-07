@@ -29,7 +29,7 @@ export class Instructor extends User {
     return this;
   }
   static fromJSON(json) {
-    const course = new Instructor();
-    return course.fromJSON(json);
+    const instructor = new Instructor();
+    return instructor.fromJSON(json);
 }
 }

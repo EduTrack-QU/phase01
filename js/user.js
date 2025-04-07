@@ -13,5 +13,11 @@ export class User {
         role: this.role
       };
     }
+    static fromJSON(json) {
+      this.name = json.name;
+      this.username = json.username;
+      this.role = json.role;
+      return this;
+    }
   }
   

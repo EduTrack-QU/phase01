@@ -98,7 +98,7 @@ export class Student extends User {
         return this;
     }
     static fromJSON(json) {
-        const course = new Student();
-        return course.fromJSON(json);
+        const student = new Student();
+        return student.fromJSON(json);
     }
 }
