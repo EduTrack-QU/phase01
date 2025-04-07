@@ -22,8 +22,8 @@
         "password": "hamzapassword",
         "role": "student",
         "gpa": 3.5,
-        "enrolledCourses": [1,2,3,4,5],
-        "finishedCourses": [1,4],
+        "enrolledCourses": [],
+        "finishedCourses": [1,5],
         "grades": {},
         "prevGrades":{}
     },
