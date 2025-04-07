@@ -24,5 +24,8 @@ export class Admin extends User {
     toJSON() {
       return super.toJSON();
     }
+    static fromJSON(Json) {
+      return new Admin(Json.name, Json.username);  
+    }
   }
   
