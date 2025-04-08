@@ -590,49 +590,55 @@ async function instructorGradesSubmission() {
     }
 
     const courses_list = document.querySelector('.course-list');
-    const instructor = Instructor.fromJSON(currentUser);
-    const coursesData = instructor.teachingCourses;
 
+    const instructor = users.find(u => u.username === currentUser.username);   
+    const coursesData = instructor.teachingCourses.map(courseId => {let co =courses.find(c => c.id === courseId);
+        return co;
+    });
+
+    if(!coursesData || coursesData.length === 0) {  
+        courses_list.innerHTML = '<p class="no-courses">No courses available for grading.</p>'; 
+        return; }
+
+    
     let gradedcourses = localStorage.graded ? JSON.parse(localStorage.getItem('graded')) : [];
-    // let courses = [];
-    let students = localStorage.students ? JSON.parse(localStorage.getItem('students')) : [];
+    let students = [];
 
     const cHTML = coursesData.map(c => convertToHtml(c)).join('');
     courses_list.innerHTML = cHTML;
 
 
     window.handleDetails = async function (cid) {
+
         if (gradedcourses.includes(cid)) {
             alert("This course hvae been already graded");
             return;
         }
         const studentDiv = document.getElementById(`students-${cid}`);
         studentDiv.classList.remove('hidden');
-        let studentsEnrolled = [];
-        const response = await fetch('../json/users.json');
-        const users = await response.json();
-        for (let user of users) {
-            if (user.role === 'student') {
-                if (user.enrolledCourses.includes(cid)) {
-                    studentsEnrolled.push(user);
-                }
-            }
-        }
-        const course_ = coursesData.find(c => c.course_code === cid);
-        if (!course_ || !studentsEnrolled) {
+
+
+        const course_ = coursesData.find(c => c.id == cid);
+        let studentsEnrolled = users.filter(user => user.role =='student' && user.enrolledCourses.includes(course_.id));
+
+        if (!course_ || studentsEnrolled.length === 0) {
             studentDiv.innerHTML = "<p>No students enrolled.</p>";
             return;
         }
         students = studentsEnrolled;
-        const stuHTML = studentsEnrolled.map(s => converStutToHtml(s)).join('');
+
+        const stuHTML = studentsEnrolled.map(s => converStutToHtml(s.name)).join('');
         studentDiv.innerHTML = `
-        <h4>Grading Form</h4>
+        <h4 id="grading-title">Grading ${course_.code}</h4>
         <form onsubmit="submitGrades(event, '${cid}')">
             <ul id="ulist">
                 ${stuHTML}
             </ul>
-            <button type="submit" class="submit-btn">Submit</button>
-            <button type="button" class="back-btn" onclick="document.getElementById('students-${cid}').classList.add('hidden')">Back</button>
+
+            <div class="button-row">
+                <button type="submit" class="submit-btn">Submit</button>
+                <button type="button" class="back-btn" onclick="document.getElementById('students-${cid}').classList.add('hidden')">Back</button>
+            </div>
         </form>`;
     }
     window.submitGrades = async function (event, cid) {
@@ -641,10 +647,12 @@ async function instructorGradesSubmission() {
         const studentGrades = Array.from(form.querySelectorAll('select')).map(select => {
             return { studentName: select.name, grade: select.value };
         });
+
         alert(`Grades submitted for course ${cid}: ${JSON.stringify(studentGrades)}`);
+
         for (let i = 0; i < students.length; i++) {
-            let student = createUserInstance(students[i]);
-            const grade = studentGrades[i].grade;
+            let student = students[i];
+            let grade = studentGrades[i].grade;
             student.setGrades(cid, grade);
         }
 
@@ -653,14 +661,23 @@ async function instructorGradesSubmission() {
         gradedcourses.push(cid);
         localStorage.setItem('graded', JSON.stringify(gradedcourses));
         alert(`Grades for course ${cid} have been submitted.`);
+        users = users.map(s => {
+            students.forEach(stu => {
+                if (s.username === stu.username && s.password === stu.password) {   
+                    s = stu;
+                }
+            });          
+            return s;
+        });
+        saveUsers(users);   
     };
 }
 
 function converStutToHtml(s) {
     return `
     <li id="lig">
-        ${s.name}
-        <select name="grade-${s.name}" id="selectgrade">
+        ${s}
+        <select name="grade-${s}" id="selectgrade">
             <option value="A">A</option>
             <option value="A+">A+</option>
             <option value="B">B</option>
@@ -679,11 +696,11 @@ function converStutToHtml(s) {
 function convertToHtml(course) {
     return `
         <div class="course-item">
-            <button class="course-btn" onclick="handleDetails('${course.course_code}')">
-                ${course.course_code}${" "} ${course.course_name}
+            <button class="course-btn" onclick="handleDetails('${course.id}')">
+                ${course.code}${" - "} ${course.title}
                 <span class="details-btn">View students list</span>
             </button>
-            <div id="students-${course.course_code}"></div>
+            <div id="students-${course.id}"></div>
         </div>
     `;
 }

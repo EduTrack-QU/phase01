@@ -5,8 +5,8 @@
         "password": "mahmoud",
         "role": "student",
         "gpa": 3,
-        "enrolledCourses": [],
-        "finishedCourses": [],
+        "enrolledCourses": [1,5,3],
+        "finishedCourses": [4],
         "enrolledCoursesGrades": {},
         "finishedCoursesGrades":{}
     },
@@ -22,8 +22,8 @@
         "password": "hamzapassword",
         "role": "student",
         "gpa": 3.5,
-        "enrolledCourses": [],
-        "finishedCourses": [1,5],
+        "enrolledCourses": [1,4],
+        "finishedCourses": [2,5],
         "enrolledCoursesGrades": {},
         "finishedCoursesGrades":{"1":"A","5":"B"}  
     },
@@ -32,7 +32,7 @@
         "username": "bakry@qu.edu.qa",
         "password": "bakrypassword",
         "role": "instructor",
-        "teachingCourses": [],
+        "teachingCourses": [1,4],
         "prefereredCourses": []
     },
     {
