@@ -723,9 +723,10 @@ async function viewLearningPath() {
         }
 
         selectedCourses = courses.filter(c => selectCoursesCode.includes(c.id));
-        
+
         const HTML_ = selectedCourses.map(c => `<li>${c.code} - ${c.title}  <span class="grade"> Grade: ${student.getGrades(c.id)}</span></li>`).join('');
-        learningPathList.innerHTML = `<ul class="course-list" >${HTML_}</ul>`;
+        const currentGpaHtml = `<p class="gpa">Current GPA: ${student.gpa}</p>`;    
+        learningPathList.innerHTML = `<ul class="course-list" >${HTML_ + currentGpaHtml}</ul>`;
         // learningPathList.classList.remove('hidden');    
     })
 }
