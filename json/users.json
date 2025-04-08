@@ -7,8 +7,8 @@
         "gpa": 3,
         "enrolledCourses": [],
         "finishedCourses": [],
-        "grades": {},
-        "prevGrades":{}
+        "enrolledCoursesGrades": {},
+        "finishedCoursesGrades":{}
     },
     {
         "name": "Mohamed",
@@ -24,8 +24,8 @@
         "gpa": 3.5,
         "enrolledCourses": [],
         "finishedCourses": [1,5],
-        "grades": {},
-        "prevGrades":{}
+        "enrolledCoursesGrades": {},
+        "finishedCoursesGrades":{"1":"A","5":"B"}  
     },
     {
         "name": "Bakry",

@@ -83,7 +83,9 @@ export class Student extends User {
             ...super.toJSON(),
             enrolledCourses: this.enrolledCourses,
             finishedCourses: this.finishedCourses,
-            gpa: this.gpa
+            gpa: this.gpa,
+            enrolledCoursesGrades: this.enrolledCoursesGrades,
+            finishedCoursesGrades: this.finishedCoursesGrades
         };
     }
 

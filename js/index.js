@@ -643,7 +643,7 @@ async function instructorGradesSubmission() {
         });
         alert(`Grades submitted for course ${cid}: ${JSON.stringify(studentGrades)}`);
         for (let i = 0; i < students.length; i++) {
-            const student = createUserInstance(students[i]);
+            let student = createUserInstance(students[i]);
             const grade = studentGrades[i].grade;
             student.setGrades(cid, grade);
         }
@@ -723,7 +723,7 @@ async function viewLearningPath() {
         }
 
         selectedCourses = courses.filter(c => selectCoursesCode.includes(c.id));
-
+        
         const HTML_ = selectedCourses.map(c => `<li>${c.code} - ${c.title}  <span class="grade"> Grade: ${student.getGrades(c.id)}</span></li>`).join('');
         learningPathList.innerHTML = `<ul class="course-list" >${HTML_}</ul>`;
         // learningPathList.classList.remove('hidden');    
