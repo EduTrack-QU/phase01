@@ -694,13 +694,9 @@ async function viewLearningPath() {
         window.location.href = 'login.html';
         return;
     }
-    const request = fetch('../json/courses.json');
-    const response = await request;
-    const coursesData = await response.json();
-    let courses = coursesData.map(c => Course.fromJSON(c));
-
+  
     const learningPathList = document.getElementById('courses-list');
-    const student = Student.fromJSON(currentUser);
+    const student = users.find(u => u.username === currentUser.username);
     const selectButton = document.getElementById('courseSelect');
 
     selectButton.addEventListener('click', function (e) {
