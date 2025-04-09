@@ -319,7 +319,7 @@ async function initRegistrationPage() {
             student.unregisterCourse(courseId);
         });
         
-        const registeredCount = student.registerCourses(newRegisteredCourses);
+        const registeredCount = student.registerCourses(newRegisteredCourses, courses);
         
         const totalChanges = registeredCount + coursesToUnregister.length;
 

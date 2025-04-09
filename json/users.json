@@ -23,7 +23,7 @@
         "role": "student",
         "gpa": 3.5,
         "enrolledCourses": [4],
-        "finishedCourses": [2,5,3],
+        "finishedCourses": [2,5],
         "enrolledCoursesGrades": {},
         "finishedCoursesGrades":{"1":"A","5":"B"}  
     },
