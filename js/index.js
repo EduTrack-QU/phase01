@@ -969,23 +969,18 @@ function displayCreatedCourses(courses) {
     if (!tableBody) return;
 
     tableBody.innerHTML = '';
+    
+    // Use Course class to get formatted course data for display
+    const displayCourses = Course.getCoursesForDisplay(courses);
 
-    courses.forEach(course => {
+    displayCourses.forEach(course => {
         const row = document.createElement('tr');
-
-        // Format days for display
-        const days = course.time?.days ? course.time.days.join('/') : '-';
-        const time = course.time?.time || '-';
-        const daysTime = `${days}<br>${time}`;
-
-        // Create status class based on course status
-        const statusClass = `status-${course.status || 'pending'}`;
 
         row.innerHTML = `
             <td>${course.code}</td>
             <td>${course.title}</td>
-            <td>${daysTime}</td>
-            <td class="${statusClass}">${capitalizeFirstLetter(course.status || 'pending')}</td>
+            <td>${course.daysTime}</td>
+            <td class="${course.statusClass}">${course.status}</td>
             <td>
                 <button class="action-btn edit-btn" data-id="${course.id}">Edit</button>
                 <button class="action-btn delete-btn" data-id="${course.id}">Delete</button>
@@ -1022,12 +1017,10 @@ function addCourseActionButtonListeners() {
 function editCourse(courseId) {
     // Get courses from localStorage
     const courses = JSON.parse(localStorage.getItem('courses') || '[]');
-    const course = courses.find(c => c.id == courseId);
-
-    if (!course) {
-        alert('Course not found');
-        return;
-    }
+    
+    const course =courses.find(c => c.id == courseId);
+    
+    if (!course) return;
 
     // Fill the form with course data
     document.getElementById('course-code').value = course.code || '';
@@ -1051,21 +1044,19 @@ function editCourse(courseId) {
 }
 
 function deleteCourse(courseId) {
-    if (!confirm('Are you sure you want to delete this course?')) {
-        return;
-    }
-
     // Get courses from localStorage
     let courses = JSON.parse(localStorage.getItem('courses') || '[]');
-
-    // Filter out the course to delete
-    courses = courses.filter(c => c.id != courseId);
-
+    
+    // Use Course class method to delete the course
+    const updatedCourses = Course.deleteCourse(courseId, courses);
+    
+    if (!updatedCourses) return;
+    
     // Save back to localStorage
-    localStorage.setItem('courses', JSON.stringify(courses));
+    localStorage.setItem('courses', JSON.stringify(updatedCourses));
 
     // Refresh the display
-    displayCreatedCourses(courses);
+    displayCreatedCourses(updatedCourses);
 }
 
 function handleCourseFormSubmit(event) {
@@ -1085,12 +1076,6 @@ function handleCourseFormSubmit(event) {
         selectedDays.push(checkbox.value);
     });
 
-    // Validate form
-    if (!code || !title || !creditHour || !description || !timeStr || selectedDays.length === 0) {
-        alert('Please fill in all required fields');
-        return;
-    }
-
     // Parse prerequisites
     const prerequisites = prerequisitesStr
         ? prerequisitesStr.split(',').map(p => p.trim()).filter(p => p)
@@ -1103,64 +1088,120 @@ function handleCourseFormSubmit(event) {
 
     // Get existing courses
     let courses = JSON.parse(localStorage.getItem('courses') || '[]');
-
-    if (isUpdate) {
-        // Update existing course
-        const index = courses.findIndex(c => c.id == courseId);
-        if (index !== -1) {
-            courses[index] = {
-                ...courses[index],
-                code,
-                title,
-                creditHour,
-                description,
-                prerequisites,
-                time: {
-                    days: selectedDays,
-                    time: timeStr
-                }
-            };
-        }
-
-        // Reset form button
-        submitButton.textContent = 'Create Course';
-        submitButton.removeAttribute('data-id');
-        submitButton.classList.remove('update');
-    } else {
-        // Create new course using the Course class
-        const newCourse = new Course(
-            code,
-            title,
-            creditHour,
-            description,
-            '', // instructorId (empty for now)
-            false // available (false until validated)
-        );
-
-        newCourse.prerequisites = prerequisites;
-        newCourse.time = {
-            days: selectedDays,
-            time: timeStr
-        };
-
-        // Add to courses array
-        courses.push(newCourse.toJSON());
-    }
-
+    
+    // Prepare form data for Course class method
+    const formData = {
+        code,
+        title,
+        creditHour,
+        description,
+        prerequisites,
+        days: selectedDays,
+        time: timeStr
+    };
+    
+    // Use Course class method to create or update the course
+    const updatedCourses = Course.createOrUpdateCourse(formData, courses, isUpdate ? courseId : null);
+    
+    if (!updatedCourses) return;
+    
     // Save to localStorage
-    localStorage.setItem('courses', JSON.stringify(courses));
+    localStorage.setItem('courses', JSON.stringify(updatedCourses));
 
     // Reset form
     document.getElementById('create-course-form').reset();
+    
+    // Reset form button if it was an update
+    if (isUpdate) {
+        submitButton.textContent = 'Create Course';
+        submitButton.removeAttribute('data-id');
+        submitButton.classList.remove('update');
+    }
 
     // Refresh the display
-    displayCreatedCourses(courses);
+    displayCreatedCourses(updatedCourses);
 
     // Show success message
     alert(isUpdate ? 'Course updated successfully!' : 'Course created successfully!');
 }
+async function initValidationPage() {
+    currentUser = loadCurrentUserFromStorage();
 
-// Helper function to capitalize first letter
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
+    if (!currentUser || currentUser.role.toLowerCase() !== 'admin') {
+        window.location.href = 'login.html';
+        return;
+    }
+  
+    const tableBody = document.getElementById('validation-courses-body');
+    tableBody.innerHTML = '';
+  
+    // Load courses from localStorage or fallback to JSON
+    let courses = [];
+    const localCourses = localStorage.getItem('courses');
+  
+    if (localCourses) {
+      courses = JSON.parse(localCourses);
+    } else {
+      const response = await fetch('../json/courses.json');
+      courses = await response.json();
+    }
+  
+    // Load students to count registrations
+    const students = JSON.parse(localStorage.getItem('students') || '[]');
+  
+    const getEnrollmentCount = (courseId) => {
+      return students.reduce((count, student) => {
+        if (student.enrolledCourses && student.enrolledCourses.includes(courseId)) {
+          return count + 1;
+        }
+        return count;
+      }, 0);
+    };
+  
+    // Filter relevant courses (pending or in progress)
+    const filteredCourses = courses.filter(
+      (course) => course.status === 'pending' || course.status === 'in progress'
+    );
+  
+    if (filteredCourses.length === 0) {
+      tableBody.innerHTML = '<tr><td colspan="7">No courses to validate at the moment.</td></tr>';
+      return;
+    }
+  
+    // Build table rows
+    filteredCourses.forEach((course, index) => {
+      const enrolledCount = getEnrollmentCount(course.id);
+      const schedule = course.time?.days?.join('/') || '';
+      const courseTime = course.time?.time || '';
+      const statusClass = {
+        pending: 'status-pending',
+        'in progress': 'status-in-progress', // Changed to match CSS class
+        cancelled: 'status-cancelled'
+      }[course.status] || 'status-pending';
+  
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${course.code}</td>
+        <td>${course.title}</td>
+        <td>${course.instructorId || 'TBA'}</td>
+        <td>${schedule}<br><small>${courseTime}</small></td>
+        <td>${enrolledCount}</td>
+        <td><span class="status-badge ${statusClass}">${capitalize(course.status)}</span></td>
+        <td>
+          <div class="action-buttons">
+            <button class="validate-btn" ${course.status !== 'pending' ? 'disabled' : ''} data-id="${course.id}">Validate</button>
+            <button class="cancel-btn" ${course.status !== 'pending' ? 'disabled' : ''} data-id="${course.id}">Cancel</button>
+          </div>
+        </td>
+      `;
+  
+      tableBody.appendChild(row);
+    });
+  
+    
+  
+    function capitalize(text) {
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+  }
+

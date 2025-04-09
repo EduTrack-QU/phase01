@@ -1,41 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validate Courses </title>
-    <link rel="stylesheet" href="styles/admin.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Validate Courses - EduTrack-QU</title>
+  <link rel="stylesheet" href="styles/admin.css" />
 </head>
+
 <body>
-    <header>
-        <img class="inline-icon" src="media/cap.svg" alt="cap icon">
-        <h3>EduTrack-QU</h3>
-    
-        <img class=qu-logo src="media/qulogo.png" alt="QU logo">
-    </header>
-    <div id="header"></div>
+  <header>
+    <img class="inline-icon" src="media/cap.svg" alt="cap icon" />
+    <h3>EduTrack-QU</h3>
+    <img class="qu-logo" src="media/qulogo.png" alt="QU logo" />
+  </header>
 
-    <main>
-        <h1>Validate Courses / Classes</h1>
-        <section id="courses-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>User</th>
-                        <th>Course</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="courses-table-body">
-                </tbody>
-            </table>
-        </section>
-    </main>
+  <main class="container">
+    <section class="validation-section">
+      <h2>Course Validation </h2>
+      <div id="course-validation-table">
+        <table class="courses-table">
+          <thead>
+            <tr>
+              <th>Course Code</th>
+              <th>Title</th>
+              <th>Instructor</th>
+              <th>Schedule</th>
+              <th>Enrolled</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="validation-courses-body">
+            <!-- Classes will be populated here dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
-
-    <script src="js/validate.js"></script>
-  
+  <script type="module" src="js/index.js"></script>
 </body>
 </html>
