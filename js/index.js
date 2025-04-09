@@ -356,8 +356,8 @@ async function initChooseCoursesPage() {
     }
 
     const coursesContainer = document.getElementById('courses-container');
-    const response = await fetch('../json/courses.json');
-    const courses = await response.json();
+    // const response = await fetch('../json/courses.json');
+    // const courses = await response.json();
 
     const selectedCourses = new Set();
 
@@ -396,30 +396,38 @@ async function initChooseCoursesPage() {
             return;
         }
 
-        const instructor = Instructor.fromJSON(currentUser);
+        const instructor = users.find(u => u.username === currentUser.username);
         const courseIds = Array.from(selectedCourses);
 
-        // Save preferences to current user (session)
+        let updatedCourses = courses.filter(course => {courseIds.forEach(c => {
+            if(c===course.id){
+                course.instructorId = instructor.username;
+                return true;
+            }})});
+
+        
         instructor.preferedCourses = courseIds;
-        saveCurrentUserToStorage(instructor);
 
 
-        let allInstructors = JSON.parse(localStorage.getItem('instructors') || '[]');
-        const index = allInstructors.findIndex(i => i.username === instructor.username);
 
-        if (index !== -1) {
-            allInstructors[index] = {
-                ...instructor,
-                role: 'instructor'
-            };
-        } else {
-            allInstructors.push({
-                ...instructor,
-                role: 'instructor'
+        users=users.map(s => {
+            if (s.username === instructor.username) {
+                s = instructor;
+            }
+            return s;   
+        });
+        saveUsers(users);   
+        courses= courses.map(c => {
+            updatedCourses.forEach(u => {
+                if (c.id === u.id) {
+                    c = u;
+                }
             });
-        }
+            return c;
+        });
+        saveCourses(courses);
 
-        localStorage.setItem('instructors', JSON.stringify(allInstructors));
+        // localStorage.setItem('instructors', JSON.stringify(allInstructors));
 
         alert("Your preferred courses have been saved!");
     });
