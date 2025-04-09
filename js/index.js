@@ -516,78 +516,44 @@ async function initBrowsePage() {
 }
 //use vase for instructor grades submission
 async function initViewSchedulePage() {
-    const scheduleTable = document.getElementById('schedule-table');
-
     if (!currentUser || currentUser.role.toLowerCase() !== 'admin') {
-        scheduleTable.innerHTML = '<tr><td>You do not have permission to view this page.</td></tr>';
+        window.location.href = 'login.html';
         return;
     }
 
-    let allCourses = [];
-    const localCourses = localStorage.getItem('courses');
-    if (localCourses) {
-        allCourses = JSON.parse(localCourses);
-    } else {
-        const courseRes = await fetch('json/courses.json');
-        allCourses = await courseRes.json();
-    }
+    const scheduleTable = document.getElementById('schedule-table');
+    scheduleTable.innerHTML = '';
 
-    let users = [];
-    const localUsers = localStorage.getItem('instructors');
-    if (localUsers) {
-        users = JSON.parse(localUsers);
-    } else {
-        const userRes = await fetch('json/users.json');
-        users = await userRes.json();
-    }
-
+    const allCourses = courses;
     const instructors = users.filter(u => u.role === 'instructor');
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
 
-    // Build table header
     const thead = document.createElement('thead');
     const headRow = document.createElement('tr');
-    const firstTh = document.createElement('th');
-    firstTh.textContent = 'Instructors';
-    headRow.appendChild(firstTh);
-
-    days.forEach(day => {
-        const th = document.createElement('th');
-        th.textContent = day;
-        headRow.appendChild(th);
-    });
-
+    headRow.innerHTML = `<th>Instructors</th>` + days.map(day => `<th>${day}</th>`).join('');
     thead.appendChild(headRow);
     scheduleTable.appendChild(thead);
 
-    // Build table body
     const tbody = document.createElement('tbody');
 
     instructors.forEach((instructor, index) => {
         const row = document.createElement('tr');
-
-        const nameCell = document.createElement('td');
-        nameCell.textContent = instructor.name || `Instructor#${index + 1}`;
-        row.appendChild(nameCell);
-
-        days.forEach(day => {
-            const cell = document.createElement('td');
-            const coursesToday = allCourses.filter(course =>
-                course.instructorId === instructor.username &&
-                course.time?.days?.includes(day)
-            );
-
-            cell.innerHTML = coursesToday.length > 0
-                ? coursesToday.map(c => `${c.code}<br><small>${c.time.time}</small>`).join('<br>')
-                : '-';
-            row.appendChild(cell);
-        });
-
+        row.innerHTML = `<td>${instructor.name || `Instructor#${index + 1}`}</td>` +
+            days.map(day => {
+                const coursesToday = allCourses.filter(course =>
+                    course.instructorId === instructor.username &&
+                    course.time?.days?.includes(day)
+                );
+                return `<td>${coursesToday.length > 0 ?
+                    coursesToday.map(c => `${c.code}<br><small>${c.time.time}</small>`).join('<br>') :
+                    '-'}</td>`;
+            }).join('');
         tbody.appendChild(row);
     });
 
     scheduleTable.appendChild(tbody);
 }
+
 
 
 async function instructorGradesSubmission() {
