@@ -62,7 +62,7 @@
     ],
     "description": "Introduction to database design, SQL, and database management systems.",
     "instructorId": "",
-    "available": false,
+    "available": true,
     "time": {
       "days": [
         "Monday",
