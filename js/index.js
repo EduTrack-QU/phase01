@@ -753,21 +753,13 @@ async function initAssignPage() {
     }
 
     try {
-        const coursesResponse = await fetch('../json/courses.json');
-
-        if (!coursesResponse.ok) {
-            throw new Error('Failed to fetch course data');
-        }
-
-        const courses = await coursesResponse.json();
-
+        const courses = await loadCourses();
         let users = [];
         const localInstructors = localStorage.getItem('instructors');
         if (localInstructors) {
             users = JSON.parse(localInstructors);
         } else {
-            const usersResponse = await fetch('../json/users.json');
-            users = await usersResponse.json();
+            users=await loadUsers(); 
         }
 
         const instructors = users.filter(user => user.role === "instructor");
@@ -912,8 +904,7 @@ async function initAssignPage() {
                     return course;
                 });
 
-                localStorage.setItem('courses', JSON.stringify(updatedCourses));
-
+                saveCourses(updatedCourses);
                 assignButton.classList.add('assigned');
                 alert('Instructors have been successfully assigned to courses!');
             });
@@ -930,30 +921,8 @@ async function initCreatePage() {
         window.location.href = 'login.html';
         return;
     }
-
-    // Load existing courses
-    let courses = [];
-
-    // Try to get courses from localStorage first
-    const localCourses = localStorage.getItem('courses');
-    if (localCourses) {
-        courses = JSON.parse(localCourses);
-    } else {
-        // If not in localStorage, fetch from JSON file
-        try {
-            const response = await fetch('json/courses.json');
-            if (response.ok) {
-                courses = await response.json();
-                // Store in localStorage for future use
-                localStorage.setItem('courses', JSON.stringify(courses));
-            } else {
-                console.error('Failed to fetch courses');
-            }
-        } catch (error) {
-            console.error('Error fetching courses:', error);
-        }
-    }
-
+    let courses = [];    
+    courses=await loadCourses();
     // Display the courses
     displayCreatedCourses(courses);
 
@@ -1105,9 +1074,7 @@ function handleCourseFormSubmit(event) {
     
     if (!updatedCourses) return;
     
-    // Save to localStorage
-    localStorage.setItem('courses', JSON.stringify(updatedCourses));
-
+    saveCourses(updatedCourses);
     // Reset form
     document.getElementById('create-course-form').reset();
     
