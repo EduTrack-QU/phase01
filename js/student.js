@@ -10,13 +10,24 @@ export class Student extends User {
     }
 
 
-    registerCourse(courseId) {
+    registerCourse(courseId, allCourses) {
         courseId = courseId.toString();
-        if (!this.isRegisteredFor(courseId) && !this.hasFinished(courseId)) {
-            this.enrolledCourses.push(parseInt(courseId));
-            return true;
+        if (this.isRegisteredFor(courseId) || this.hasFinished(courseId)) {
+            return false;
         }
-        return false;
+        
+        const course = allCourses.find(c => c.id.toString() === courseId);
+        if (!course) return false;
+        
+        const alreadyTakingCode = this.isRegisteredForCourseCode(course.code, allCourses);
+        const alreadyFinishedCode = this.hasFinishedCourseCode(course.code, allCourses);
+        
+        if (alreadyTakingCode || alreadyFinishedCode) {
+            return false;
+        }
+        
+        this.enrolledCourses.push(parseInt(courseId));
+        return true;
     }
     
     isRegisteredFor(courseId) {
@@ -37,10 +48,10 @@ export class Student extends User {
         return false;
     }
     
-    registerCourses(courseIds) {
+    registerCourses(courseIds, allCourses) {
         let count = 0;
         for (const courseId of courseIds) {
-            if (this.registerCourse(courseId)) {
+            if (this.registerCourse(courseId, allCourses)) {
                 count++;
             }
         }
@@ -48,11 +59,30 @@ export class Student extends User {
     }
     
     getAvailableCourses(allCourses) {
+        const registeredCodes = new Set();
+        const finishedCodes = new Set();
+        
+        this.enrolledCourses.forEach(enrolledId => {
+            const course = allCourses.find(c => c.id.toString() === enrolledId.toString());
+            if (course) registeredCodes.add(course.code);
+        });
+        
+        this.finishedCourses.forEach(finishedId => {
+            const course = allCourses.find(c => c.id.toString() === finishedId.toString());
+            if (course) finishedCodes.add(course.code);
+        });
+        
+        console.log("Registered course codes:", Array.from(registeredCodes));
+        console.log("Finished course codes:", Array.from(finishedCodes));
+        
         return allCourses.filter(course => {
-            const courseId = course.id.toString();
-            return course.available && 
-                   !this.isRegisteredFor(courseId) && 
-                   !this.hasFinished(courseId);
+            const isAvailable = course.available;
+            const notRegistered = !registeredCodes.has(course.code);
+            const notFinished = !finishedCodes.has(course.code);
+            
+            console.log(`Course ${course.code} - Available: ${isAvailable}, Not Registered: ${notRegistered}, Not Finished: ${notFinished}`);
+            
+            return isAvailable && notRegistered && notFinished;
         });
     }
 
@@ -102,5 +132,19 @@ export class Student extends User {
     static fromJSON(json) {
         const student = new Student();
         return student.fromJSON(json);
+    }
+
+    isRegisteredForCourseCode(courseCode, allCourses) {
+        return this.enrolledCourses.some(enrolledId => {
+            const course = allCourses.find(c => c.id.toString() === enrolledId.toString());
+            return course && course.code === courseCode;
+        });
+    }
+
+    hasFinishedCourseCode(courseCode, allCourses) {
+        return this.finishedCourses.some(finishedId => {
+            const course = allCourses.find(c => c.id.toString() === finishedId.toString());
+            return course && course.code === courseCode;
+        });
     }
 }
