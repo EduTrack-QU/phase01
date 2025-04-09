@@ -349,15 +349,12 @@ async function initRegistrationPage() {
     });
 }
 async function initChooseCoursesPage() {
-
     if (!currentUser || currentUser.role.toLowerCase() !== 'instructor') {
         window.location.href = 'login.html';
         return;
     }
 
     const coursesContainer = document.getElementById('courses-container');
-    // const response = await fetch('../json/courses.json');
-    // const courses = await response.json();
 
     const selectedCourses = new Set();
 
@@ -405,11 +402,7 @@ async function initChooseCoursesPage() {
                 return true;
             }})});
 
-        
         instructor.preferedCourses = courseIds;
-
-
-
         users=users.map(s => {
             if (s.username === instructor.username) {
                 s = instructor;
@@ -427,8 +420,6 @@ async function initChooseCoursesPage() {
         });
         saveCourses(courses);
 
-        // localStorage.setItem('instructors', JSON.stringify(allInstructors));
-
         alert("Your preferred courses have been saved!");
     });
 }
@@ -440,9 +431,7 @@ async function initBrowsePage() {
     }
 
     const coursesContainer = document.getElementById('courses-container');
-    const student = users.find(u => u.username === currentUser.username);
-
-    const availableCourses = courses.filter(course => course.available && !student.hasFinished(course.id));
+    const availableCourses = courses.filter(course => course.available);
 
     const searchFilterHTML = `
         <div class="search-filter-container">
