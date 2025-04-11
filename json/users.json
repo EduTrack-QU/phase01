@@ -8,7 +8,7 @@
         "enrolledCourses": [1,5,3],
         "finishedCourses": [4],
         "enrolledCoursesGrades": {},
-        "finishedCoursesGrades":{}
+        "finishedCoursesGrades":{"4":"A"}
     },
     {
         "name": "Mohamed",
@@ -25,7 +25,7 @@
         "enrolledCourses": [4],
         "finishedCourses": [2,5],
         "enrolledCoursesGrades": {},
-        "finishedCoursesGrades":{"1":"A","5":"B"}  
+        "finishedCoursesGrades":{"2":"B+","5":"B"}  
     },
     {
         "name": "Bakry",
