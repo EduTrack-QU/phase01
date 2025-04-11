@@ -21,6 +21,57 @@
     margin-bottom: var(--space-lg);
 }
 
+/* Validation page button styles */
+.validate-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.validate-btn:hover {
+    background-color: #218838;
+}
+
+.cancel-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-left: 5px;
+}
+
+.cancel-btn:hover {
+    background-color: #c82333;
+}
+
+/* Status colors */
+.status-pending {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.status-validated {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-cancelled {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.status-in-progress {
+    color: #007bff;
+    font-weight: bold;
+}
+
 body {
     background-color: #f8f9fa;
 }
