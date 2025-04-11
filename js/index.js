@@ -1055,8 +1055,6 @@ function handleCourseFormSubmit(event) {
     alert(isUpdate ? 'Course updated successfully!' : 'Course created successfully!');
 }
 async function initValidationPage() {
-    currentUser = loadCurrentUserFromStorage();
-
     if (!currentUser || currentUser.role.toLowerCase() !== 'admin') {
         window.location.href = 'login.html';
         return;
@@ -1065,47 +1063,34 @@ async function initValidationPage() {
     const tableBody = document.getElementById('validation-courses-body');
     tableBody.innerHTML = '';
   
-    // Load courses from localStorage or fallback to JSON
-    let courses = [];
-    const localCourses = localStorage.getItem('courses');
-  
-    if (localCourses) {
-      courses = JSON.parse(localCourses);
-    } else {
-      const response = await fetch('../json/courses.json');
-      courses = await response.json();
-    }
-  
-    // Load students to count registrations
-    const students = JSON.parse(localStorage.getItem('students') || '[]');
-  
-    const getEnrollmentCount = (courseId) => {
-      return students.reduce((count, student) => {
-        if (student.enrolledCourses && student.enrolledCourses.includes(courseId)) {
-          return count + 1;
-        }
-        return count;
-      }, 0);
-    };
-  
-    // Filter relevant courses (pending or in progress)
-    const filteredCourses = courses.filter(
-      (course) => course.status === 'pending' || course.status === 'in progress'
-    );
+    // Use the loadCourses function instead of direct localStorage access
+    const coursesData = await loadCourses();
+    
+   
+    const filteredCourses = coursesData;
   
     if (filteredCourses.length === 0) {
-      tableBody.innerHTML = '<tr><td colspan="7">No courses to validate at the moment.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="7">No courses available at the moment.</td></tr>';
       return;
     }
   
+    // Get enrollment count for each course
+    const getEnrollmentCount = (courseId) => {
+      return users.filter(user => 
+        user.role === 'student' && 
+        user.enrolledCourses && 
+        user.enrolledCourses.includes(courseId)
+      ).length;
+    };
+  
     // Build table rows
-    filteredCourses.forEach((course, index) => {
+    filteredCourses.forEach((course) => {
       const enrolledCount = getEnrollmentCount(course.id);
       const schedule = course.time?.days?.join('/') || '';
       const courseTime = course.time?.time || '';
       const statusClass = {
         pending: 'status-pending',
-        'in progress': 'status-in-progress', // Changed to match CSS class
+        'in progress': 'status-in-progress',
         cancelled: 'status-cancelled'
       }[course.status] || 'status-pending';
   
@@ -1116,22 +1101,66 @@ async function initValidationPage() {
         <td>${course.instructorId || 'TBA'}</td>
         <td>${schedule}<br><small>${courseTime}</small></td>
         <td>${enrolledCount}</td>
-        <td><span class="status-badge ${statusClass}">${capitalize(course.status)}</span></td>
+        <td class="${statusClass}">${course.status}</td>
         <td>
-          <div class="action-buttons">
-            <button class="validate-btn" ${course.status !== 'pending' ? 'disabled' : ''} data-id="${course.id}">Validate</button>
-            <button class="cancel-btn" ${course.status !== 'pending' ? 'disabled' : ''} data-id="${course.id}">Cancel</button>
-          </div>
+          <button class="action-btn validate-btn" data-id="${course.id}">Validate</button>
+          <button class="action-btn cancel-btn" data-id="${course.id}">Cancel</button>
         </td>
       `;
-  
       tableBody.appendChild(row);
     });
   
-    
+    // Add event listeners to action buttons
+    document.querySelectorAll('.validate-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const courseId = this.getAttribute('data-id');
+        validateCourse(courseId);
+      });
+    });
   
-    function capitalize(text) {
-      return text.charAt(0).toUpperCase() + text.slice(1);
-    }
-  }
+    document.querySelectorAll('.cancel-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const courseId = this.getAttribute('data-id');
+        cancelCourse(courseId);
+      });
+    });
+}
+
+function validateCourse(courseId) {
+    if (!confirm('Are you sure you want to validate this course?')) return;
+  
+    const updatedCourses = courses.map(course => {
+      if (course.id == courseId) {
+        return {
+          ...course,
+          status: 'validated',
+          available: true
+        };
+      }
+      return course;
+    });
+  
+    saveCourses(updatedCourses);
+    alert('Course has been validated and is now available for registration.');
+    initValidationPage(); // Refresh the page
+}
+
+function cancelCourse(courseId) {
+    if (!confirm('Are you sure you want to cancel this course?')) return;
+  
+    const updatedCourses = courses.map(course => {
+      if (course.id == courseId) {
+        return {
+          ...course,
+          status: 'cancelled',
+          available: false
+        };
+      }
+      return course;
+    });
+  
+    saveCourses(updatedCourses);
+    alert('Course has been cancelled.');
+    initValidationPage(); // Refresh the page
+}
 
