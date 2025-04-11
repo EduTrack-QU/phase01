@@ -762,7 +762,7 @@ async function initAssignPage() {
             const schedule = `${course.time.days.join('/')} ${course.time.time}`;
             nameCell.innerHTML = `<strong>${course.code}: ${course.title}</strong><br><small>${schedule}</small>`;
             row.appendChild(nameCell);
-
+    
             const interestedCell = document.createElement('td');
             if (coursePref.interestedInstructors.length > 0) {
                 interestedCell.textContent = coursePref.interestedInstructors
@@ -772,44 +772,37 @@ async function initAssignPage() {
                 interestedCell.textContent = 'No preferences';
             }
             row.appendChild(interestedCell);
-
+    
             const assignedCell = document.createElement('td');
             const selectElement = document.createElement('select');
             selectElement.className = 'instructor-select';
             selectElement.dataset.courseId = course.id;
-
+    
             const emptyOption = document.createElement('option');
             emptyOption.value = '';
             emptyOption.textContent = 'Select instructor';
+            emptyOption.selected = true; // Set as default selected option
             selectElement.appendChild(emptyOption);
-
+    
             instructors.forEach(instructor => {
                 const option = document.createElement('option');
                 option.value = instructor.username;
                 option.textContent = instructor.name;
-
-                const isInterested = coursePref.interestedInstructors.some(
-                    inst => inst.username === instructor.username
-                );
-
-                if (isInterested) {
-                    option.className = 'interested-instructor';
-                }
-
+    
                 if (
                     instructor.teachingCourses &&
                     Array.isArray(instructor.teachingCourses) &&
                     instructor.teachingCourses.includes(course.id)
                 ) {
-                    option.selected = true;
+                    option.selected = false; // Ensure other options are not selected by default
                 }
-
+    
                 selectElement.appendChild(option);
             });
-
+    
             assignedCell.appendChild(selectElement);
             row.appendChild(assignedCell);
-
+    
             tableBody.appendChild(row);
         });
 

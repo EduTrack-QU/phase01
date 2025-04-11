@@ -272,10 +272,10 @@ body {
     background-color: var(--color-primary-dark, #3a5fcd);
 }
 
-/* .button.create.assigned {
+.button.create.assigned {
     background-color: var(--color-success, #28a745);
     cursor: default;
-} */
+}
 
 /* .button.create:hover {
     background-color: var(--color-primary-light);
@@ -471,10 +471,7 @@ h2 {
     background-color: white;
 }
 
-.interested-instructor {
-    font-weight: bold;
-    color: var(--color-primary);
-}
+
 
 /* Make sure the assign button is properly styled */
 #assign-button {
