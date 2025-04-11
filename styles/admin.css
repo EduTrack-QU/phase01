@@ -272,10 +272,10 @@ body {
     background-color: var(--color-primary-dark, #3a5fcd);
 }
 
-.button.create.assigned {
+/* .button.create.assigned {
     background-color: var(--color-success, #28a745);
     cursor: default;
-}
+} */
 
 /* .button.create:hover {
     background-color: var(--color-primary-light);
@@ -480,15 +480,18 @@ h2 {
 #assign-button {
     width: 140px;
     height: 50px;
-    background: linear-gradient( #23487f);
-    color: black;
+    background-color: #1976d2;
+    color: white;
     border-radius: 50px;
     border: none;
     outline: none;
     cursor: pointer;
     position: relative;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
+    
+    
+}
+#assign-button.assigned {
+    background-color: #28a745;
 }
 
 #assign-button span {
@@ -545,7 +548,7 @@ h2 {
 .create-section #assign-button {
     padding: 0;
     font-size: 1.1rem;
-    color: black;
+    color: white;
     width: 180px;
     height: 50px;
 }
