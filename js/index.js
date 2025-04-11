@@ -709,7 +709,6 @@ async function viewLearningPath() {
 
 
 async function initAssignPage() {
-
     if (!currentUser || currentUser.role.toLowerCase() !== 'admin') {
         window.location.href = 'login.html';
         return;
@@ -717,15 +716,17 @@ async function initAssignPage() {
 
     try {
         const courses = await loadCourses();
+
+        // Load full users list
         let users = [];
-        const localInstructors = localStorage.getItem('instructors');
-        if (localInstructors) {
-            users = JSON.parse(localInstructors);
+        const localUsers = localStorage.getItem('users');
+        if (localUsers) {
+            users = JSON.parse(localUsers);
         } else {
-            users=await loadUsers(); 
+            users = await loadUsers();
         }
 
-        const instructors = users.filter(user => user.role === "instructor");
+        const instructors = users.filter(user => user.role === 'instructor');
 
         const coursePreferences = {};
 
@@ -739,7 +740,7 @@ async function initAssignPage() {
         });
 
         instructors.forEach(instructor => {
-            if (instructor.preferedCourses && Array.isArray(instructor.preferedCourses)) {
+            if (Array.isArray(instructor.preferedCourses)) {
                 instructor.preferedCourses.forEach(courseId => {
                     if (coursePreferences[courseId]) {
                         coursePreferences[courseId].interestedInstructors.push({
@@ -762,7 +763,7 @@ async function initAssignPage() {
             const schedule = `${course.time.days.join('/')} ${course.time.time}`;
             nameCell.innerHTML = `<strong>${course.code}: ${course.title}</strong><br><small>${schedule}</small>`;
             row.appendChild(nameCell);
-    
+
             const interestedCell = document.createElement('td');
             if (coursePref.interestedInstructors.length > 0) {
                 interestedCell.textContent = coursePref.interestedInstructors
@@ -772,37 +773,28 @@ async function initAssignPage() {
                 interestedCell.textContent = 'No preferences';
             }
             row.appendChild(interestedCell);
-    
+
             const assignedCell = document.createElement('td');
             const selectElement = document.createElement('select');
             selectElement.className = 'instructor-select';
             selectElement.dataset.courseId = course.id;
-    
+
             const emptyOption = document.createElement('option');
             emptyOption.value = '';
             emptyOption.textContent = 'Select instructor';
-            emptyOption.selected = true; // Set as default selected option
+            emptyOption.selected = true;
             selectElement.appendChild(emptyOption);
-    
+
             instructors.forEach(instructor => {
                 const option = document.createElement('option');
                 option.value = instructor.username;
                 option.textContent = instructor.name;
-    
-                if (
-                    instructor.teachingCourses &&
-                    Array.isArray(instructor.teachingCourses) &&
-                    instructor.teachingCourses.includes(course.id)
-                ) {
-                    option.selected = false; // Ensure other options are not selected by default
-                }
-    
+                option.selected = course.instructorId === instructor.username;
                 selectElement.appendChild(option);
             });
-    
+
             assignedCell.appendChild(selectElement);
             row.appendChild(assignedCell);
-    
             tableBody.appendChild(row);
         });
 
@@ -824,29 +816,26 @@ async function initAssignPage() {
                     }
                 });
 
-                let allInstructors = JSON.parse(localStorage.getItem('instructors') || '[]');
-
-                instructors.forEach(instructorData => {
-                    const username = instructorData.username;
-                    if (assignments[username]) {
-                        const instructorIndex = allInstructors.findIndex(i => i.username === username);
-
-                        if (instructorIndex !== -1) {
-                            allInstructors[instructorIndex] = {
-                                ...instructorData,
-                                teachingCourses: assignments[username]
-                            };
-                        } else {
-                            allInstructors.push({
-                                ...instructorData,
-                                teachingCourses: assignments[username]
-                            });
-                        }
+                // Update the full user list (not just instructors) to preserve all users
+                const updatedUsers = users.map(user => {
+                    if (user.role === 'instructor') {
+                        const updatedTeaching = assignments[user.username] || user.teachingCourses || [];
+                        return {
+                            ...user,
+                            teachingCourses: updatedTeaching
+                        };
                     }
+                    return user;
                 });
 
-                localStorage.setItem('instructors', JSON.stringify(allInstructors));
+                // Save the updated full user list
+                localStorage.setItem('users', JSON.stringify(updatedUsers));
 
+                // Also store instructors separately for compatibility (if needed elsewhere)
+                const updatedInstructors = updatedUsers.filter(u => u.role === 'instructor');
+                localStorage.setItem('instructors', JSON.stringify(updatedInstructors));
+
+                // Update courses with assigned instructor
                 const updatedCourses = courses.map(course => {
                     if (course.available) {
                         const select = document.querySelector(`.instructor-select[data-course-id="${course.id}"]`);
@@ -871,6 +860,7 @@ async function initAssignPage() {
             '<tr><td colspan="3">Failed to load data. Please try again later.</td></tr>';
     }
 }
+
 async function initCreatePage() {
 
     if (!currentUser || currentUser.role.toLowerCase() !== 'admin') {
@@ -1047,6 +1037,7 @@ function handleCourseFormSubmit(event) {
     // Show success message
     alert(isUpdate ? 'Course updated successfully!' : 'Course created successfully!');
 }
+
 async function initValidationPage() {
     if (!currentUser || currentUser.role.toLowerCase() !== 'admin') {
         window.location.href = 'login.html';
