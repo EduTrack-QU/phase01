@@ -2,7 +2,7 @@ import { nanoid } from '../node_modules/nanoid/nanoid.js';
 
 export class Course {
     constructor(code, title, creditHour, description, instructorId, available) {
-        this.id = nanoid(8);
+        this.id = Math.floor(Math.random() * 1000000); // Generate 8-digit number
         this.code = code || nanoid(6); // Changed from nullish coalescing to logical OR for better compatibility
         this.title = title || "";
         this.creditHour = creditHour || 0; // Default to 0 if not provided

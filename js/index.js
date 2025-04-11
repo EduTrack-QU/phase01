@@ -236,8 +236,8 @@ async function initRegistrationPage() {
     const registeredCourseIds = student.enrolledCourses || [];
     
     const registeredCourses = courses.filter(course => 
-        registeredCourseIds.includes(course.id) && 
-        !availableCourses.some(ac => ac.id === course.id)
+        registeredCourseIds.map(id => id.toString()).includes(course.id.toString()) && 
+        !availableCourses.some(ac => ac.id.toString() === course.id.toString())
     );
     
     const allCoursesToShow = [...availableCourses, ...registeredCourses];
@@ -263,7 +263,7 @@ async function initRegistrationPage() {
     allCoursesToShow.forEach(course => {
         const courseName = `${course.code}: ${course.title}`;
         const schedule = `${course.time.days.join('/')} ${course.time.time}`;
-        const isRegistered = registeredCourseIds.includes(course.id);
+        const isRegistered = registeredCourseIds.map(id => id.toString()).includes(course.id.toString());
 
         const courseDiv = document.createElement('div');
         courseDiv.classList.add('course-card');
@@ -331,7 +331,9 @@ async function initRegistrationPage() {
                 return s;
             });
             saveUsers(users);
-
+            
+            localStorage.setItem('currentUser', JSON.stringify(student));
+            
             let message = '';
             if (registeredCount > 0 && coursesToUnregister.length > 0) {
                 message = `Successfully registered for ${registeredCount} course(s) and unregistered from ${coursesToUnregister.length} course(s).`;

@@ -26,7 +26,7 @@ export class Student extends User {
             return false;
         }
         
-        this.enrolledCourses.push(parseInt(courseId));
+        this.enrolledCourses.push(courseId);
         return true;
     }
     
