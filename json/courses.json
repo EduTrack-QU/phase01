@@ -26,7 +26,7 @@
     "description": "Introduction to basic programming concepts using a high-level language.",
     "instructorId": "",
     "available": true,
-    "status": "validated",
+    "status": "in progress",
     "time": {
       "days": [
         "Monday",
@@ -46,7 +46,7 @@
     "description": "Covers object-oriented programming principles including classes, inheritance, and polymorphism.",
     "instructorId": "",
     "available": true,
-    "status": "validated",
+    "status": "pending",
     "time": {
       "days": [
         "Tuesday",

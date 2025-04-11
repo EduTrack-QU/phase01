@@ -1084,31 +1084,37 @@ async function initValidationPage() {
     };
   
     // Build table rows
+    // Build table rows
     filteredCourses.forEach((course) => {
-      const enrolledCount = getEnrollmentCount(course.id);
-      const schedule = course.time?.days?.join('/') || '';
-      const courseTime = course.time?.time || '';
-      const statusClass = {
-        pending: 'status-pending',
-        'in progress': 'status-in-progress',
-        cancelled: 'status-cancelled'
-      }[course.status] || 'status-pending';
-  
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${course.code}</td>
-        <td>${course.title}</td>
-        <td>${course.instructorId || 'TBA'}</td>
-        <td>${schedule}<br><small>${courseTime}</small></td>
-        <td>${enrolledCount}</td>
-        <td class="${statusClass}">${course.status}</td>
-        <td>
-          <button class="action-btn validate-btn" data-id="${course.id}">Validate</button>
-          <button class="action-btn cancel-btn" data-id="${course.id}">Cancel</button>
-        </td>
-      `;
-      tableBody.appendChild(row);
-    });
+        const enrolledCount = getEnrollmentCount(course.id);
+        const schedule = course.time?.days?.join('/') || '';
+        const courseTime = course.time?.time || '';
+        
+        // Add a default status if it doesn't exist
+        const status = course.status || (course.available ? 'validated' : 'pending');
+        
+        const statusClass = {
+          pending: 'status-pending',
+          'in progress': 'status-in-progress',
+          cancelled: 'status-cancelled',
+          validated: 'status-validated'
+        }[status] || 'status-pending';
+    
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${course.code}</td>
+          <td>${course.title}</td>
+          <td>${course.instructorId || 'TBA'}</td>
+          <td>${schedule}<br><small>${courseTime}</small></td>
+          <td>${enrolledCount}</td>
+          <td class="${statusClass}">${status}</td>
+          <td>
+            <button class="action-btn validate-btn" data-id="${course.id}">Validate</button>
+            <button class="action-btn cancel-btn" data-id="${course.id}">Cancel</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
   
     // Add event listeners to action buttons
     document.querySelectorAll('.validate-btn').forEach(button => {
