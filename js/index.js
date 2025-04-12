@@ -363,8 +363,7 @@ async function initChooseCoursesPage() {
     coursesContainer.innerHTML = '';
 
     courses.forEach(course => {
-        if (!course.available) return;
-
+        if (!course.available ) return;
         const div = document.createElement('div');
         div.classList.add('course-card');
         div.setAttribute('data-id', course.id);
@@ -376,6 +375,13 @@ async function initChooseCoursesPage() {
 
         div.addEventListener('click', () => {
             const cid = course.id;
+            const instructor = users.find(u => u.username === currentUser.username);
+        
+            if (instructor.preferedCourses.includes(cid)) {
+                alert("This course is already in your preferred courses.");
+                return;
+            }
+        
             if (selectedCourses.has(cid)) {
                 selectedCourses.delete(cid);
                 div.classList.remove('selected');
@@ -398,13 +404,19 @@ async function initChooseCoursesPage() {
         const instructor = users.find(u => u.username === currentUser.username);
         const courseIds = Array.from(selectedCourses);
 
+
         let updatedCourses = courses.filter(course => {courseIds.forEach(c => {
             if(c===course.id){
-                course.instructorId = instructor.username;
                 return true;
             }})});
+        
 
-        instructor.preferedCourses = courseIds;
+            for (let i = 0; i < courseIds.length; i++) {
+                if (!instructor.preferedCourses.includes(courseIds[i])) {
+                    instructor.preferedCourses.push(courseIds[i]);
+                }
+            }
+            
         users=users.map(s => {
             if (s.username === instructor.username) {
                 s = instructor;
@@ -423,6 +435,7 @@ async function initChooseCoursesPage() {
         saveCourses(courses);
 
         alert("Your preferred courses have been saved!");
+        window.location.reload();
     });
 }
 
@@ -1156,3 +1169,4 @@ function cancelCourse(courseId) {
     initValidationPage(); // Refresh the page
 }
 
+  
