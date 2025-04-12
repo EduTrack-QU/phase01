@@ -91,8 +91,84 @@ function initDashboard() {
         welcomeMsg.innerText = welcomeTemplates[role](currentUser.name);
     }
     loadNavigation(role);
+    
+    // Add dashboard content for admin users
+    if (role === 'admin') {
+        // Create a container for the courses cards
+        const dashboardContent = document.createElement('div');
+        dashboardContent.className = 'dashboard-courses';
+        dashboardContent.innerHTML = `
+            <h3 class="section-title">Current Courses</h3>
+            <div class="courses-grid" id="dashboard-courses-container"></div>
+        `;
+        
+        // Insert the container after the navigation
+        const nav = document.getElementById('nav');
+        if (nav) {
+            nav.parentNode.insertBefore(dashboardContent, nav.nextSibling);
+            
+            // Load courses directly from localStorage using the same approach as in initValidationPage
+            loadCourses().then(coursesData => {
+                console.log("All courses loaded:", coursesData);
+                
+                // Filter courses that are in progress or open for registration
+                const relevantCourses = coursesData.filter(course => 
+                    course.status === 'validated' || 
+                    course.status === 'in progress' || 
+                    course.available === true ||
+                    course.status === undefined // Include courses without explicit status
+                );
+                
+                console.log("Filtered courses for dashboard:", relevantCourses);
+                
+                const coursesContainer = document.getElementById('dashboard-courses-container');
+                
+                if (coursesContainer && relevantCourses.length > 0) {
+                    relevantCourses.forEach(course => {
+                        const courseCard = document.createElement('div');
+                        courseCard.className = 'course-card';
+                        
+                        // Determine status class for styling
+                        let statusClass = 'status-pending';
+                        let statusText = 'Pending';
+                        
+                        if (course.status === 'validated') {
+                            statusClass = 'status-validated';
+                            statusText = 'Validated';
+                        } else if (course.status === 'in progress') {
+                            statusClass = 'status-in-progress';
+                            statusText = 'In Progress';
+                        } else if (course.available === true) {
+                            statusClass = 'status-validated';
+                            statusText = 'Open for Registration';
+                        }
+                        
+                        // Format schedule safely
+                        const schedule = course.time && course.time.days ? 
+                            `${course.time.days.join('/')} ${course.time.time}` : 'TBA';
+                        
+                        courseCard.innerHTML = `
+                            <h3 class="course-title">${course.code}: ${course.title}</h3>
+                            <div class="course-details">
+                                <p><strong>Instructor:</strong> ${course.instructorId || 'TBA'}</p>
+                                <p><strong>Schedule:</strong> ${schedule}</p>
+                                <p><strong>Credits:</strong> ${course.creditHour || 'N/A'}</p>
+                                <p><strong>Status:</strong> <span class="${statusClass}">${statusText}</span></p>
+                            </div>
+                            <p class="course-description">${course.description || 'No description available.'}</p>
+                        `;
+                        
+                        coursesContainer.appendChild(courseCard);
+                    });
+                } else if (coursesContainer) {
+                    coursesContainer.innerHTML = '<p class="no-courses">No courses currently in progress or open for registration.</p>';
+                }
+            }).catch(error => {
+                console.error("Error loading courses for dashboard:", error);
+            });
+        }
+    }
 }
-
 function loadNavigation(role) {
     const nav = document.getElementById('nav');
     if (!nav || !navConfig[role]) return;
