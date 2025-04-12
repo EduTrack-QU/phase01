@@ -1166,7 +1166,7 @@ async function initValidationPage() {
         const courseTime = course.time?.time || '';
         
         // Add a default status if it doesn't exist
-        const status = course.status || (course.available ? 'validated' : 'pending');
+        const status = course.status || (course.available ? 'in progress' : 'Open for Registration');
         
         const statusClass = {
           pending: 'status-pending',
@@ -1214,7 +1214,7 @@ function validateCourse(courseId) {
       if (course.id == courseId) {
         return {
           ...course,
-          status: 'validated',
+          status: 'in progress',
           available: true
         };
       }

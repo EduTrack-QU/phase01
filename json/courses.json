@@ -8,7 +8,7 @@
     "description": "Introduction to basic programming concepts using a high-level language.",
     "instructorId": "",
     "available": true,
-    "status": "validated",
+    "status": "in progress",
     "time": {
       "days": [
         "Monday",
@@ -46,7 +46,7 @@
     "description": "Covers object-oriented programming principles including classes, inheritance, and polymorphism.",
     "instructorId": "",
     "available": true,
-    "status": "pending",
+    "status": "Open for Registration",
     "time": {
       "days": [
         "Tuesday",
@@ -66,7 +66,7 @@
     "description": "Introduction to database design, SQL, and database management systems.",
     "instructorId": "",
     "available": true,
-    "status": "pending",
+    "status": "Open for Registration",
     "time": {
       "days": [
         "Monday",
@@ -86,7 +86,7 @@
     "description": "Covers web technologies including HTML, CSS, JavaScript, and server-side programming.",
     "instructorId": "",
     "available": false,
-    "status": "pending",
+    "status": "Open for Registration",
     "time": {
       "days": [
         "Tuesday",

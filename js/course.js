@@ -14,7 +14,7 @@ export class Course {
             days: [],
             time: ""
         };
-        this.status = "pending"; // pending, validated, cancelled
+        this.status = "Open for Registration"; // Open for Registration, in progress , cancelled
     }
 
    
@@ -92,7 +92,7 @@ export class Course {
             const daysTime = `${days}<br>${time}`;
             
             // Make sure status is a string before using it in class names
-            const status = (course.status || 'pending').toString();
+            const status = (course.status || 'Open for Registration').toString();
             const statusClass = `status-${status}`;
             
             return {
@@ -120,7 +120,7 @@ export class Course {
         this.available = json.available;
         this.prerequisites = json.prerequisites || [];
         this.time = json.time || { days: [], time: "" };
-        this.status = json.status || "pending";
+        this.status = json.status || "Open for Registration";
         return this;
     }
     
